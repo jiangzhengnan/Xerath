@@ -1,0 +1,48 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+apply plugin: 'java'
+apply plugin : 'maven-publish'
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    //gradle sdk
+    implementation gradleApi()
+    //groovy sdk
+    implementation localGroovy()
+    //添加 gradle
+    implementation 'com.android.tools.build:gradle:3.6.1'
+    implementation 'org.ow2.asm:asm:9.2'
+    implementation 'org.ow2.asm:asm-commons:9.1'
+}
+
+group = 'com.ng.xerathlib'
+version = "1.0.0"
+
+//打包上传到本地
+uploadArchives {
+    repositories {
+        flatDir {
+            dirs '../repo/'
+        }
+    }
+}
+
+////打包上传到本地
+//uploadArchives {
+//    repositories.mavenDeployer {
+//        pom.version = '1.0.0'
+//        pom.artifactId = 'Orianna'
+//        pom.groupId = 'com.ng.corelibrary'
+//        //放到根目录下
+//        repository(url: uri('../repo'))
+//        //repository(url: "file:/Users/xiaoguagua/Desktop/chajian/")
+//    }
+//
+//
+//}
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}

@@ -1,0 +1,3 @@
+rootProject.name = "Xerath"
+include ':app'
+include ':XerathLib'
