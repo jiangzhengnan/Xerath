@@ -42,4 +42,4 @@ dependencies {
     implementation 'org.ow2.asm:asm-commons:9.1'
 }
 
-//apply plugin: 'ng-xerath-plugin'
+apply plugin: 'ng-xerath-plugin'

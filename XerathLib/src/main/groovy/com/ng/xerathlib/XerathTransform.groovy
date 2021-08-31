@@ -23,7 +23,7 @@ class XerathTransform extends Transform {
      */
     @Override
     String getName() {
-        return "OriannaTransform"
+        return "customPumpkin"
     }
 
     /**
@@ -53,62 +53,73 @@ class XerathTransform extends Transform {
     @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
         super.transform(transformInvocation)
-        // OutputProvider管理输出路径，如果消费型输入为空，你会发现OutputProvider == null
-        TransformOutputProvider outputProvider = transformInvocation.getOutputProvider();
         transformInvocation.getInputs().each {
             TransformInput input ->
                 //这里面存放第三方的 jar 包
                 input.jarInputs.each {
-                    //暂不需要处理
+                    JarInput jarInput ->
+                        String destName = jarInput.file.name
+                        String absolutePath = jarInput.file.absolutePath
+                        println "jarInput destName: ${destName}"
+                        println "jarInput absolutePath: ${absolutePath}"
+                        // 重命名输出文件（同目录copyFile会冲突）
+                        def md5Name = DigestUtils.md5(absolutePath)
+                        if (destName.endsWith(".jar")) {
+                            destName = destName.substring(0, destName.length() - 4)
+                        }
+
+                        //def modifyJar = ModifyUtils.modifyJar(jarInput.file, transformInvocation.context.getTemporaryDir())
+                        def modifyJar = null
+                        if (modifyJar == null) {
+                            modifyJar = jarInput.file
+                        }
+
+                        //获取输出文件
+                        File dest = transformInvocation.getOutputProvider()
+                                .getContentLocation(destName+"_"+md5Name,
+                                        jarInput.contentTypes, jarInput.scopes, Format.JAR)
+                        //中间可以将 jarInput.file 进行操作！
+                        //copy 到输出目录
+                        FileUtils.copyFile(modifyJar, dest)
                 }
 
                 //这里存放着开发者手写的类
                 input.directoryInputs.each {
                     DirectoryInput directoryInput ->
-                        // 处理源码文件
-                        processDirectoryInputs(directoryInput, outputProvider,transformInvocation)
-                }
-        }
-    }
-
-    /**
-     * 处理源码文件
-     */
-    private void processDirectoryInputs(DirectoryInput directoryInput,
-                                        TransformOutputProvider outputProvider,
-                                        TransformInvocation transformInvocation) {
-        def dest = outputProvider
-                .getContentLocation(
-                        directoryInput.name,
-                        directoryInput.contentTypes,
-                        directoryInput.scopes, Format.DIRECTORY)
-        println "directory output dest: $dest.absolutePath"
-        File dir = directoryInput.file
-        HashMap<String, File> modifyMap = new HashMap<>()
-        if (dir) {
-            dir.traverse(type: FileType.FILES, nameFilter: ~/.*\.class/) {
-                File classFile -> //遍历一遍把需要遍历的类存到 map
-                    if (!classFile.name.endsWith("R.class")
-                            && !classFile.name.endsWith("BuildConfig.class")
-                            && !classFile.name.contains("R\$")) {
-                        File modified = modifyClassFile(dir, classFile, transformInvocation.context.getTemporaryDir())
-                        if (modified != null) {
-                            modifyMap.put(classFile.absolutePath.replace(dir.absolutePath, ""), modified)
+                        def dest = transformInvocation.getOutputProvider()
+                                .getContentLocation(
+                                        directoryInput.name,
+                                        directoryInput.contentTypes,
+                                        directoryInput.scopes, Format.DIRECTORY)
+                        println "directory output dest: $dest.absolutePath"
+                        File dir = directoryInput.file
+                        HashMap<String, File> modifyMap = new HashMap<>()
+                        if (dir) {
+                            dir.traverse(type: FileType.FILES, nameFilter: ~/.*\.class/) {
+                                File classFile -> //遍历一遍把需要遍历的类存到 map
+                                    if (!classFile.name.endsWith("R.class")
+                                            && !classFile.name.endsWith("BuildConfig.class")
+                                            && !classFile.name.contains("R\$")) {
+                                        File modified = modifyClassFile(dir, classFile, transformInvocation.context.getTemporaryDir())
+                                        if (modified != null) {
+                                            modifyMap.put(classFile.absolutePath.replace(dir.absolutePath, ""), modified)
+                                        }
+                                    }
+                            }
+                            FileUtils.copyDirectory(directoryInput.file, dest)
+                            //取出 map
+                            modifyMap.entrySet().each {
+                                Map.Entry<String, File> entry ->
+                                    File target = new File(dest.absolutePath + entry.getKey());
+                                    if(target.exists()) {
+                                        target.delete()
+                                    }
+                                    //将修改的覆盖掉
+                                    FileUtils.copyFile(entry.getValue(), target)
+                                    entry.getValue().delete()
+                            }
                         }
-                    }
-            }
-            FileUtils.copyDirectory(directoryInput.file, dest)
-            //取出 map
-            modifyMap.entrySet().each {
-                Map.Entry<String, File> entry ->
-                    File target = new File(dest.absolutePath + entry.getKey());
-                    if (target.exists()) {
-                        target.delete()
-                    }
-                    //将修改的覆盖掉
-                    FileUtils.copyFile(entry.getValue(), target)
-                    entry.getValue().delete()
-            }
+                }
         }
     }
 
