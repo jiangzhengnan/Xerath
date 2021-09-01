@@ -8,6 +8,11 @@ buildscript {
         flatDir {
             dirs './repo/'
         }
+        // 添加本地maven地址配置
+        maven {
+            url uri("${rootProject.projectDir}/repo")
+        }
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.6.1'
@@ -26,6 +31,12 @@ allprojects {
         flatDir {
             dirs './repo/'
         }
+        // 添加本地maven地址配置
+        maven {
+            url uri("${rootProject.projectDir}/repo")
+        }
+
+
     }
 }
 

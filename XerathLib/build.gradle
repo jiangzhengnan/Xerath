@@ -4,8 +4,13 @@ apply plugin: 'java'
 apply plugin : 'maven-publish'
 
 repositories {
-    mavenCentral()
+    mavenLocal()
 }
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
 dependencies {
     //gradle sdk
     implementation gradleApi()
@@ -29,20 +34,3 @@ uploadArchives {
     }
 }
 
-////打包上传到本地
-//uploadArchives {
-//    repositories.mavenDeployer {
-//        pom.version = '1.0.0'
-//        pom.artifactId = 'Orianna'
-//        pom.groupId = 'com.ng.corelibrary'
-//        //放到根目录下
-//        repository(url: uri('../repo'))
-//        //repository(url: "file:/Users/xiaoguagua/Desktop/chajian/")
-//    }
-//
-//
-//}
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}

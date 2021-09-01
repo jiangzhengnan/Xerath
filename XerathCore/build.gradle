@@ -1,18 +1,19 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
 }
+apply plugin: 'maven'
 
 android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.ng.xerath"
         minSdkVersion 16
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -31,16 +32,17 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
-
-
-    //asm
-    implementation 'org.ow2.asm:asm:9.2'
-    implementation 'org.ow2.asm:asm-commons:9.1'
-
-    //core
-    implementation 'com.ng.xerathlib:XerathCore:1.0.0'
-
 }
 
-apply plugin: 'ng-xerath-plugin'
+uploadArchives{
+    repositories.mavenDeployer{
+        // 本地仓库路径
+        repository(url: uri("${rootProject.projectDir}/repo")) // 配置本地仓库路径，项目根目录下的repository目录中
+        // 唯一标识
+        pom.groupId = "com.ng.xerathlib"
+        // 项目名称
+        pom.artifactId = "XerathCore"
+        // 版本号
+        pom.version = "1.0.0"
+    }
+}

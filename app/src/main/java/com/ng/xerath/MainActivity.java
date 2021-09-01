@@ -1,7 +1,6 @@
 package com.ng.xerath;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.view.View;
 
@@ -35,16 +34,14 @@ public class MainActivity extends AppCompatActivity {
      */
     @CalculateTime
     private void btn1ClickMethod() {
-        println("按钮1 点击了！！！");
-       //try {
-       //    Thread.sleep(100);
-       //} catch (Exception e) {
-       //    e.printStackTrace();
-       //}
-
+        println("按钮1 点击了 ...");
+        try {
+            Thread.sleep(100);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    @TestASM
     private void btn2ClickMethod() {
         println("按钮2 点击了！！！");
     }
