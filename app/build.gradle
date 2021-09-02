@@ -39,7 +39,7 @@ dependencies {
     implementation 'org.ow2.asm:asm-commons:9.1'
 
     //core
-    implementation 'com.ng.xerathlib:XerathCore:1.0.0'
+    //implementation 'com.ng.xerathlib:XerathCore:1.0.0'
 
 }
 

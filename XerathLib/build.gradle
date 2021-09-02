@@ -3,9 +3,6 @@ apply plugin: 'maven'
 apply plugin: 'java'
 apply plugin : 'maven-publish'
 
-repositories {
-    mavenLocal()
-}
 java {
     sourceCompatibility = JavaVersion.VERSION_1_8
     targetCompatibility = JavaVersion.VERSION_1_8
