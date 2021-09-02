@@ -3,10 +3,9 @@ package com.ng.xerathlib
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.utils.FileUtils
-import groovy.io.FileType
-import org.apache.commons.codec.digest.DigestUtils
-import org.apache.commons.io.IOUtils
 import org.gradle.api.Project
+import org.objectweb.asm.ClassReader
+import org.objectweb.asm.ClassWriter
 
 /**
  * 自定义的 Transform 类
@@ -23,6 +22,7 @@ class XerathTransform extends Transform {
      */
     @Override
     String getName() {
+        //return "XerathTransform"
         return "customPumpkin"
     }
 
@@ -51,107 +51,82 @@ class XerathTransform extends Transform {
     }
 
     @Override
-    void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
-        super.transform(transformInvocation)
-        transformInvocation.getInputs().each {
+    void transform(Context context, Collection<TransformInput> inputs, Collection<TransformInput> referencedInputs, TransformOutputProvider outputProvider, boolean isIncremental) throws IOException, TransformException, InterruptedException {
+        super.transform(context, inputs, referencedInputs, outputProvider, isIncremental)
+        inputs.each {
             TransformInput input ->
                 //这里面存放第三方的 jar 包
                 input.jarInputs.each {
-                    JarInput jarInput ->
-                        String destName = jarInput.file.name
-                        String absolutePath = jarInput.file.absolutePath
-                        println "jarInput destName: ${destName}"
-                        println "jarInput absolutePath: ${absolutePath}"
-                        // 重命名输出文件（同目录copyFile会冲突）
-                        def md5Name = DigestUtils.md5(absolutePath)
-                        if (destName.endsWith(".jar")) {
-                            destName = destName.substring(0, destName.length() - 4)
-                        }
-
-                        //def modifyJar = ModifyUtils.modifyJar(jarInput.file, transformInvocation.context.getTemporaryDir())
-                        def modifyJar = null
-                        if (modifyJar == null) {
-                            modifyJar = jarInput.file
-                        }
-
-                        //获取输出文件
-                        File dest = transformInvocation.getOutputProvider()
-                                .getContentLocation(destName+"_"+md5Name,
-                                        jarInput.contentTypes, jarInput.scopes, Format.JAR)
-                        //中间可以将 jarInput.file 进行操作！
-                        //copy 到输出目录
-                        FileUtils.copyFile(modifyJar, dest)
+                    //暂无需处理
                 }
-
                 //这里存放着开发者手写的类
                 input.directoryInputs.each {
-                    DirectoryInput directoryInput ->
-                        def dest = transformInvocation.getOutputProvider()
-                                .getContentLocation(
-                                        directoryInput.name,
-                                        directoryInput.contentTypes,
-                                        directoryInput.scopes, Format.DIRECTORY)
-                        println "directory output dest: $dest.absolutePath"
-                        File dir = directoryInput.file
-                        HashMap<String, File> modifyMap = new HashMap<>()
-                        if (dir) {
-                            dir.traverse(type: FileType.FILES, nameFilter: ~/.*\.class/) {
-                                File classFile -> //遍历一遍把需要遍历的类存到 map
-                                    if (!classFile.name.endsWith("R.class")
-                                            && !classFile.name.endsWith("BuildConfig.class")
-                                            && !classFile.name.contains("R\$")) {
-                                        File modified = modifyClassFile(dir, classFile, transformInvocation.context.getTemporaryDir())
-                                        if (modified != null) {
-                                            modifyMap.put(classFile.absolutePath.replace(dir.absolutePath, ""), modified)
-                                        }
-                                    }
-                            }
-                            FileUtils.copyDirectory(directoryInput.file, dest)
-                            //取出 map
-                            modifyMap.entrySet().each {
-                                Map.Entry<String, File> entry ->
-                                    File target = new File(dest.absolutePath + entry.getKey());
-                                    if(target.exists()) {
-                                        target.delete()
-                                    }
-                                    //将修改的覆盖掉
-                                    FileUtils.copyFile(entry.getValue(), target)
-                                    entry.getValue().delete()
-                            }
-                        }
+                    DirectoryInput dirInput ->
+                        //处理需要插桩的文件
+                        modifyClassWithPath(dirInput.file)
+                        //Copy修改之后的文件
+                        File dest = outputProvider.getContentLocation(dirInput.name, dirInput.contentTypes,
+                                dirInput.scopes, Format.DIRECTORY)
+                        FileUtils.copyDirectory(dirInput.file, dest)
                 }
         }
     }
 
-    /**
-     * 修改目录里的 class
-     * @param dir
-     * @param classFile
-     * @param tempDir
-     * @return
-     */
-    private static File modifyClassFile(File dir, File classFile, File tempDir) {
-        File modified = null
-        try {
-            println "dir.absolutePath + File.separator: ${dir.absolutePath + File.separator}"
-            String className = path2ClassName(classFile.absolutePath.replace(dir.absolutePath + File.separator, ""))
-            println "className: $className"
-            byte[] sourceClassBytes = IOUtils.toByteArray(new FileInputStream(classFile))
-            byte[] modifyClassBytes = ModifyUtils.modifyClasses(sourceClassBytes)
-            if (modifyClassBytes) {
-                modified = new File(tempDir, className.replace('.', '') + '.class')
-                if (modified.exists()) {
-                    modified.delete()
-                }
-                modified.createNewFile()
-                new FileOutputStream(modified).write(modifyClassBytes)
-            }
-        } catch (Exception e) {
-            e.printStackTrace()
+    void modifyClassWithPath(File dir) {
+        def root = dir.absolutePath
+        dir.eachFileRecurse { File file ->
+            def filePath = file.absolutePath
+            //过滤非class文件
+            if (!filePath.endsWith(".class")) return
+            def className = getClassName(root, filePath)
+            //过滤系统文件
+            if (isSystemClass(className)) return
+            //hook关键代码
+            hookClass(filePath, className)
         }
-        return modified
     }
-    private static String path2ClassName(String pathName) {
-        pathName.replace(File.separator, ".").replace(".class", "")
+
+    private static void hookClass(String filePath, String className) {
+        //1.声明ClassReader
+        ClassReader reader = new ClassReader(new FileInputStream(new File(filePath)))
+        //2声明 ClassWriter
+        ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS)
+        //3声明ClassVisitor
+        CostTimeClassAdapter adapter = new CostTimeClassAdapter(writer)
+        //4调用accept方法 传入classVisitor
+        reader.accept(adapter, ClassReader.EXPAND_FRAMES)
+        if (adapter.changed) {
+            println className + "is changed:" + adapter.changed
+            byte[] bytes = writer.toByteArray()
+            FileOutputStream fos = new FileOutputStream(new File(filePath))
+            fos.write(bytes)
+        }
     }
+
+
+    //默认排除
+    private static final DEFAULT_EXCLUDE = [
+            '^android\\..*',
+            '^androidx\\..*',
+            '.*\\.R$',
+            '.*\\.R\\$.*$',
+            '.*\\.BuildConfig$',
+    ]
+
+    //获取类名
+    private static String getClassName(String root, String classPath) {
+        return classPath.substring(root.length() + 1, classPath.length() - 6)
+                .replaceAll("/", ".")       // unix/linux
+                .replaceAll("\\\\", ".")    //windows
+    }
+
+    private static boolean isSystemClass(String fileName) {
+        for (def exclude : DEFAULT_EXCLUDE) {
+            if (fileName.matches(exclude)) return true
+        }
+        return false
+    }
+
+
+
 }

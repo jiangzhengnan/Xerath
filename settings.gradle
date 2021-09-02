@@ -1,3 +1,4 @@
 rootProject.name = "Xerath"
 include ':app'
 include ':XerathLib'
+include ':XerathCore'

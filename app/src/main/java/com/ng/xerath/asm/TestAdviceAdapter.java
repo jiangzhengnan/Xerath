@@ -7,7 +7,7 @@ import org.objectweb.asm.commons.AdviceAdapter;
 import dalvik.bytecode.Opcodes;
 
 /**
- * @author : jiangzhengnan.jzn@alibaba-inc.com
+ * @author : jiangzhengnan
  * @creation : 2021/08/25
  * @description :
  * 使用 AdviceAdapter 是 MethodVisitor 的子类，功能更全

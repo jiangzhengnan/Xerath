@@ -76,9 +76,10 @@ public class CustomClassVisitor extends ClassVisitor {
                     if (isNeedCalculateTime) {
                         System.out.println("[Pumpkin] 注解 onMethodEnter: " + descriptor);
                         mv.visitLabel(label0);
-                        mv.visitLineNumber(41, label0);
+                        mv.visitLineNumber(53, label0);
                         mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
-                        mv.visitVarInsn(LSTORE, 1);
+                        mv.visitMethodInsn(INVOKESTATIC, "java/lang/Long", "valueOf", "(J)Ljava/lang/Long;", false);
+                        mv.visitVarInsn(ASTORE, 1);
                     }
                 }
 
@@ -90,35 +91,38 @@ public class CustomClassVisitor extends ClassVisitor {
                         mv.visitLdcInsn("点击结束 finish");
                         mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
                         Label label1 = new Label();
-                        Label label2 = new Label();
-                        Label label3 = new Label();
-                        Label label4 = new Label();
                         mv.visitLabel(label1);
-                        mv.visitLineNumber(42, label1);
+                        mv.visitLineNumber(54, label1);
                         mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
-                        mv.visitVarInsn(LSTORE, 3);
+                        mv.visitMethodInsn(INVOKESTATIC, "java/lang/Long", "valueOf", "(J)Ljava/lang/Long;", false);
+                        mv.visitVarInsn(ASTORE, 2);
+                        Label label2 = new Label();
                         mv.visitLabel(label2);
-                        mv.visitLineNumber(43, label2);
+                        mv.visitLineNumber(55, label2);
                         mv.visitFieldInsn(GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
                         mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
                         mv.visitInsn(DUP);
                         mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false);
-                        mv.visitLdcInsn(mClassName + " | " + name + " 点击耗时:");
+                        mv.visitLdcInsn("\u8017\u65f6:");
                         mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
-                        mv.visitVarInsn(LLOAD, 1);
-                        mv.visitVarInsn(LLOAD, 3);
+                        mv.visitVarInsn(ALOAD, 2);
+                        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Long", "longValue", "()J", false);
+                        mv.visitVarInsn(ALOAD, 1);
+                        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Long", "longValue", "()J", false);
                         mv.visitInsn(LSUB);
                         mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false);
                         mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
                         mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+                        Label label3 = new Label();
                         mv.visitLabel(label3);
-                        mv.visitLineNumber(44, label3);
+                        mv.visitLineNumber(56, label3);
                         mv.visitInsn(RETURN);
+                        Label label4 = new Label();
                         mv.visitLabel(label4);
                         mv.visitLocalVariable("this", "Lcom/ng/xerath/MainActivity;", null, label0, label4, 0);
-                        mv.visitLocalVariable("startTime", "J", null, label1, label4, 1);
-                        mv.visitLocalVariable("endTime", "J", null, label2, label4, 3);
-                        mv.visitMaxs(6, 5);
+                        mv.visitLocalVariable("START_TIME", "Ljava/lang/Long;", null, label1, label4, 1);
+                        mv.visitLocalVariable("END_TIME", "Ljava/lang/Long;", null, label2, label4, 2);
+                        mv.visitMaxs(6, 3);
                         mv.visitEnd();
                     }
                     super.onMethodExit(opcode);

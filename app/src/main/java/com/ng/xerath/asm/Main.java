@@ -9,11 +9,11 @@ import org.objectweb.asm.ClassWriter;
 
 import java.io.FileOutputStream;
 
-import static org.objectweb.asm.Opcodes.ASM9;
+import static org.objectweb.asm.Opcodes.ASM5;
 
 
 /**
- * @author : jiangzhengnan.jzn@alibaba-inc.com
+ * @author : jiangzhengnan
  * @creation : 2021/08/23
  * @description :
  * ASM的最简单用法
@@ -36,8 +36,8 @@ public class Main {
             ClassReader cr = new ClassReader(MainActivity.class.getName());
             //2.然后创建ClassWriter对象，
             ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
-            ClassVisitor cv = new TestClassVisitor(ASM9, cw);
-            cr.accept(cv, ASM9);
+            ClassVisitor cv = new TestClassVisitor(ASM5, cw);
+            cr.accept(cv, ASM5);
             // 获取生成的class文件对应的二进制流
             byte[] code = cw.toByteArray();
             //将二进制流写到out/下
