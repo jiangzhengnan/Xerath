@@ -1,13 +1,6 @@
-简体中文 | [English](./README.en.md) |<br />
-# Xerath
-<img src="https://github.com/jiangzhengnan/Xerath/blob/master/app/src/main/res/raw/ic_bg.png" width="567" height="336"/><br />
-# 简介
-AOP为Aspect Oriented Programming的缩写，意为：面向切面编程。
-本项目为AOP思想在Android上的运用与实战，参考基于AspectJ的开源项目[AopArms](https://github.com/AICareless/AopArms)
-旨在通过注解+Transfrom+ASM实现一套功能强大，方便开发，并且能够有效减少重复代码的Android Aop 框架。
-  
-  
- 
+English | [简体中文](./README.md) |<br />
+
+
 
 </br>
 ## License
@@ -25,5 +18,3 @@ AOP为Aspect Oriented Programming的缩写，意为：面向切面编程。
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
-
-
