@@ -47,8 +47,7 @@
             android:layout_marginLeft="12dp"
             android:layout_weight="1"
             android:enabled="false"
-            android:visibility="invisible"
-            android:text="异步线程"
+            android:text="异常捕获"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -113,7 +112,7 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:enabled="false"
-            android:text="捕获异常"
+            android:text="异步线程"
 
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -126,7 +125,7 @@
             android:layout_marginLeft="12dp"
             android:layout_weight="1"
             android:enabled="false"
-            android:text="延迟任务"
+            android:text="主线程"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -138,56 +137,13 @@
             android:layout_marginLeft="12dp"
             android:layout_weight="1"
             android:enabled="false"
-            android:text="日志收集"
-
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="12dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn10_layout_fuc"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:enabled="false"
-            android:text="主线程"
-
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/btn11_layout_data"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="12dp"
-            android:layout_weight="1"
-            android:enabled="false"
-            android:text="异步线程"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/btn12_layout_view"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="12dp"
-            android:layout_weight="1"
-            android:enabled="false"
-            android:text=""
+            android:text=" "
             android:visibility="invisible"
+
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
     </LinearLayout>
+
 </merge>

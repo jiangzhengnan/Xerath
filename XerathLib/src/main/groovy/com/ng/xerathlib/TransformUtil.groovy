@@ -18,11 +18,11 @@ class TransformUtil  {
         //2声明 ClassWriter
         ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS)
         //3声明ClassVisitor
-        CostTimeClassVisitor adapter = new CostTimeClassVisitor(writer)
+        XerathClassVisitor adapter = new XerathClassVisitor(writer)
         //4调用accept方法 传入classVisitor
         reader.accept(adapter, ClassReader.EXPAND_FRAMES)
         if (adapter.changed) {
-            println className + "is changed:" + adapter.changed
+            println className + " 产生了修改:" + adapter.changed
             byte[] bytes = writer.toByteArray()
             FileOutputStream fos = new FileOutputStream(new File(filePath))
             fos.write(bytes)
