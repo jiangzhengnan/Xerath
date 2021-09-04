@@ -48,7 +48,7 @@ public class CostTimeClassAdapter extends ClassVisitor {
         private int time;
 
         public CostTimeMethodAdapter(int access, String name, String descriptor, MethodVisitor methodVisitor) {
-            super(ASM4, access, descriptor, methodVisitor);
+            super(ASM5, access, descriptor, methodVisitor);
             this.name = name;
         }
 

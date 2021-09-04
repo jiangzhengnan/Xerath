@@ -3,7 +3,7 @@ package com.ng.xerathlib
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.utils.FileUtils
-import org.gradle.api.Project
+import org.apache.commons.codec.digest.DigestUtils
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
 
@@ -11,40 +11,23 @@ import org.objectweb.asm.ClassWriter
  * 自定义的 Transform 类
  */
 class XerathTransform extends Transform {
-    Project mProject
 
-    XerathTransform(Project project) {
-        mProject = project
-    }
-
-    /**
-     * Task Name
-     */
     @Override
     String getName() {
-        //return "XerathTransform"
-        return "customPumpkin"
+        //Transform名称
+        return "CostTime"
     }
 
-    /**
-     * 需要处理的数据类型，这里处理class文件
-     */
     @Override
     Set<QualifiedContent.ContentType> getInputTypes() {
         return TransformManager.CONTENT_CLASS
     }
 
-    /**
-     * 操作内容范围,处理所有的class字节码
-     */
     @Override
     Set<? super QualifiedContent.Scope> getScopes() {
         return TransformManager.SCOPE_FULL_PROJECT
     }
 
-    /**
-     * 当前Transform是否支持增量编译
-     */
     @Override
     boolean isIncremental() {
         return false
@@ -52,23 +35,26 @@ class XerathTransform extends Transform {
 
     @Override
     void transform(Context context, Collection<TransformInput> inputs, Collection<TransformInput> referencedInputs, TransformOutputProvider outputProvider, boolean isIncremental) throws IOException, TransformException, InterruptedException {
-        super.transform(context, inputs, referencedInputs, outputProvider, isIncremental)
-        inputs.each {
-            TransformInput input ->
-                //这里面存放第三方的 jar 包
-                input.jarInputs.each {
-                    //暂无需处理
+        //遍历输入
+        for (TransformInput input in inputs) {
+            //遍历Directioy
+            for (DirectoryInput dirInput in input.directoryInputs) {
+                //处理需要插桩的文件
+                modifyClassWithPath(dirInput.file)
+                //Copy修改之后的文件
+                File dest = outputProvider.getContentLocation(dirInput.name, dirInput.contentTypes,
+                        dirInput.scopes, Format.DIRECTORY)
+                FileUtils.copyDirectory(dirInput.file, dest)
+            }
+            //遍历JarInput 因为我们这里只对自己的方法插桩 所以不对JarInput做处理
+            for (JarInput jarInput : input.jarInputs) {//jar（第三方库，module）
+                if (jarInput.scopes.contains(QualifiedContent.Scope.SUB_PROJECTS)) {//module library
+                    //从module中获取注解信息
+//                    readClassWithJar(jarInput)
                 }
-                //这里存放着开发者手写的类
-                input.directoryInputs.each {
-                    DirectoryInput dirInput ->
-                        //处理需要插桩的文件
-                        modifyClassWithPath(dirInput.file)
-                        //Copy修改之后的文件
-                        File dest = outputProvider.getContentLocation(dirInput.name, dirInput.contentTypes,
-                                dirInput.scopes, Format.DIRECTORY)
-                        FileUtils.copyDirectory(dirInput.file, dest)
-                }
+                //虽然不做处理 但是还是要记得重新拷贝回去 不然会有问题
+                copyFile(jarInput, outputProvider)
+            }
         }
     }
 
@@ -86,7 +72,7 @@ class XerathTransform extends Transform {
         }
     }
 
-    private static void hookClass(String filePath, String className) {
+    void hookClass(String filePath, String className) {
         //1.声明ClassReader
         ClassReader reader = new ClassReader(new FileInputStream(new File(filePath)))
         //2声明 ClassWriter
@@ -101,11 +87,13 @@ class XerathTransform extends Transform {
             FileOutputStream fos = new FileOutputStream(new File(filePath))
             fos.write(bytes)
         }
+
+
     }
 
 
     //默认排除
-    private static final DEFAULT_EXCLUDE = [
+    static final DEFAULT_EXCLUDE = [
             '^android\\..*',
             '^androidx\\..*',
             '.*\\.R$',
@@ -114,19 +102,34 @@ class XerathTransform extends Transform {
     ]
 
     //获取类名
-    private static String getClassName(String root, String classPath) {
+    String getClassName(String root, String classPath) {
         return classPath.substring(root.length() + 1, classPath.length() - 6)
                 .replaceAll("/", ".")       // unix/linux
                 .replaceAll("\\\\", ".")    //windows
     }
 
-    private static boolean isSystemClass(String fileName) {
+    boolean isSystemClass(String fileName) {
         for (def exclude : DEFAULT_EXCLUDE) {
             if (fileName.matches(exclude)) return true
         }
         return false
     }
+    void copyFile(JarInput jarInput, TransformOutputProvider outputProvider) {
+        def dest = getDestFile(jarInput, outputProvider)
+        FileUtils.copyFile(jarInput.file, dest)
+    }
 
+    static File getDestFile(JarInput jarInput, TransformOutputProvider outputProvider) {
+        def destName = jarInput.name
+        // 重名名输出文件,因为可能同名,会覆盖
+        def hexName = DigestUtils.md5Hex(jarInput.file.absolutePath)
+        if (destName.endsWith(".jar")) {
+            destName = destName.substring(0, destName.length() - 4)
+        }
+        // 获得输出文件
+        File dest = outputProvider.getContentLocation(destName + "_" + hexName, jarInput.contentTypes, jarInput.scopes, Format.JAR)
+        return dest
+    }
 
 
 }
