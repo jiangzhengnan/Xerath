@@ -17,7 +17,7 @@ public class CustomClassVisitor extends ClassVisitor {
     private String[] mInterfaces;
 
     public CustomClassVisitor(ClassVisitor classVisitor) {
-        super(Opcodes.ASM5, classVisitor);
+        super(Opcodes.ASM9, classVisitor);
     }
 
     /**

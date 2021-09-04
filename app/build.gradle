@@ -38,8 +38,8 @@ dependencies {
     implementation 'org.ow2.asm:asm:9.2'
     implementation 'org.ow2.asm:asm-commons:9.1'
 
-    //core
-    //implementation 'com.ng.xerathlib:XerathCore:1.0.0'
+    //core 引入注解依赖
+    implementation 'com.ng.xerathlib:XerathCore:1.0.0'
 
 }
 
