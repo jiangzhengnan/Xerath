@@ -3,11 +3,8 @@ package com.ng.xerath;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.View;
 
-import com.ng.xerath.utils.LogUtil;
-import com.ng.xerathcore.CalculateTime;
-import com.ng.xerathcore.CoreUtils;
+import com.ng.xerath.test.func.FuncMethodUtil;
 
 /**
  * @author pumpkin

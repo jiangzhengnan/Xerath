@@ -11,9 +11,8 @@ class XerathTransformPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        println "NgTransformPlugin apply"
-
+        println "XerathTransformPlugin apply"
+        //注册task
         project.android.registerTransform(new XerathTransform())
-
     }
 }

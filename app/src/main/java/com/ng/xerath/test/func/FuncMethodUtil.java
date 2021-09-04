@@ -1,4 +1,4 @@
-package com.ng.xerath;
+package com.ng.xerath.test.func;
 
 import com.ng.xerath.utils.LogUtil;
 import com.ng.xerathcore.CalculateTime;
@@ -9,8 +9,7 @@ import com.ng.xerathcore.CalculateTime;
  * @author Jzn
  * @date 2021/9/4
  */
-class FuncMethodUtil {
-
+public class FuncMethodUtil {
 
     /**
      * 使用注解统计耗时方法

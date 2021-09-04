@@ -15,7 +15,7 @@ class XerathTransform extends Transform {
     @Override
     String getName() {
         //Transform名称
-        return "CostTime"
+        return "XerathTransform"
     }
 
     @Override
@@ -37,10 +37,10 @@ class XerathTransform extends Transform {
     void transform(Context context, Collection<TransformInput> inputs, Collection<TransformInput> referencedInputs, TransformOutputProvider outputProvider, boolean isIncremental) throws IOException, TransformException, InterruptedException {
         //遍历输入
         for (TransformInput input in inputs) {
-            //遍历Directioy
+            //遍历directoryInputs
             for (DirectoryInput dirInput in input.directoryInputs) {
                 //处理需要插桩的文件
-                modifyClassWithPath(dirInput.file)
+                TransformUtil.modifyClassWithPath(dirInput.file)
                 //Copy修改之后的文件
                 File dest = outputProvider.getContentLocation(dirInput.name, dirInput.contentTypes,
                         dirInput.scopes, Format.DIRECTORY)
@@ -50,85 +50,12 @@ class XerathTransform extends Transform {
             for (JarInput jarInput : input.jarInputs) {//jar（第三方库，module）
                 if (jarInput.scopes.contains(QualifiedContent.Scope.SUB_PROJECTS)) {//module library
                     //从module中获取注解信息
-//                    readClassWithJar(jarInput)
+                    // readClassWithJar(jarInput)
                 }
                 //虽然不做处理 但是还是要记得重新拷贝回去 不然会有问题
-                copyFile(jarInput, outputProvider)
+                TransformUtil.copyFile(jarInput, outputProvider)
             }
         }
-    }
-
-    void modifyClassWithPath(File dir) {
-        def root = dir.absolutePath
-        dir.eachFileRecurse { File file ->
-            def filePath = file.absolutePath
-            //过滤非class文件
-            if (!filePath.endsWith(".class")) return
-            def className = getClassName(root, filePath)
-            //过滤系统文件
-            if (isSystemClass(className)) return
-            //hook关键代码
-            hookClass(filePath, className)
-        }
-    }
-
-    void hookClass(String filePath, String className) {
-        //1.声明ClassReader
-        ClassReader reader = new ClassReader(new FileInputStream(new File(filePath)))
-        //2声明 ClassWriter
-        ClassWriter writer = new ClassWriter(reader, ClassWriter.COMPUTE_MAXS)
-        //3声明ClassVisitor
-        CostTimeClassAdapter adapter = new CostTimeClassAdapter(writer)
-        //4调用accept方法 传入classVisitor
-        reader.accept(adapter, ClassReader.EXPAND_FRAMES)
-        if (adapter.changed) {
-            println className + "is changed:" + adapter.changed
-            byte[] bytes = writer.toByteArray()
-            FileOutputStream fos = new FileOutputStream(new File(filePath))
-            fos.write(bytes)
-        }
-
-
-    }
-
-
-    //默认排除
-    static final DEFAULT_EXCLUDE = [
-            '^android\\..*',
-            '^androidx\\..*',
-            '.*\\.R$',
-            '.*\\.R\\$.*$',
-            '.*\\.BuildConfig$',
-    ]
-
-    //获取类名
-    String getClassName(String root, String classPath) {
-        return classPath.substring(root.length() + 1, classPath.length() - 6)
-                .replaceAll("/", ".")       // unix/linux
-                .replaceAll("\\\\", ".")    //windows
-    }
-
-    boolean isSystemClass(String fileName) {
-        for (def exclude : DEFAULT_EXCLUDE) {
-            if (fileName.matches(exclude)) return true
-        }
-        return false
-    }
-    void copyFile(JarInput jarInput, TransformOutputProvider outputProvider) {
-        def dest = getDestFile(jarInput, outputProvider)
-        FileUtils.copyFile(jarInput.file, dest)
-    }
-
-    static File getDestFile(JarInput jarInput, TransformOutputProvider outputProvider) {
-        def destName = jarInput.name
-        // 重名名输出文件,因为可能同名,会覆盖
-        def hexName = DigestUtils.md5Hex(jarInput.file.absolutePath)
-        if (destName.endsWith(".jar")) {
-            destName = destName.substring(0, destName.length() - 4)
-        }
-        // 获得输出文件
-        File dest = outputProvider.getContentLocation(destName + "_" + hexName, jarInput.contentTypes, jarInput.scopes, Format.JAR)
-        return dest
     }
 
 

@@ -10,16 +10,19 @@ import static org.objectweb.asm.Opcodes.*;
  * @date 2020/6/22
  * @describe
  */
-public class CostTimeClassAdapter extends ClassVisitor {
-    public boolean changed; //是否修改过
+public class CostTimeClassVisitor extends ClassVisitor {
+    /**
+     * 是否被修改过
+     */
+    public boolean changed;
     private String owner;
     private boolean isInterface;
 
-    public CostTimeClassAdapter(ClassVisitor visitor) {
+    public CostTimeClassVisitor(ClassVisitor visitor) {
         super(ASM4, visitor);
     }
 
-    public CostTimeClassAdapter(int api, ClassVisitor classVisitor) {
+    public CostTimeClassVisitor(int api, ClassVisitor classVisitor) {
         super(api, classVisitor);
     }
 
@@ -120,6 +123,7 @@ public class CostTimeClassAdapter extends ClassVisitor {
         @Override
         public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
             isAnnotationed = (descriptor.contains("CalculateTime"));
+            System.out.println("是否需要更改:" + isAnnotationed+"  注解:" + descriptor );
             if (!changed && isAnnotationed) {
                 changed = true;
             }
