@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.ng.xerath.test.func.FuncMethodUtil;
+import com.ng.xerathcore.CoreUtils;
+import com.ng.xerathcore.XerathEngine;
 
 /**
  * @author pumpkin
@@ -15,6 +17,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        XerathEngine.getInstance().start();
 
         initFunc();
         initView();
@@ -28,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        System.out.println("what the fuck");
+        CoreUtils.catchLog("hhh");
     }
 
 

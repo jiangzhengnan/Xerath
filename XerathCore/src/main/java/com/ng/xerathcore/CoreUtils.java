@@ -7,7 +7,7 @@ package com.ng.xerathcore;
  */
 public class CoreUtils {
 
-    public static void doSomeThing(String s) {
-        System.out.println("coreutils: " + s);
+    public static void catchLog(String s) {
+        System.out.println("XerathCore 工程 抓取到了日志 coreutils: " + s);
     }
 }

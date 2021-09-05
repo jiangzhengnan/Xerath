@@ -19,7 +19,10 @@ import static org.objectweb.asm.Opcodes.LSUB;
 import static org.objectweb.asm.Opcodes.NEW;
 import static org.objectweb.asm.Opcodes.RETURN;
 
-//继承自LocalVariablesSorter 有序遍历素有方法
+
+/**
+ * 继承自LocalVariablesSorter 有序遍历素有方法
+ */
 class XerathMethodAdapter extends LocalVariablesSorter {
     private String name;
     private boolean isAnnotationed;
@@ -51,6 +54,12 @@ class XerathMethodAdapter extends LocalVariablesSorter {
     public void visitCode() {
         super.visitCode();
         if (isAnnotationed) {
+            //Label label0 = new Label();
+            //mv.visitLabel(label0);
+            //mv.visitLineNumber(35, label0);
+            //mv.visitLdcInsn("测试输出～");
+            //mv.visitMethodInsn(INVOKESTATIC, "com/ng/xerathcore/CoreUtils", "catchLog", "(Ljava/lang/String;)V", false);
+
             //mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
             //mv.visitLdcInsn("what the fuck");
             //mv.visitMethodInsn(INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
@@ -99,7 +108,8 @@ class XerathMethodAdapter extends LocalVariablesSorter {
                 mv.visitVarInsn(LLOAD, 3);
                 mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false);
                 mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
-                mv.visitMethodInsn(INVOKESTATIC, "android/util/Log", "e", "(Ljava/lang/String;Ljava/lang/String;)I", false);
+                //mv.visitMethodInsn(INVOKESTATIC, "android/util/Log", "e", "(Ljava/lang/String;Ljava/lang/String;)I", false);
+                mv.visitMethodInsn(INVOKESTATIC, "com/ng/xerathcore/CoreUtils", "catchLog", "(Ljava/lang/String;)V", false);
             }
         }
         super.visitInsn(opcode);
