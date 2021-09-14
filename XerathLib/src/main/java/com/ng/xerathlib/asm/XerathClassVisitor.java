@@ -1,4 +1,6 @@
-package com.ng.xerathlib;
+package com.ng.xerathlib.asm;
+
+import com.ng.xerathlib.utils.LogUtil;
 
 import org.objectweb.asm.*;
 
@@ -36,7 +38,7 @@ public class XerathClassVisitor extends ClassVisitor {
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
         if (!isInterface && mv != null && !name.equals("<init>")) {
-            LogUtil.print("方法：" + name);
+            LogUtil.print("方法：" + name + " des:" + descriptor + " ");
             //将MethodVisitor交由CostTimeMethodAdapter代理
             mv = new XerathMethodAdapter(access, name, descriptor, mv, owner, new XerathMethodAdapter.OnChangedListener() {
                 @Override

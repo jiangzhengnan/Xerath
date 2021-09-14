@@ -1,4 +1,4 @@
-package com.ng.xerathlib;
+package com.ng.xerathlib.utils;
 
 /**
  * 描述:
@@ -10,6 +10,6 @@ public class LogUtil {
     private static final String TAG = "nangua";
 
     public static void print(String s) {
-        System.out.println("[" + TAG + "]" + s);
+        System.out.println("【 " + TAG + " 】" + s);
     }
 }

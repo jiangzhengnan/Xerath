@@ -2,6 +2,7 @@ package com.ng.xerathlib
 
 import com.android.build.api.transform.*
 import com.android.utils.FileUtils
+import com.ng.xerathlib.asm.XerathClassVisitor
 import org.apache.commons.codec.digest.DigestUtils
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassWriter
