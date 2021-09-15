@@ -11,11 +11,8 @@ import androidx.annotation.NonNull;
 public class XerathEngine {
 
     private static XerathEngine mInstance;
-    @NonNull
-    private LogCatchManager mLogCatchManager;
 
     private XerathEngine() {
-        mLogCatchManager = new LogCatchManager();
     }
 
     public static XerathEngine getInstance() {
@@ -31,8 +28,6 @@ public class XerathEngine {
 
 
     public void start() {
-        mLogCatchManager.start();
-        ;
     }
 
 }

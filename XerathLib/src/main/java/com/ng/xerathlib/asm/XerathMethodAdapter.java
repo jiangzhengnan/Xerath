@@ -1,6 +1,6 @@
 package com.ng.xerathlib.asm;
 
-import com.ng.xerathlib.AnnotationHelper;
+import com.ng.xerathlib.core.AnnotationHelper;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -61,9 +61,9 @@ class XerathMethodAdapter extends LocalVariablesSorter {
      */
     @Override
     public void visitInsn(int opcode) {
-        if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
-            AnnotationHelper.getInstance().hookMethodEnd(mv);
-        }
+       // if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
+       //     AnnotationHelper.getInstance().hookMethodEnd(mv);
+       // }
         super.visitInsn(opcode);
     }
 
@@ -85,6 +85,7 @@ class XerathMethodAdapter extends LocalVariablesSorter {
 
     @Override
     public void visitMaxs(int maxStack, int maxLocals) {
+        AnnotationHelper.getInstance().hookMethodEnd(mv);
         super.visitMaxs(maxStack, maxLocals);
     }
 

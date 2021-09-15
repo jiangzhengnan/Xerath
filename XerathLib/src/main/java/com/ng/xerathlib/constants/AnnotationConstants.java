@@ -9,4 +9,6 @@ package com.ng.xerathlib.constants;
 public class AnnotationConstants {
     public final static String CALCULATE_TIME = "Lcom/ng/xerathcore/CalculateTime;";
 
+    public final static String TRY_CATCH = "Lcom/ng/xerathcore/TryCatch;";
+
 }

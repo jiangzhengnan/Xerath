@@ -1,14 +1,13 @@
-package com.ng.xerathlib;
+package com.ng.xerathlib.core;
 
 
 import com.ng.xerathlib.constants.AnnotationConstants;
-import com.ng.xerathlib.core.CalculateTimePlug;
-import com.ng.xerathlib.core.IAnnotationPlug;
+import com.ng.xerathlib.core.plug.CalculateTimePlug;
+import com.ng.xerathlib.core.plug.TryCatchPlug;
+import com.ng.xerathlib.core.plug.base.IAnnotationPlug;
 import com.ng.xerathlib.utils.LogUtil;
 
-import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
 
@@ -31,7 +30,8 @@ public class AnnotationHelper {
 
     private AnnotationHelper() {
         mAnnotationArrays = new String[]{
-                AnnotationConstants.CALCULATE_TIME
+                AnnotationConstants.CALCULATE_TIME,
+                AnnotationConstants.TRY_CATCH
         };
     }
 
@@ -53,17 +53,21 @@ public class AnnotationHelper {
     }
 
     public boolean isNeedHook(String descriptor) {
+        LogUtil.print("遍历注解:" + descriptor);
         for (String temp : mAnnotationArrays) {
-            if (temp.equals(descriptor)) {
+             if (temp.equals(descriptor)) {
                 LogUtil.print("注解:" + descriptor + " 需要hook");
                 switch (temp) {
                     case AnnotationConstants.CALCULATE_TIME:
                         mPlug = new CalculateTimePlug();
-                        mPlug.init(mAdapter, mClassName, mOwner);
+                        break;
+                    case AnnotationConstants.TRY_CATCH:
+                        mPlug = new TryCatchPlug();
                         break;
                     default:
                         break;
                 }
+                mPlug.init(mAdapter, mClassName, mOwner);
                 return true;
             }
         }

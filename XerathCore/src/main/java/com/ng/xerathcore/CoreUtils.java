@@ -4,6 +4,8 @@ package com.ng.xerathcore;
  * @author : jiangzhengnan.jzn@alibaba-inc.com
  * @creation : 2021/09/01
  * @description :
+ * todo
+ * 存储数据
  */
 public class CoreUtils {
 

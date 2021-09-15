@@ -46,7 +46,6 @@
             android:layout_height="50dp"
             android:layout_marginLeft="12dp"
             android:layout_weight="1"
-            android:enabled="false"
             android:text="异常捕获"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

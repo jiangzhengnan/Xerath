@@ -1,4 +1,4 @@
-package com.ng.xerathlib.core;
+package com.ng.xerathlib.core.plug.base;
 
 import org.objectweb.asm.commons.LocalVariablesSorter;
 

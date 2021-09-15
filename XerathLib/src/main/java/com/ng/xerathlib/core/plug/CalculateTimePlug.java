@@ -1,4 +1,6 @@
-package com.ng.xerathlib.core;
+package com.ng.xerathlib.core.plug;
+
+import com.ng.xerathlib.core.plug.base.AnnotationPlug;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -45,7 +47,7 @@ public class CalculateTimePlug extends AnnotationPlug {
         mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
         mv.visitInsn(DUP);
         mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false);
-        mv.visitLdcInsn("耗时统计: func " + mClassName + " cost Time:");
+        mv.visitLdcInsn("【耗时统计】:func " + mClassName + " cost Time:");
         mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
         mv.visitVarInsn(LLOAD, 3);
         mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false);

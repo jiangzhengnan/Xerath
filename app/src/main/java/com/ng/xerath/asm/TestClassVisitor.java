@@ -26,8 +26,9 @@ public class TestClassVisitor extends ClassVisitor {
     @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions);
-        if (name.equals("initView")) {
-            return new TestAdviceAdapter(Opcodes.ASM9,methodVisitor,access,name,descriptor);
+        if (name.equals("initData")) {
+            //int api, int access, String descriptor, MethodVisitor methodVisitor
+            return new TestAdviceAdapter(Opcodes.ASM5,access,descriptor,methodVisitor);
         }
         return methodVisitor;
     }
