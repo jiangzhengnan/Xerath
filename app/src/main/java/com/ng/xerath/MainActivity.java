@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initFunc() {
         //耗时统计
-        //findViewById(R.id.btn1_layout_fuc).setOnClickListener(v -> FuncMethodUtil.calculateTimeMethod());
+        findViewById(R.id.btn1_layout_fuc).setOnClickListener(v -> FuncMethodUtil.calculateTimeMethod());
         //异常捕获
         findViewById(R.id.btn3_layout_view).setOnClickListener(v->FuncMethodUtil.tryCatchMethod());
     }
@@ -36,14 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initData() {
-        try {
-
-            initFunc();
-
-
-        }catch (Exception e) {
-            CoreUtils.catchLog("【异常catch】:"+e.getMessage());
-        }
     }
 
 

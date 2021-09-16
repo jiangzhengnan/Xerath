@@ -87,6 +87,13 @@ public class AnnotationHelper {
         }
     }
 
+
+    public void hookMethodReturn(MethodVisitor mv) {
+        if (mPlug != null) {
+            mPlug.hookMethodReturn(mv);
+        }
+    }
+
     public void reset() {
         mPlug = null;
     }

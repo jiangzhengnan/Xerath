@@ -9,6 +9,7 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.ASTORE;
 import static org.objectweb.asm.Opcodes.ATHROW;
+import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.IRETURN;
 import static org.objectweb.asm.Opcodes.RETURN;
 
@@ -38,6 +39,9 @@ public class TestAdviceAdapter extends LocalVariablesSorter {
 
     @Override
     public void visitCode() {
+        mv.visitLdcInsn("【异常统计开始】");
+        mv.visitMethodInsn(INVOKESTATIC, "com/ng/xerathcore/CoreUtils", "catchLog", "(Ljava/lang/String;)V", false);
+
         //标志：try块开始位置
         visitLabel(from);
         visitTryCatchBlock(from,

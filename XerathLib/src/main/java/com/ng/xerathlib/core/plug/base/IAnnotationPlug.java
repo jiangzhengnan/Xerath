@@ -15,5 +15,7 @@ public interface IAnnotationPlug {
 
     void hookMethodStart(MethodVisitor mv);
 
+    void hookMethodReturn(MethodVisitor mv);
+
     void hookMethodEnd(MethodVisitor mv);
 }

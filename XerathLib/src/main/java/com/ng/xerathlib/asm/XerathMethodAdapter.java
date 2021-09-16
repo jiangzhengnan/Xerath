@@ -61,9 +61,9 @@ class XerathMethodAdapter extends LocalVariablesSorter {
      */
     @Override
     public void visitInsn(int opcode) {
-       // if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
-       //     AnnotationHelper.getInstance().hookMethodEnd(mv);
-       // }
+        if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
+            AnnotationHelper.getInstance().hookMethodReturn(mv);
+        }
         super.visitInsn(opcode);
     }
 

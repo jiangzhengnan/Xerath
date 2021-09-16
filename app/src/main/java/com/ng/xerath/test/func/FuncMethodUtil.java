@@ -32,16 +32,14 @@ public class FuncMethodUtil {
      */
     @TryCatch
     public static void tryCatchMethod() {
-        int a = 1;
-        int b = 0;
-        int c = a / b;
+        Integer.parseInt("a");
     }
 
-    /**
-     * 重复点击
-     */
-    @Xerath_DoubleClick
-    public static void doubleClick() {
-        System.out.println("click");
-    }
+//    /**
+//     * 重复点击
+//     */
+//    @Xerath_DoubleClick
+//    public static void doubleClick() {
+//        System.out.println("click");
+//    }
 }

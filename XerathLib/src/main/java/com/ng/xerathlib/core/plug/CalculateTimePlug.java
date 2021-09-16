@@ -32,7 +32,7 @@ public class CalculateTimePlug extends AnnotationPlug {
     }
 
     @Override
-    public void hookMethodEnd(MethodVisitor mv) {
+    public void hookMethodReturn(MethodVisitor mv) {
         //这里的代码都可以由ASM插件生成
         //Label可以生成局部变量
         Label l1 = new Label();
@@ -55,5 +55,9 @@ public class CalculateTimePlug extends AnnotationPlug {
         //mv.visitMethodInsn(INVOKESTATIC, "android/util/Log", "e", "(Ljava/lang/String;Ljava/lang/String;)I", false);
         mv.visitMethodInsn(INVOKESTATIC, "com/ng/xerathcore/CoreUtils", "catchLog", "(Ljava/lang/String;)V", false);
 
+    }
+
+    @Override
+    public void hookMethodEnd(MethodVisitor mv) {
     }
 }

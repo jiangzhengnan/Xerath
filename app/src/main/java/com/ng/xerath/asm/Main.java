@@ -2,6 +2,7 @@ package com.ng.xerath.asm;
 
 
 import com.ng.xerath.MainActivity;
+import com.ng.xerathcore.CoreUtils;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -24,19 +25,20 @@ public class Main {
 
     public static void main(String[] args) {
         //testChild();
-        //startHook();
+        startHook();
+
+
         try {
-            int a = 1;
-            int b = 0;
-            int var10000 = a / b;
-        } catch (Exception var4) {
-            throw var4;
+            Integer.parseInt("a");
+        }catch (Exception e) {
+            CoreUtils.catchLog(e.getMessage());
+            throw e;
         }
     }
 
     //Child 的 class文件路径
-    public static final String LOCAL_PATH = "/Users/xiaoguagua/AndroidProjects/MyProjects/ng_projects/Xerath/app/build/" +
-            "intermediates/javac/debug/classes/com/ng/xerath";
+    public static final String LOCAL_PATH = "/Users/pumpkin/AndroidPro/AndroidStudioPrivate/Xerath/app/" +
+            "build/intermediates/javac/debug/classes/com/ng/xerath/test/func";
 
     public static final String HOME_PATH = "/Users/pumpkin/AndroidPro/AndroidStudioPrivate/Xerath/app/build/" +
             "intermediates/javac/debug/classes/com/ng/xerath";
@@ -47,12 +49,12 @@ public class Main {
             ClassReader cr = new ClassReader(MainActivity.class.getName());
             //2.然后创建ClassWriter对象，
             ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
-            ClassVisitor cv = new TestClassVisitor(ASM5, cw);
-            cr.accept(cv, ASM5);
+            TestClassVisitor cv = new TestClassVisitor(cw);
+            cr.accept(cv, ClassReader.EXPAND_FRAMES);
             // 获取生成的class文件对应的二进制流
             byte[] code = cw.toByteArray();
             //将二进制流写到out/下
-            FileOutputStream fos = new FileOutputStream(HOME_PATH + "/MainActivity.class");
+            FileOutputStream fos = new FileOutputStream(LOCAL_PATH + "/FuncMethodUtil.class");
             fos.write(code);
             fos.close();
         } catch (Exception e) {
