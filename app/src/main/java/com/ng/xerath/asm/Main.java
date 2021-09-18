@@ -1,6 +1,8 @@
 package com.ng.xerath.asm;
 
 
+import androidx.annotation.IntDef;
+
 import com.ng.xerath.MainActivity;
 import com.ng.xerathcore.CoreUtils;
 
@@ -23,22 +25,39 @@ import static org.objectweb.asm.Opcodes.ASM9;
  */
 public class Main {
 
-    public static void main(String[] args) {
-        //testChild();
-        startHook();
-
-
-        try {
-            Integer.parseInt("a");
-        }catch (Exception e) {
-            CoreUtils.catchLog(e.getMessage());
-            throw e;
-        }
+    @IntDef({LoadAdType.getAd, LoadAdType.preloadAd, LoadAdType.getAdSync})
+    public @interface LoadAdType {
+        int getAd     = 1;
+        int preloadAd = 2;
+        int getAdSync = 3;
     }
 
+    @IntDef({5,6,7})
+    public @interface DownLoadType {
+        int downLoadWithDialog     = 0;
+        int downLoad = 1;
+    }
+
+    public static void main(String[] args) {
+        //testChild();
+        //startHook();
+        System.out.println("aaa: " + DownLoadType.downLoad);
+        System.out.println("bbb: " + DownLoadType.downLoadWithDialog);
+
+    }
+
+
+
+
+
+
+
+
+
+
     //Child 的 class文件路径
-    public static final String LOCAL_PATH = "/Users/pumpkin/AndroidPro/AndroidStudioPrivate/Xerath/app/" +
-            "build/intermediates/javac/debug/classes/com/ng/xerath/test/func";
+    public static final String LOCAL_PATH = "/Users/xiaoguagua/AndroidProjects/MyProjects/ng_projects/Xerath/app/" +
+            "build/intermediates/javac/debug/classes/com/ng/xerath/func";
 
     public static final String HOME_PATH = "/Users/pumpkin/AndroidPro/AndroidStudioPrivate/Xerath/app/build/" +
             "intermediates/javac/debug/classes/com/ng/xerath";

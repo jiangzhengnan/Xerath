@@ -1,4 +1,4 @@
-package com.ng.xerath.test.func;
+package com.ng.xerath.func;
 
 import com.ng.xerath.utils.LogUtil;
 import com.ng.xerathcore.CalculateTime;
@@ -35,11 +35,11 @@ public class FuncMethodUtil {
         Integer.parseInt("a");
     }
 
-//    /**
-//     * 重复点击
-//     */
-//    @Xerath_DoubleClick
-//    public static void doubleClick() {
-//        System.out.println("click");
-//    }
+    /**
+     * 重复点击
+     */
+    @Xerath_DoubleClick
+    public static void doubleClick() {
+        System.out.println("click");
+    }
 }

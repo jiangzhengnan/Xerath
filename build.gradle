@@ -12,6 +12,9 @@ buildscript {
         maven {
             url uri("${rootProject.projectDir}/repo")
         }
+        maven {
+            url 'https://storage.googleapis.com/r8-releases/raw'
+        }
 
     }
     dependencies {
@@ -34,6 +37,9 @@ allprojects {
         // 添加本地maven地址配置
         maven {
             url uri("${rootProject.projectDir}/repo")
+        }
+        maven {
+            url 'https://storage.googleapis.com/r8-releases/raw'
         }
 
 

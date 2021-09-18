@@ -4,9 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-import com.ng.xerath.test.func.FuncMethodUtil;
-import com.ng.xerathcore.CoreUtils;
-import com.ng.xerathcore.TryCatch;
+import com.ng.xerath.func.FuncMethodUtil;
 import com.ng.xerathcore.XerathEngine;
 
 /**

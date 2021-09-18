@@ -49,29 +49,45 @@ public class TryCatchPlug extends AnnotationPlug {
 
     @Override
     public void hookMethodEnd(MethodVisitor mv) {
-        //标志：try块结束
+        // visit try block end label
         mv.visitLabel(to);
-        //标志：catch块开始位置
+        // visit normal execution exit block
+        //mv.visitJumpInsn(Opcodes.GOTO, exitBlock);
+        // visit catch exception block
         mv.visitLabel(target);
-        mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]{"java/lang/Exception"});
+        // store the exception
+        mv.visitVarInsn(Opcodes.ASTORE, 10);
+        // load the exception
+        mv.visitVarInsn(Opcodes.ALOAD, 10);
+        // call printStackTrace()
+        //this.visitInsn(Opcodes.ATHROW);
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/Exception", "printStackTrace", "()V");
+        // exit from this dynamic block
+        //mv.visitLabel(exitBlock);
 
-        // 异常信息保存到局部变量
-        int localException = mAdapter.newLocal(Type.LONG_TYPE);
-        mv.visitVarInsn(ASTORE, localException);
-
-        mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
-        mv.visitInsn(DUP);
-        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false);
-        mv.visitLdcInsn("【异常捕获】:");
-        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
-        mv.visitVarInsn(LLOAD, localException);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Exception", "getMessage", "()Ljava/lang/String;", false);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false);
-        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
-        mv.visitMethodInsn(INVOKESTATIC, "com/ng/xerathcore/CoreUtils", "catchLog", "(Ljava/lang/String;)V", false);
-
-        // 抛出异常
-        mv.visitVarInsn(ALOAD, localException);
-        mv.visitInsn(ATHROW);
+//        //标志：try块结束
+//        mv.visitLabel(to);
+//        //标志：catch块开始位置
+//        mv.visitLabel(target);
+//        mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]{"java/lang/Exception"});
+//
+//        // 异常信息保存到局部变量
+//        //int localException = mAdapter.newLocal(Type.LONG_TYPE);
+//        //mv.visitVarInsn(ASTORE, localException);
+//
+//        mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
+//        mv.visitInsn(DUP);
+//        mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false);
+//        mv.visitLdcInsn("【异常捕获】:");
+//        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+//       // mv.visitVarInsn(LLOAD, localException);
+//        //mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/Exception", "getMessage", "()Ljava/lang/String;", false);
+//        //mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false);
+//        mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
+//        mv.visitMethodInsn(INVOKESTATIC, "com/ng/xerathcore/CoreUtils", "catchLog", "(Ljava/lang/String;)V", false);
+//
+//        // 抛出异常
+//        //mv.visitVarInsn(ALOAD, localException);
+//        //mv.visitInsn(ATHROW);
     }
 }
