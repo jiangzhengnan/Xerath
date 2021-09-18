@@ -26,5 +26,6 @@ public class TestClassVisitor extends ClassVisitor {
             return new TestAdviceAdapter(ASM5,access,descriptor,methodVisitor);
         }
         return methodVisitor;
+
     }
 }
