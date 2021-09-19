@@ -21,7 +21,10 @@ import static org.objectweb.asm.Opcodes.RETURN;
  * 使用 AdviceAdapter 是 MethodVisitor 的子类，功能更全
  */
 public class TestAdviceAdapter extends LocalVariablesSorter {
-
+    Label l1;
+    Label l2;
+    private String exceptionHandleClass;
+    private String exceptionHandleMethod;
 
     protected TestAdviceAdapter(int api, int access, String descriptor, MethodVisitor methodVisitor) {
         super(api, access, descriptor, methodVisitor);
@@ -39,34 +42,27 @@ public class TestAdviceAdapter extends LocalVariablesSorter {
 
     @Override
     public void visitCode() {
-        mv.visitLdcInsn("【异常统计开始】");
-        mv.visitMethodInsn(INVOKESTATIC, "com/ng/xerathcore/CoreUtils", "catchLog", "(Ljava/lang/String;)V", false);
-
-        //标志：try块开始位置
-        visitLabel(from);
-        visitTryCatchBlock(from,
-                to,
-                target,
-                "java/lang/Exception");
+        Label l0 = new Label();
+        l1 = new Label();
+        l2 = new Label();
+        mv.visitTryCatchBlock(l0, l1, l2, "java/lang/Exception");
+        mv.visitLabel(l0);
     }
 
     @Override
     public void visitInsn(int opcode) {
         if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
-            //标志：try块结束
-            mv.visitLabel(to);
-
-            //标志：catch块开始位置
-            mv.visitLabel(target);
-            mv.visitFrame(Opcodes.F_SAME1, 0, null, 1, new Object[]{"java/lang/Exception"});
-
-            // 异常信息保存到局部变量
-            int local = newLocal(Type.LONG_TYPE);
-            mv.visitVarInsn(ASTORE, local);
-
-            // 抛出异常
-            mv.visitVarInsn(ALOAD, local);
-            mv.visitInsn(ATHROW);
+            mv.visitLabel(l1);
+            Label l3 = new Label();
+            mv.visitJumpInsn(Opcodes.GOTO, l3);
+            mv.visitLabel(l2);
+            mv.visitVarInsn(ASTORE, 1);
+            if (exceptionHandleClass != null && exceptionHandleMethod != null) {
+                mv.visitVarInsn(ALOAD, 1);
+                mv.visitMethodInsn(INVOKESTATIC, exceptionHandleClass,
+                        exceptionHandleMethod, "(Ljava/lang/Exception;)V", false);
+            }
+            mv.visitLabel(l3);
         }
         super.visitInsn(opcode);
     }

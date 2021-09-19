@@ -32,7 +32,7 @@ public class FuncMethodUtil {
      */
     @TryCatch
     public static void tryCatchMethod() {
-        Integer.parseInt("a");
+        int a = 1 / 0;
     }
 
     /**

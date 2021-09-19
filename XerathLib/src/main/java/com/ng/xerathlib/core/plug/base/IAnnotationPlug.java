@@ -11,7 +11,7 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
  */
 public interface IAnnotationPlug {
 
-    void init(LocalVariablesSorter adapter, String owner, String name);
+    void init(LocalVariablesSorter adapter, String owner, String name,String methodDesc);
 
     void hookMethodStart(MethodVisitor mv);
 

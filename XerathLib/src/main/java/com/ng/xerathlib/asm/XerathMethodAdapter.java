@@ -30,7 +30,7 @@ class XerathMethodAdapter extends LocalVariablesSorter {
                                String owner, OnChangedListener onChangedListener) {
         super(ASM5, access, descriptor, methodVisitor);
         this.onChangedListener = onChangedListener;
-        AnnotationHelper.getInstance().init(this,owner,name);
+        AnnotationHelper.getInstance().init(this,owner,name,descriptor);
     }
 
 

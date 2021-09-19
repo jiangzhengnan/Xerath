@@ -48,10 +48,10 @@ class XerathTransform extends Transform {
             }
             //遍历JarInput 因为我们这里只对自己的方法插桩 所以不对JarInput做处理
             for (JarInput jarInput : input.jarInputs) {//jar（第三方库，module）
-                if (jarInput.scopes.contains(QualifiedContent.Scope.SUB_PROJECTS)) {//module library
-                    //从module中获取注解信息
-                    // readClassWithJar(jarInput)
-                }
+                //if (jarInput.scopes.contains(QualifiedContent.Scope.SUB_PROJECTS)) {//module library
+                //    //从module中获取注解信息
+                //    // readClassWithJar(jarInput)
+                //}
                 //虽然不做处理 但是还是要记得重新拷贝回去 不然会有问题
                 TransformUtil.copyFile(jarInput, outputProvider)
             }

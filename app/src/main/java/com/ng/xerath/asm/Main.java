@@ -1,9 +1,8 @@
 package com.ng.xerath.asm;
 
 
-import androidx.annotation.IntDef;
-
 import com.ng.xerath.MainActivity;
+import com.ng.xerath.func.FuncMethodUtil;
 import com.ng.xerathcore.CoreUtils;
 
 import org.objectweb.asm.ClassReader;
@@ -25,39 +24,16 @@ import static org.objectweb.asm.Opcodes.ASM9;
  */
 public class Main {
 
-    @IntDef({LoadAdType.getAd, LoadAdType.preloadAd, LoadAdType.getAdSync})
-    public @interface LoadAdType {
-        int getAd     = 1;
-        int preloadAd = 2;
-        int getAdSync = 3;
-    }
-
-    @IntDef({5,6,7})
-    public @interface DownLoadType {
-        int downLoadWithDialog     = 0;
-        int downLoad = 1;
-    }
-
     public static void main(String[] args) {
         //testChild();
-        //startHook();
-        System.out.println("aaa: " + DownLoadType.downLoad);
-        System.out.println("bbb: " + DownLoadType.downLoadWithDialog);
+        startHook();
+
 
     }
 
-
-
-
-
-
-
-
-
-
     //Child 的 class文件路径
-    public static final String LOCAL_PATH = "/Users/xiaoguagua/AndroidProjects/MyProjects/ng_projects/Xerath/app/" +
-            "build/intermediates/javac/debug/classes/com/ng/xerath/func";
+    public static final String LOCAL_PATH = "/Users/xiaoguagua/AndroidProjects/MyProjects/ng_projects/" +
+            "Xerath/app/build/intermediates/javac/debug/classes/com/ng/xerath/func";
 
     public static final String HOME_PATH = "/Users/pumpkin/AndroidPro/AndroidStudioPrivate/Xerath/app/build/" +
             "intermediates/javac/debug/classes/com/ng/xerath";
@@ -65,7 +41,7 @@ public class Main {
     private static void startHook() {
         try {
             //1.首先创建ClassReader,读取目标类Child的内容
-            ClassReader cr = new ClassReader(MainActivity.class.getName());
+            ClassReader cr = new ClassReader(FuncMethodUtil.class.getName());
             //2.然后创建ClassWriter对象，
             ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
             TestClassVisitor cv = new TestClassVisitor(cw);

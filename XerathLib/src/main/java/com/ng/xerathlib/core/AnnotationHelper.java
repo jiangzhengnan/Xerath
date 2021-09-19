@@ -23,6 +23,8 @@ public class AnnotationHelper {
 
     private LocalVariablesSorter mAdapter;
     private String[] mAnnotationArrays;
+    // 方法返回值类型描述符
+    private String methodDesc;
     private String mOwner;
     private String mClassName;
 
@@ -46,10 +48,16 @@ public class AnnotationHelper {
         return mInstance;
     }
 
-    public void init(LocalVariablesSorter adapter, String owner, String name) {
+    public void init(LocalVariablesSorter adapter, String owner, String name,String methodDesc) {
+        LogUtil.print("[AnnotationHelper]" );
+        LogUtil.print("owner:" + owner );
+        LogUtil.print("name:" + name );
+        LogUtil.print("methodDesc:" + methodDesc );
+
         this.mAdapter = adapter;
         this.mOwner = owner;
         this.mClassName = name;
+        this.methodDesc = methodDesc;
     }
 
     public boolean isNeedHook(String descriptor) {
@@ -67,7 +75,7 @@ public class AnnotationHelper {
                     default:
                         break;
                 }
-                mPlug.init(mAdapter, mClassName, mOwner);
+                mPlug.init(mAdapter, mClassName, mOwner,methodDesc);
                 return true;
             }
         }
