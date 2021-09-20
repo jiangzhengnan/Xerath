@@ -1,4 +1,4 @@
-package com.ng.xerathcore;
+package com.ng.xerathcore.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,8 +10,8 @@ import java.lang.annotation.Target;
  * @creation : 2021/08/27
  * @description :统计耗时注解
  */
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.CLASS)
 @Target(ElementType.METHOD)
-public @interface CalculateTime {
+public @interface Xerath_CalculateTime {
 }
 

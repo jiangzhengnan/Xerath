@@ -1,18 +1,12 @@
 package com.ng.xerath.asm;
 
 
-import com.ng.xerath.MainActivity;
 import com.ng.xerath.func.FuncMethodUtil;
-import com.ng.xerathcore.CoreUtils;
 
 import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
 
 import java.io.FileOutputStream;
-
-import static org.objectweb.asm.Opcodes.ASM5;
-import static org.objectweb.asm.Opcodes.ASM9;
 
 
 /**
@@ -27,8 +21,6 @@ public class Main {
     public static void main(String[] args) {
         //testChild();
         startHook();
-
-
     }
 
     //Child 的 class文件路径

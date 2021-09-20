@@ -3,13 +3,9 @@ package com.ng.xerath.asm;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
-import static org.objectweb.asm.Opcodes.ALOAD;
-import static org.objectweb.asm.Opcodes.ASTORE;
 import static org.objectweb.asm.Opcodes.ATHROW;
-import static org.objectweb.asm.Opcodes.INVOKESTATIC;
 import static org.objectweb.asm.Opcodes.IRETURN;
 import static org.objectweb.asm.Opcodes.RETURN;
 
@@ -21,13 +17,11 @@ import static org.objectweb.asm.Opcodes.RETURN;
  * 使用 AdviceAdapter 是 MethodVisitor 的子类，功能更全
  */
 public class TestAdviceAdapter extends LocalVariablesSorter {
-    Label l1;
-    Label l2;
-    private String exceptionHandleClass;
-    private String exceptionHandleMethod;
+    private MethodVisitor methodVisitor;
 
     protected TestAdviceAdapter(int api, int access, String descriptor, MethodVisitor methodVisitor) {
         super(api, access, descriptor, methodVisitor);
+        methodVisitor = mv;
     }
 
     @Override
@@ -36,36 +30,44 @@ public class TestAdviceAdapter extends LocalVariablesSorter {
         super.visitEnd();
     }
 
-    private Label from = new Label(),
-            to = new Label(),
-            target = new Label();
 
     @Override
     public void visitCode() {
-        Label l0 = new Label();
-        l1 = new Label();
-        l2 = new Label();
-        mv.visitTryCatchBlock(l0, l1, l2, "java/lang/Exception");
-        mv.visitLabel(l0);
+        MethodVisitor methodVisitor = mv;
+        Label label0 = new Label();
+        methodVisitor.visitLabel(label0);
+        methodVisitor.visitLineNumber(48, label0);
+        methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/utils/CoreUtils", "isDoubleClick", "()Z", false);
+
+        Label label1 = new Label();
+        methodVisitor.visitJumpInsn(Opcodes.IFEQ, label1);
+
+        Label label2 = new Label();
+        methodVisitor.visitLabel(label2);
+        methodVisitor.visitLineNumber(49, label2);
+        methodVisitor.visitLdcInsn("\u963b\u6b62\u91cd\u590d\u70b9\u51fb");
+        methodVisitor.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchLog", "(Ljava/lang/String;)V", false);
+        Label label3 = new Label();
+        methodVisitor.visitLabel(label3);
+        methodVisitor.visitLineNumber(50, label3);
+        methodVisitor.visitInsn(RETURN);
+
+        methodVisitor.visitLabel(label1);
+        methodVisitor.visitLineNumber(52, label1);
+        methodVisitor.visitFrame(Opcodes.F_SAME, 0, null, 0, null);
+        //methodVisitor.visitInsn(RETURN);
+
     }
 
     @Override
     public void visitInsn(int opcode) {
         if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
-            mv.visitLabel(l1);
-            Label l3 = new Label();
-            mv.visitJumpInsn(Opcodes.GOTO, l3);
-            mv.visitLabel(l2);
-            mv.visitVarInsn(ASTORE, 1);
-            if (exceptionHandleClass != null && exceptionHandleMethod != null) {
-                mv.visitVarInsn(ALOAD, 1);
-                mv.visitMethodInsn(INVOKESTATIC, exceptionHandleClass,
-                        exceptionHandleMethod, "(Ljava/lang/Exception;)V", false);
-            }
-            mv.visitLabel(l3);
         }
         super.visitInsn(opcode);
     }
 
-
+    @Override
+    public void visitMaxs(int maxStack, int maxLocals) {
+        super.visitMaxs(maxStack, maxLocals);
+    }
 }

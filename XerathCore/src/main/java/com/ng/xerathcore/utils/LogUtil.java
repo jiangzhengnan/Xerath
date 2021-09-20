@@ -1,4 +1,4 @@
-package com.ng.xerathlib.utils;
+package com.ng.xerathcore.utils;
 
 /**
  * 描述:

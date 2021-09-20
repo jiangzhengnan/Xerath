@@ -1,14 +1,18 @@
 package com.ng.xerathcore;
 
-import androidx.annotation.NonNull;
+import android.content.Context;
+
+import com.ng.xerathcore.utils.SpUtils;
 
 /**
- * 描述:框架总入口
+ * 描述:
+ * 数据收集 框架
  *
  * @author Jzn
  * @date 2021/9/5
  */
 public class XerathEngine {
+    private Context mContext;
 
     private static XerathEngine mInstance;
 
@@ -26,8 +30,12 @@ public class XerathEngine {
         return mInstance;
     }
 
-
-    public void start() {
+    public void init(Context context) {
+        mContext = context;
+        SpUtils.init(mContext);
     }
 
+    public Context getContext() {
+        return mContext;
+    }
 }

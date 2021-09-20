@@ -6,6 +6,7 @@ import com.ng.xerathlib.utils.ASMUtil;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.commons.LocalVariablesSorter;
 
 import javafx.util.Pair;
 
@@ -20,19 +21,31 @@ import static org.objectweb.asm.Opcodes.INVOKESTATIC;
  * @date 2021/9/14
  */
 public class TryCatchPlug extends AnnotationPlug {
-    //自定义异常处理
-    private String exceptionHandleClass = "com/ng/xerathcore/CoreUtils";
-    private String exceptionHandleMethod = "handleException";
+    //自定义异常处理类
+    private static String exceptionHandleClass;
+    private static String exceptionHandleMethod;
 
-    private Label startLabel = new Label(),   // 开头
-            endLabel = new Label(),           // 结尾
-            handlerLabel = new Label(),       // 处理
-            returnLabel = new Label();        // 返回
+    // 开头
+    private final Label startLabel = new Label();
+    // 结尾
+    private final Label endLabel = new Label();
+    // 处理
+    private final Label handlerLabel = new Label();
+    // 返回
+    private final Label returnLabel = new Label();
+
+    @Override
+    public void init(LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
+        super.init(adapter, owner, name, methodDesc);
+        //增加自定义异常处理类
+        exceptionHandleClass = "com/ng/xerathcore/CoreHelper";
+        exceptionHandleMethod = "handleException";
+    }
 
     @Override
     public void hookMethodStart(MethodVisitor mv) {
         mv.visitLdcInsn("【异常捕获】开始");
-        mv.visitMethodInsn(INVOKESTATIC, "com/ng/xerathcore/CoreUtils", "catchLog", "(Ljava/lang/String;)V", false);
+        mv.visitMethodInsn(INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchLog", "(Ljava/lang/String;)V", false);
         // 1标志：try块开始位置
         mv.visitTryCatchBlock(startLabel,
                 endLabel,
@@ -61,7 +74,6 @@ public class TryCatchPlug extends AnnotationPlug {
         if (exceptionHandleClass != null && exceptionHandleMethod != null) {
             mv.visitMethodInsn(INVOKESTATIC, exceptionHandleClass,
                     exceptionHandleMethod, "(Ljava/lang/Exception;)V", false);
-
         } else {
             // 没提供处理类就直接抛出异常
             mv.visitInsn(Opcodes.ATHROW);

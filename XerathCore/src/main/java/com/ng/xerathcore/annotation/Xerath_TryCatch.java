@@ -1,4 +1,4 @@
-package com.ng.xerathcore;
+package com.ng.xerathcore.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,9 +8,9 @@ import java.lang.annotation.Target;
 /**
  * @author : jiangzhengnan
  * @creation : 2021/09/15
- * @description :重复点击
+ * @description :异常捕获
  */
-@Retention(RetentionPolicy.RUNTIME)
+@Retention(RetentionPolicy.CLASS)
 @Target(ElementType.METHOD)
-public @interface Xerath_DoubleClick {
+public @interface Xerath_TryCatch {
 }

@@ -1,15 +1,14 @@
 package com.ng.xerathlib.core;
 
-
-import com.ng.xerathlib.constants.AnnotationConstants;
-import com.ng.xerathlib.core.plug.CalculateTimePlug;
-import com.ng.xerathlib.core.plug.TryCatchPlug;
+import com.ng.xerathlib.core.constants.AnnotationCreator;
 import com.ng.xerathlib.core.plug.base.IAnnotationPlug;
 import com.ng.xerathlib.utils.LogUtil;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 描述:
@@ -18,23 +17,21 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
  * @date 2021/9/14
  */
 public class AnnotationHelper {
-    //当前操作插件
+    // 当前操作插件
     private IAnnotationPlug mPlug;
-
+    // 方法操作类
     private LocalVariablesSorter mAdapter;
-    private String[] mAnnotationArrays;
     // 方法返回值类型描述符
     private String methodDesc;
     private String mOwner;
     private String mClassName;
 
+    // 注解参数
+    private Map<String, Object> mAnnotationParams;
+
     private static AnnotationHelper mInstance;
 
     private AnnotationHelper() {
-        mAnnotationArrays = new String[]{
-                AnnotationConstants.CALCULATE_TIME,
-                AnnotationConstants.TRY_CATCH
-        };
     }
 
     public static AnnotationHelper getInstance() {
@@ -48,36 +45,35 @@ public class AnnotationHelper {
         return mInstance;
     }
 
-    public void init(LocalVariablesSorter adapter, String owner, String name,String methodDesc) {
-        LogUtil.print("[AnnotationHelper]" );
-        LogUtil.print("owner:" + owner );
-        LogUtil.print("name:" + name );
-        LogUtil.print("methodDesc:" + methodDesc );
+    public void init(LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
+        LogUtil.print("[AnnotationHelper]入参分析");
+        LogUtil.print("owner:" + owner);
+        LogUtil.print("方法名:name:" + name);
+        LogUtil.print("方法描述:methodDesc:" + methodDesc);
 
         this.mAdapter = adapter;
         this.mOwner = owner;
         this.mClassName = name;
         this.methodDesc = methodDesc;
+        this.mAnnotationParams = new HashMap<>();
+    }
+
+    public void putParams(String key, Object value) {
+        mAnnotationParams.put(key, value);
+    }
+
+    public Object getParams(String key) {
+        if (mAnnotationParams != null && mAnnotationParams.containsKey(key)) {
+            return mAnnotationParams.get(key);
+        }
+        return null;
     }
 
     public boolean isNeedHook(String descriptor) {
-        LogUtil.print("遍历注解:" + descriptor);
-        for (String temp : mAnnotationArrays) {
-             if (temp.equals(descriptor)) {
-                LogUtil.print("注解:" + descriptor + " 需要hook");
-                switch (temp) {
-                    case AnnotationConstants.CALCULATE_TIME:
-                        mPlug = new CalculateTimePlug();
-                        break;
-                    case AnnotationConstants.TRY_CATCH:
-                        mPlug = new TryCatchPlug();
-                        break;
-                    default:
-                        break;
-                }
-                mPlug.init(mAdapter, mClassName, mOwner,methodDesc);
-                return true;
-            }
+        mPlug = AnnotationCreator.createPlug(descriptor);
+        if (mPlug != null) {
+            mPlug.init(mAdapter, mClassName, mOwner, methodDesc);
+            return true;
         }
         return false;
     }
@@ -88,13 +84,11 @@ public class AnnotationHelper {
         }
     }
 
-
     public void hookMethodEnd(MethodVisitor mv) {
         if (mPlug != null) {
             mPlug.hookMethodEnd(mv);
         }
     }
-
 
     public void hookMethodReturn(MethodVisitor mv) {
         if (mPlug != null) {
@@ -104,6 +98,7 @@ public class AnnotationHelper {
 
     public void reset() {
         mPlug = null;
+        mAnnotationParams.clear();
     }
 
 }

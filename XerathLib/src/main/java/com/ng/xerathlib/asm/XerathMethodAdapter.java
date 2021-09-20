@@ -1,6 +1,7 @@
 package com.ng.xerathlib.asm;
 
 import com.ng.xerathlib.core.AnnotationHelper;
+import com.ng.xerathlib.utils.LogUtil;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -30,7 +31,7 @@ class XerathMethodAdapter extends LocalVariablesSorter {
                                String owner, OnChangedListener onChangedListener) {
         super(ASM5, access, descriptor, methodVisitor);
         this.onChangedListener = onChangedListener;
-        AnnotationHelper.getInstance().init(this,owner,name,descriptor);
+        AnnotationHelper.getInstance().init(this, owner, name, descriptor);
     }
 
 
@@ -75,11 +76,19 @@ class XerathMethodAdapter extends LocalVariablesSorter {
      */
     @Override
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
+        AnnotationVisitor annotationVisitor = new AnnotationVisitor(ASM5) {
+            @Override
+            public void visit(String name, Object value) {
+                super.visit(name, value);
+                LogUtil.print("注解: " + descriptor + " 附带参数:" + name + " " + value.toString());
+                AnnotationHelper.getInstance().putParams(name, value);
+            }
+        };
         isAnnotationed = AnnotationHelper.getInstance().isNeedHook(descriptor);
         if (isAnnotationed && onChangedListener != null) {
             onChangedListener.onChanged();
         }
-        return super.visitAnnotation(descriptor, visible);
+        return annotationVisitor;
 
     }
 

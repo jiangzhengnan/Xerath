@@ -1,8 +1,9 @@
-package com.ng.xerathlib.utils;
+package com.ng.xerath.asm;
+
+import android.util.Pair;
 
 import org.objectweb.asm.Opcodes;
 
-import javafx.util.Pair;
 
 public final class ASMUtil {
 
