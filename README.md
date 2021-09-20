@@ -20,15 +20,15 @@ Xerath 是一个通过 [自定义注解]+[ASM](https://asm.ow2.io/) + [Gradle Tr
         //do something
     }
 ```
-2.限制方法频繁调用
-在目标方法上增加@Xerath_LimitCall(time = 1000L)注解,其中time为频繁调用的时间阈值
+2.限制方法频繁调用<br/>
+在目标方法上增加@Xerath_LimitCall(time = 1000L)注解,其中time为频繁调用的时间阈值<br/>
 ```
     @Xerath_LimitCall(time = 1000L)
     public static void doubleClick() {
         //do something
     }
 ```
-3.try-catch异常捕获
+3.try-catch异常捕获<br/>
 在目标方法上增加@TryCatch注解<br/>
 ```
     @TryCatch
