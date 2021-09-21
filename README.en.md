@@ -1,6 +1,6 @@
 English | [简体中文](./README.md) |<br />
 
-简体中文 | [English](./README.en.md) |<br />
+
 ### Xerath
 Xerath is an Android Aop framework that uses the [custom Annotations]+ASM + Gradle Transform API to implement a powerful, easy to develop, and efficient way to reduce code duplication.<br />
 
