@@ -37,7 +37,7 @@ Xerath 是一个通过 [自定义注解]+[ASM](https://asm.ow2.io/) + [Gradle Tr
     }
 ```
 
-### 3.功能列表(暂定)
+### 3.功能列表(补充中)
 <img src="https://github.com/jiangzhengnan/Xerath/blob/master/app/src/main/res/raw/ic_func.jpg" width="30%" /><br />
 
 ### License
