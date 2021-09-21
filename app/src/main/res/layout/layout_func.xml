@@ -28,7 +28,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btn2_layout_data"
+            android:id="@+id/btn2_layout_fuc"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginLeft="12dp"
@@ -41,7 +41,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btn3_layout_view"
+            android:id="@+id/btn3_layout_fuc"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginLeft="12dp"
@@ -65,79 +65,34 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:enabled="false"
-            android:text="定时任务"
+            android:text="参数统计"
 
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btn5_layout_data"
+            android:id="@+id/btn5_layout_fuc"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginLeft="12dp"
             android:layout_weight="1"
             android:enabled="false"
-            android:text="延迟任务"
+            android:text="方法移除"
 
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btn6_layout_view"
+            android:id="@+id/btn6_layout_fuc"
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginLeft="12dp"
             android:layout_weight="1"
             android:enabled="false"
-            android:text="日志收集"
-
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="12dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn7_layout_fuc"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:enabled="false"
-            android:text="异步线程"
-
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/btn8_layout_data"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="12dp"
-            android:layout_weight="1"
-            android:enabled="false"
-            android:text="主线程"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Button
-            android:id="@+id/btn9_layout_view"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="12dp"
-            android:layout_weight="1"
-            android:enabled="false"
-            android:text=" "
             android:visibility="invisible"
+            android:text="日志收集"
 
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

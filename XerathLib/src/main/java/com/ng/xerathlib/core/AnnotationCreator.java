@@ -1,14 +1,15 @@
-package com.ng.xerathlib.core.constants;
+package com.ng.xerathlib.core;
 
 import com.ng.xerathlib.core.plug.CalculateTimePlug;
 import com.ng.xerathlib.core.plug.LimitCallPlug;
+import com.ng.xerathlib.core.plug.PopToastPlug;
 import com.ng.xerathlib.core.plug.TryCatchPlug;
 import com.ng.xerathlib.core.plug.base.IAnnotationPlug;
 import com.ng.xerathlib.utils.LogUtil;
 
 /**
  * 描述:
- * 定义注解常量
+ * plug构建器
  *
  * @author Jzn
  * @date 2021/9/14
@@ -23,6 +24,9 @@ public class AnnotationCreator {
 
     public final static String DOUBLE_CLICK = ANNOTATION_PATH + "Xerath_LimitCall;";
 
+    public final static String POP_TOAST = ANNOTATION_PATH + "Xerath_PopToast;";
+
+
     public static IAnnotationPlug createPlug(String annotationStr) {
         IAnnotationPlug resultPlug = null;
         LogUtil.print("遍历注解:" + annotationStr);
@@ -35,6 +39,9 @@ public class AnnotationCreator {
                 break;
             case AnnotationCreator.DOUBLE_CLICK:
                 resultPlug = new LimitCallPlug();
+                break;
+            case AnnotationCreator.POP_TOAST:
+                resultPlug = new PopToastPlug();
                 break;
             default:
                 break;

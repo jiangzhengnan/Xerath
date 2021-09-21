@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ng.xerath.func.FuncMethodUtil;
+import com.ng.xerath.func.ViewMethodUtil;
 
 /**
  * @author pumpkin
@@ -24,18 +25,22 @@ public class MainActivity extends AppCompatActivity {
         //耗时统计
         findViewById(R.id.btn1_layout_fuc).setOnClickListener(v -> FuncMethodUtil.calculateTimeMethod());
         //限频调用
-        findViewById(R.id.btn2_layout_data).setOnClickListener(v -> {
+        findViewById(R.id.btn2_layout_fuc).setOnClickListener(v -> {
             FuncMethodUtil.doubleClick();
             //System.out.println("输出带参结果:" + FuncMethodUtil.doubleClickReturnBoolean());
         });
         //异常捕获
-        findViewById(R.id.btn3_layout_view).setOnClickListener(v -> {
+        findViewById(R.id.btn3_layout_fuc).setOnClickListener(v -> {
             FuncMethodUtil.tryCatchMethod();
             //System.out.println("输出带参结果:" + FuncMethodUtil.tryCatchMethodReturnBoolean());
         });
     }
 
     private void initData() {
+        //弹出toast
+        findViewById(R.id.btn1_layout_view).setOnClickListener(v -> {
+            ViewMethodUtil.popToast();
+        });
     }
 
     private void initView() {

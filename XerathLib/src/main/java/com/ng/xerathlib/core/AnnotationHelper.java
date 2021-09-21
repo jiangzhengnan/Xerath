@@ -1,6 +1,5 @@
 package com.ng.xerathlib.core;
 
-import com.ng.xerathlib.core.constants.AnnotationCreator;
 import com.ng.xerathlib.core.plug.base.IAnnotationPlug;
 import com.ng.xerathlib.utils.LogUtil;
 

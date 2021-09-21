@@ -38,7 +38,7 @@ dependencies {
     implementation 'org.ow2.asm:asm:9.2'
     implementation 'org.ow2.asm:asm-commons:9.1'
 
-    if (BUILD_DEV.toBoolean()) {
+    if (project.BUILD_DEV) {
         api project(':XerathCore')
     } else {
         //core 引入注解依赖

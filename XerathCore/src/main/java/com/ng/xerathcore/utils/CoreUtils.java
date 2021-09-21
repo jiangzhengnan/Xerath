@@ -10,11 +10,11 @@ import com.ng.xerathcore.constants.PlugConstant;
 public class CoreUtils {
 
     public static boolean needLimitCall(long time) {
-        long lastTime = SpUtils.getLongValue(PlugConstant.SpName.LIMIT_CALL_TIME,0);
+        long lastTime = SpUtil.getLongValue(PlugConstant.SpName.LIMIT_CALL_TIME,0);
         if (System.currentTimeMillis() - lastTime < time) {
             return true;
         }
-        SpUtils.putLongValue(PlugConstant.SpName.LIMIT_CALL_TIME,System.currentTimeMillis());
+        SpUtil.putLongValue(PlugConstant.SpName.LIMIT_CALL_TIME,System.currentTimeMillis());
         return false;
     }
 

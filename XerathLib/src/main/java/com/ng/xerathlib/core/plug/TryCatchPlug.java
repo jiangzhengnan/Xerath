@@ -78,7 +78,6 @@ public class TryCatchPlug extends AnnotationPlug {
             // 没提供处理类就直接抛出异常
             mv.visitInsn(Opcodes.ATHROW);
         }
-
         // catch结束，方法返回默认值收工
         Pair<Integer, Integer> defaultVo = ASMUtil.getDefaultByDesc(methodDesc);
         int value = defaultVo.getKey();

@@ -14,7 +14,7 @@ import java.util.Map;
  * @creation : 2021/09/19
  * @description :
  */
-public class SpUtils {
+public class SpUtil {
 
     /**
      * SharedPreferencese文件名

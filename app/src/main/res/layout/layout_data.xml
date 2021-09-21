@@ -46,6 +46,7 @@
             android:layout_height="50dp"
             android:layout_marginLeft="12dp"
             android:layout_weight="1"
+            android:visibility="invisible"
             android:text="存到数据库"
             android:enabled="false"
             app:layout_constraintLeft_toLeftOf="parent"

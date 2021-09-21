@@ -1,8 +1,9 @@
 package com.ng.xerathcore;
 
 import android.content.Context;
+import android.widget.Toast;
 
-import com.ng.xerathcore.utils.SpUtils;
+import com.ng.xerathcore.utils.SpUtil;
 
 /**
  * 描述:
@@ -32,10 +33,16 @@ public class XerathEngine {
 
     public void init(Context context) {
         mContext = context;
-        SpUtils.init(mContext);
+        SpUtil.init(mContext);
     }
 
     public Context getContext() {
         return mContext;
+    }
+
+    public void showToast(String str) {
+        if (mContext != null) {
+            Toast.makeText(mContext, str, Toast.LENGTH_SHORT).show();
+        }
     }
 }
