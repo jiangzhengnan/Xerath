@@ -36,6 +36,43 @@ Xerath 是一个通过 [自定义注解]+[ASM](https://asm.ow2.io/) + [Gradle Tr
         int a = 1 / 0;
     }
 ```
+4.方法入参和返回值统计<br/>
+在目标方法上增加@Xerath_CollectParams<br/>
+```
+    @Xerath_CollectParams
+    public static String testParams(boolean boolParam,
+                                    byte byteParam,
+                                    char charParam,
+                                    short shortParam,
+                                    int intParam,
+                                    long longParam,
+                                    float floatParam,
+                                    double doubleParam,
+                                    String stringParam,
+                                    int[] intArrParam,
+                                    JSONObject json) {
+        String result = boolParam + " " +
+                byteParam + " " +
+                charParam + " " +
+                shortParam + " " +
+                intParam + " " +
+                longParam + " " +
+                floatParam + " " +
+                doubleParam + " " +
+                stringParam + " " +
+                intArrParam.length +
+                json.toString();
+        return result;
+    }
+```
+5 .弹出Toast<br/>
+在目标方法上增加@Xerath_PopToast注解,其中str为需要显示Toast的内容<br/>
+```
+    @Xerath_PopToast(str = "测试Toast")
+    public static void popToast() {
+        //do something
+    }
+```
 
 ### 3.功能列表(补充中)
 <img src="https://github.com/jiangzhengnan/Xerath/blob/master/app/src/main/res/raw/ic_func.jpg" width="30%" /><br />
