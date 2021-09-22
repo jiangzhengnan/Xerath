@@ -13,9 +13,9 @@ public interface IAnnotationPlug {
 
     void init(LocalVariablesSorter adapter, String owner, String name,String methodDesc);
 
-    void hookMethodStart(MethodVisitor mv);
+    void onHookMethodStart(MethodVisitor mv);
 
-    void hookMethodReturn(MethodVisitor mv);
+    void onHookMethodReturn(int opcode,MethodVisitor mv);
 
-    void hookMethodEnd(MethodVisitor mv);
+    void onHookMethodEnd(MethodVisitor mv);
 }

@@ -1,4 +1,6 @@
-package com.ng.xerath.asm;
+package com.ng.xerath.asm.visitor;
+
+import com.ng.xerath.asm.Parameter;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -15,7 +17,9 @@ import java.util.List;
  * @description :
  * 使用 AdviceAdapter 是 MethodVisitor 的子类，功能更全
  */
-public class TestAdviceAdapter extends MethodVisitor implements Opcodes {
+public class TestPreLoadAdviceAdapter extends MethodVisitor implements Opcodes {
+    private static final String TAG = "预加载";
+
     private MethodVisitor methodVisitor;
     private List<Label> labelList = new ArrayList<>();
 
@@ -23,7 +27,7 @@ public class TestAdviceAdapter extends MethodVisitor implements Opcodes {
     private List<Parameter> parameters = new ArrayList<>();
 
 
-    public TestAdviceAdapter(int api, MethodVisitor methodVisitor) {
+    public TestPreLoadAdviceAdapter(int api, MethodVisitor methodVisitor) {
         super(api, methodVisitor);
     }
 
@@ -38,7 +42,7 @@ public class TestAdviceAdapter extends MethodVisitor implements Opcodes {
      */
     @Override
     public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
-        System.out.println("【visitLocalVariable】");
+        //print("【visitLocalVariable】");
 
         //查看入参
         if (!"this".equals(name) && start == labelList.get(0)) {
@@ -49,18 +53,18 @@ public class TestAdviceAdapter extends MethodVisitor implements Opcodes {
                 parameters.add(new Parameter(name, desc, index));
             }
         }
-        System.out.println("parameters: " + parameters.toString());
+        print("parameters: " + parameters.toString());
         super.visitLocalVariable(name, desc, signature, start, end, index);
     }
 
     @Override
     public void visitCode() {
-        System.out.println("【visitCode】");
+        //print("【visitCode】");
     }
 
     @Override
     public void visitLabel(Label label) {
-        System.out.println("【visitLabel】");
+        //print("【visitLabel】");
         labelList.add(label);
         super.visitLabel(label);
     }
@@ -68,8 +72,7 @@ public class TestAdviceAdapter extends MethodVisitor implements Opcodes {
 
     @Override
     public void visitInsn(int opcode) {
-        System.out.println("【visitInsn】");
-
+        //print("【visitInsn】");
         if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
         }
         super.visitInsn(opcode);
@@ -77,8 +80,12 @@ public class TestAdviceAdapter extends MethodVisitor implements Opcodes {
 
     @Override
     public void visitMaxs(int maxStack, int maxLocals) {
-        System.out.println("【visitMaxs】");
+        //print("【visitMaxs】");
         super.visitMaxs(maxStack, maxLocals);
+    }
+
+    private void print(String s) {
+        System.out.println(TAG + s);
     }
 
 }

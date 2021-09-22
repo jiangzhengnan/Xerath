@@ -1,6 +1,6 @@
 package com.ng.xerath.asm;
 
-import android.os.Bundle;
+import com.ng.xerathcore.utils.ResultPrinter;
 
 /**
  * @author : jiangzhengnan.jzn@alibaba-inc.com
@@ -9,13 +9,14 @@ import android.os.Bundle;
  */
 public class ASMShow {
 
-    public static String testParams(boolean bool_v,
-                                    byte byte_v,
-                                    char char_v,
-                                    short short_v,
-                                    int int_v,
-                                    long long_v, float float_v, double double_v, String string_v, int[] arr, Bundle savedInstanceState) {
-        return "testParams";
+    public void test() {
+
+        String className = "";
+        String methodName = "";
+        long costedMilles = 0;
+        byte returnVal = 1;
+        ResultPrinter.print(methodName, costedMilles, returnVal);
+
     }
 
 }

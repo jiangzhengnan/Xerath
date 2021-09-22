@@ -1,10 +1,10 @@
-package com.ng.xerathlib.asm;
+package com.ng.xerathlib.asm.load;
 
-import com.ng.xerathlib.utils.LogUtil;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
 
-import org.objectweb.asm.*;
-
-import static org.objectweb.asm.Opcodes.*;
+import static org.objectweb.asm.Opcodes.ACC_INTERFACE;
+import static org.objectweb.asm.Opcodes.ASM5;
 
 /**
  * @Project ASMCostTime
@@ -12,6 +12,7 @@ import static org.objectweb.asm.Opcodes.*;
  * @describe
  */
 public class XerathClassVisitor extends ClassVisitor {
+
     /**
      * 是否被修改过
      */
@@ -20,11 +21,7 @@ public class XerathClassVisitor extends ClassVisitor {
     private boolean isInterface;
 
     public XerathClassVisitor(ClassVisitor visitor) {
-        super(ASM4, visitor);
-    }
-
-    public XerathClassVisitor(int api, ClassVisitor classVisitor) {
-        super(api, classVisitor);
+        super(ASM5, visitor);
     }
 
     @Override
@@ -38,9 +35,9 @@ public class XerathClassVisitor extends ClassVisitor {
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
         if (!isInterface && mv != null && !name.equals("<init>")) {
-            LogUtil.print("");
-            LogUtil.print("方法：" + name + " des:" + descriptor + " ");
-            //将MethodVisitor交由CostTimeMethodAdapter代理
+            //LogUtil.print("");
+            //LogUtil.print("方法：" + name + " des:" + descriptor + " ");
+            //将 MethodVisitor交由 XerathMethodAdapter 代理
             mv = new XerathMethodAdapter(access, name, descriptor, mv, owner, new XerathMethodAdapter.OnChangedListener() {
                 @Override
                 public void onChanged() {
@@ -50,7 +47,6 @@ public class XerathClassVisitor extends ClassVisitor {
         }
         return mv;
     }
-
 
 
 }

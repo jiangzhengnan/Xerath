@@ -1,6 +1,6 @@
-package com.ng.xerathlib.asm;
+package com.ng.xerathlib.asm.load;
 
-import com.ng.xerathlib.core.AnnotationHelper;
+import com.ng.xerathlib.core.XerathHookHelper;
 import com.ng.xerathlib.utils.LogUtil;
 
 import org.objectweb.asm.AnnotationVisitor;
@@ -17,8 +17,10 @@ import static org.objectweb.asm.Opcodes.RETURN;
  * 继承自LocalVariablesSorter 有序遍历素有方法
  */
 class XerathMethodAdapter extends LocalVariablesSorter {
+
     private boolean isAnnotationed;
     private OnChangedListener onChangedListener;
+    private String mMethodName;
 
     public interface OnChangedListener {
         /**
@@ -31,7 +33,8 @@ class XerathMethodAdapter extends LocalVariablesSorter {
                                String owner, OnChangedListener onChangedListener) {
         super(ASM5, access, descriptor, methodVisitor);
         this.onChangedListener = onChangedListener;
-        AnnotationHelper.getInstance().init(this, owner, name, descriptor);
+        this.mMethodName = name;
+        XerathHookHelper.getInstance().init(this, owner, name, descriptor);
     }
 
 
@@ -41,7 +44,7 @@ class XerathMethodAdapter extends LocalVariablesSorter {
     @Override
     public void visitCode() {
         super.visitCode();
-        AnnotationHelper.getInstance().hookMethodStart(mv);
+        XerathHookHelper.getInstance().onHookMethodStart(mv);
     }
 
     @Override
@@ -63,7 +66,7 @@ class XerathMethodAdapter extends LocalVariablesSorter {
     @Override
     public void visitInsn(int opcode) {
         if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
-            AnnotationHelper.getInstance().hookMethodReturn(mv);
+            XerathHookHelper.getInstance().onHookMethodReturn(opcode,mv);
         }
         super.visitInsn(opcode);
     }
@@ -76,31 +79,35 @@ class XerathMethodAdapter extends LocalVariablesSorter {
      */
     @Override
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-        AnnotationVisitor annotationVisitor = new AnnotationVisitor(ASM5) {
-            @Override
-            public void visit(String name, Object value) {
-                super.visit(name, value);
-                LogUtil.print("注解: " + descriptor + " 附带参数:" + name + " " + value.toString());
-                AnnotationHelper.getInstance().putParams(name, value);
-            }
-        };
-        isAnnotationed = AnnotationHelper.getInstance().isNeedHook(descriptor);
+        isAnnotationed = XerathHookHelper.getInstance().isNeedHook(descriptor);
         if (isAnnotationed && onChangedListener != null) {
+            LogUtil.print("正式处理开始(" + mMethodName + ")---");
             onChangedListener.onChanged();
+            return new AnnotationVisitor(ASM5) {
+                @Override
+                public void visit(String name, Object value) {
+                    super.visit(name, value);
+                    LogUtil.print("注解: " + descriptor + " 附带参数 key:" + name + " value:" + value.toString());
+                    XerathHookHelper.getInstance().putAnnotationParams(name, value);
+                }
+            };
         }
-        return annotationVisitor;
-
+        return super.visitAnnotation(descriptor, visible);
     }
 
     @Override
     public void visitMaxs(int maxStack, int maxLocals) {
-        AnnotationHelper.getInstance().hookMethodEnd(mv);
+        XerathHookHelper.getInstance().onHookMethodEnd(mv);
         super.visitMaxs(maxStack, maxLocals);
+
+        if (isAnnotationed) {
+            LogUtil.print("正式处理结束(" + mMethodName + ")---");
+        }
     }
 
     @Override
     public void visitEnd() {
         super.visitEnd();
-        AnnotationHelper.getInstance().reset();
+        XerathHookHelper.getInstance().reset();
     }
 }

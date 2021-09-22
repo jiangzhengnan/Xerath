@@ -1,9 +1,12 @@
 package com.ng.xerath.func;
 
 import com.ng.xerath.utils.LogUtil;
+import com.ng.xerathcore.annotation.Xerath_CollectParams;
 import com.ng.xerathcore.annotation.Xerath_CalculateTime;
 import com.ng.xerathcore.annotation.Xerath_LimitCall;
 import com.ng.xerathcore.annotation.Xerath_TryCatch;
+
+import org.json.JSONObject;
 
 /**
  * 描述:
@@ -12,6 +15,35 @@ import com.ng.xerathcore.annotation.Xerath_TryCatch;
  * @date 2021/9/4
  */
 public class FuncMethodUtil {
+
+    /**
+     * 参数统计
+     */
+    @Xerath_CollectParams
+    public static String testParams(boolean boolParam,
+                                    byte byteParam,
+                                    char charParam,
+                                    short shortParam,
+                                    int intParam,
+                                    long longParam,
+                                    float floatParam,
+                                    double doubleParam,
+                                    String stringParam,
+                                    int[] intArrParam,
+                                    JSONObject json) {
+        String result = boolParam + " " +
+                byteParam + " " +
+                charParam + " " +
+                shortParam + " " +
+                intParam + " " +
+                longParam + " " +
+                floatParam + " " +
+                doubleParam + " " +
+                stringParam + " " +
+                intArrParam.length +
+                json.toString();
+        return result;
+    }
 
     /**
      * 耗时方法
@@ -49,7 +81,7 @@ public class FuncMethodUtil {
      */
     @Xerath_LimitCall(time = 8000L)
     public static void doubleClick() {
-        System.out.println("click");
+        LogUtil.println("click");
     }
 
     /**
@@ -57,7 +89,7 @@ public class FuncMethodUtil {
      */
     @Xerath_LimitCall(time = 1000L)
     public static boolean doubleClickReturnBoolean() {
-        System.out.println("click");
+        LogUtil.println("click");
         return false;
     }
 

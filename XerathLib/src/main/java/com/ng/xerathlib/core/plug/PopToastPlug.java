@@ -1,6 +1,6 @@
 package com.ng.xerathlib.core.plug;
 
-import com.ng.xerathlib.core.AnnotationHelper;
+import com.ng.xerathlib.core.XerathHookHelper;
 import com.ng.xerathlib.core.plug.base.AnnotationPlug;
 
 import org.objectweb.asm.Label;
@@ -21,8 +21,8 @@ public class PopToastPlug extends AnnotationPlug {
     }
 
     @Override
-    public void hookMethodStart(MethodVisitor mv) {
-        String showStr = (String) AnnotationHelper.getInstance().getParams("str");
+    public void onHookMethodStart(MethodVisitor mv) {
+        String showStr = (String) XerathHookHelper.getInstance().getAnnotationParams("str");
         Label label0 = new Label();
         mv.visitLabel(label0);
         mv.visitLineNumber(0, label0);
@@ -32,12 +32,12 @@ public class PopToastPlug extends AnnotationPlug {
     }
 
     @Override
-    public void hookMethodReturn(MethodVisitor mv) {
+    public void onHookMethodReturn(int opcode, MethodVisitor mv) {
 
     }
 
     @Override
-    public void hookMethodEnd(MethodVisitor mv) {
+    public void onHookMethodEnd(MethodVisitor mv) {
 
     }
 }

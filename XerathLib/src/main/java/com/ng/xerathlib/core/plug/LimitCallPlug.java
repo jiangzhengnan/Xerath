@@ -1,6 +1,6 @@
 package com.ng.xerathlib.core.plug;
 
-import com.ng.xerathlib.core.AnnotationHelper;
+import com.ng.xerathlib.core.XerathHookHelper;
 import com.ng.xerathlib.core.plug.base.AnnotationPlug;
 import com.ng.xerathlib.utils.ASMUtil;
 
@@ -34,8 +34,8 @@ public class LimitCallPlug extends AnnotationPlug {
     }
 
     @Override
-    public void hookMethodStart(MethodVisitor mv) {
-        Long clickTimeL = (Long) AnnotationHelper.getInstance().getParams("time");
+    public void onHookMethodStart(MethodVisitor mv) {
+        Long clickTimeL = (Long) XerathHookHelper.getInstance().getAnnotationParams("time");
         if (clickTimeL != null) {
             clickTime = clickTimeL;
         }
@@ -56,7 +56,7 @@ public class LimitCallPlug extends AnnotationPlug {
         mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchLog", "(Ljava/lang/String;)V", false);
 
         //方法返回默认值
-        Pair<Integer, Integer> defaultVo = ASMUtil.getDefaultByDesc(methodDesc);
+        Pair<Integer, Integer> defaultVo = ASMUtil.getDefaultByDesc(mMethodDesc);
         int value = defaultVo.getKey();
         int opcode = defaultVo.getValue();
         if (value >= 0) {
@@ -70,10 +70,10 @@ public class LimitCallPlug extends AnnotationPlug {
     }
 
     @Override
-    public void hookMethodReturn(MethodVisitor mv) {
+    public void onHookMethodReturn(int opcode,MethodVisitor mv) {
     }
 
     @Override
-    public void hookMethodEnd(MethodVisitor mv) {
+    public void onHookMethodEnd(MethodVisitor mv) {
     }
 }

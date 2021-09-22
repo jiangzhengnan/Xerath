@@ -10,9 +10,9 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
  */
 public abstract class AnnotationPlug implements IAnnotationPlug {
     // 方法返回值类型描述符
-    protected String methodDesc;
+    protected String mMethodDesc;
     protected String mOwner;
-    protected String mClassName;
+    protected String mMethodName;
     protected LocalVariablesSorter mAdapter;
 
 
@@ -20,7 +20,7 @@ public abstract class AnnotationPlug implements IAnnotationPlug {
     public void init(LocalVariablesSorter adapter, String owner, String name,String methodDesc) {
         this.mAdapter = adapter;
         this.mOwner = owner;
-        this.mClassName = name;
-        this.methodDesc = methodDesc;
+        this.mMethodName = name;
+        this.mMethodDesc = methodDesc;
     }
 }

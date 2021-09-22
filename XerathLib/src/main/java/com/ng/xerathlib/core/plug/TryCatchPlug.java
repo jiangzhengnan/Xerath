@@ -43,7 +43,7 @@ public class TryCatchPlug extends AnnotationPlug {
     }
 
     @Override
-    public void hookMethodStart(MethodVisitor mv) {
+    public void onHookMethodStart(MethodVisitor mv) {
         mv.visitLdcInsn("【异常捕获】开始");
         mv.visitMethodInsn(INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchLog", "(Ljava/lang/String;)V", false);
         // 1标志：try块开始位置
@@ -55,11 +55,11 @@ public class TryCatchPlug extends AnnotationPlug {
     }
 
     @Override
-    public void hookMethodReturn(MethodVisitor mv) {
+    public void onHookMethodReturn(int opcode, MethodVisitor mv) {
     }
 
     @Override
-    public void hookMethodEnd(MethodVisitor mv) {
+    public void onHookMethodEnd(MethodVisitor mv) {
         // 2标志：try块结束
         mv.visitLabel(endLabel);
 
@@ -79,7 +79,7 @@ public class TryCatchPlug extends AnnotationPlug {
             mv.visitInsn(Opcodes.ATHROW);
         }
         // catch结束，方法返回默认值收工
-        Pair<Integer, Integer> defaultVo = ASMUtil.getDefaultByDesc(methodDesc);
+        Pair<Integer, Integer> defaultVo = ASMUtil.getDefaultByDesc(mMethodDesc);
         int value = defaultVo.getKey();
         int opcode = defaultVo.getValue();
         if (value >= 0) {

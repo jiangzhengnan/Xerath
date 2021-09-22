@@ -25,14 +25,14 @@ public class CalculateTimePlug extends AnnotationPlug {
     private int time;
 
     @Override
-    public void hookMethodStart(MethodVisitor mv) {
+    public void onHookMethodStart(MethodVisitor mv) {
         mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
         time = mAdapter.newLocal(Type.LONG_TYPE);
         mv.visitVarInsn(LSTORE, time);
     }
 
     @Override
-    public void hookMethodReturn(MethodVisitor mv) {
+    public void onHookMethodReturn(int opcode,MethodVisitor mv) {
         //这里的代码都可以由ASM插件生成
         //Label可以生成局部变量
         Label l1 = new Label();
@@ -47,7 +47,7 @@ public class CalculateTimePlug extends AnnotationPlug {
         mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
         mv.visitInsn(DUP);
         mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false);
-        mv.visitLdcInsn("【耗时统计】:func " + mClassName + " cost Time:");
+        mv.visitLdcInsn("【耗时统计】:func " + mMethodName + " cost Time:");
         mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
         mv.visitVarInsn(LLOAD, 3);
         mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false);
@@ -58,6 +58,6 @@ public class CalculateTimePlug extends AnnotationPlug {
     }
 
     @Override
-    public void hookMethodEnd(MethodVisitor mv) {
+    public void onHookMethodEnd(MethodVisitor mv) {
     }
 }

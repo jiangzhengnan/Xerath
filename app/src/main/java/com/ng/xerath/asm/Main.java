@@ -1,6 +1,9 @@
 package com.ng.xerath.asm;
 
 
+import com.ng.xerath.asm.visitor.TestClassVisitor;
+import com.ng.xerath.asm.visitor.TestPreLoadClassVisitor;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
@@ -18,21 +21,7 @@ public class Main {
 
     public static void main(String[] args) {
         //testChild();
-        boolean bool = true;
-        byte byte_v = 1;
-        char char_v = 2;
-        short short_v = 3;
-        int int_v = 4;
-        long long_v = 5;
-        float float_v = 6;
-        double double_v = 7;
-        String string_v = "string";
-        int[] int_arr = new int[]{1, 2, 3};
-
-        ASMShow.testParams(bool, byte_v, char_v, short_v, int_v, long_v, float_v, double_v, string_v, int_arr, null);
-
         startHook();
-
     }
 
     //Child 的 class文件路径
@@ -44,12 +33,18 @@ public class Main {
 
     private static void startHook() {
         try {
-            //1.首先创建ClassReader,读取目标类Child的内容
+
             ClassReader cr = new ClassReader(ASMShow.class.getName());
-            //2.然后创建ClassWriter对象，
             ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
+
+            //预加载参数
+            TestPreLoadClassVisitor preCv = new TestPreLoadClassVisitor(cw);
+            cr.accept(preCv, ClassReader.EXPAND_FRAMES);
+
             TestClassVisitor cv = new TestClassVisitor(cw);
             cr.accept(cv, ClassReader.EXPAND_FRAMES);
+
+
             // 获取生成的class文件对应的二进制流
             byte[] code = cw.toByteArray();
             //将二进制流写到out/下
