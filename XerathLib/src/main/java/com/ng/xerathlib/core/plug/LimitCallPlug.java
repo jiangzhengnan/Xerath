@@ -3,13 +3,13 @@ package com.ng.xerathlib.core.plug;
 import com.ng.xerathlib.core.XerathHookHelper;
 import com.ng.xerathlib.core.plug.base.AnnotationPlug;
 import com.ng.xerathlib.utils.ASMUtil;
+import com.ng.xerathlib.utils.Pair;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
-import javafx.util.Pair;
 
 /**
  * @author : jiangzhengnan.jzn@alibaba-inc.com
@@ -56,9 +56,9 @@ public class LimitCallPlug extends AnnotationPlug {
         mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchLog", "(Ljava/lang/String;)V", false);
 
         //方法返回默认值
-        Pair<Integer, Integer> defaultVo = ASMUtil.getDefaultByDesc(mMethodDesc);
-        int value = defaultVo.getKey();
-        int opcode = defaultVo.getValue();
+        Pair defaultVo = ASMUtil.getDefaultByDesc(mMethodDesc);
+        int value = defaultVo.key;
+        int opcode = defaultVo.value;
         if (value >= 0) {
             mv.visitInsn(value);
         }
@@ -70,7 +70,7 @@ public class LimitCallPlug extends AnnotationPlug {
     }
 
     @Override
-    public void onHookMethodReturn(int opcode,MethodVisitor mv) {
+    public void onHookMethodReturn(int opcode, MethodVisitor mv) {
     }
 
     @Override

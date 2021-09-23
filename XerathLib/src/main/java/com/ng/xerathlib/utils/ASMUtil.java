@@ -2,7 +2,6 @@ package com.ng.xerathlib.utils;
 
 import org.objectweb.asm.Opcodes;
 
-import javafx.util.Pair;
 
 public final class ASMUtil {
 
@@ -19,8 +18,8 @@ public final class ASMUtil {
     /**
      * 根据方法描述符获取返回类型和默认值
      */
-    public static Pair<Integer, Integer> getDefaultByDesc(String methodDesc) {
-        Pair<Integer, Integer> pair = null;
+    public static Pair getDefaultByDesc(String methodDesc) {
+        Pair pair = null;
         int value = -1;
         int opcode = -1;
 
@@ -60,7 +59,7 @@ public final class ASMUtil {
             opcode = Opcodes.ARETURN;
         }
 
-        pair = new Pair<>(value, opcode);
+        pair = new Pair(value, opcode);
         return pair;
     }
 

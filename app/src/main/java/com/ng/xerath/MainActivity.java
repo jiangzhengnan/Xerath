@@ -2,11 +2,13 @@ package com.ng.xerath;
 
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.ng.xerath.func.DataMethodUtil;
 import com.ng.xerath.func.FuncMethodUtil;
 import com.ng.xerath.func.ViewMethodUtil;
 import com.ng.xerathcore.CoreHelper;
@@ -48,6 +50,10 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
             FuncMethodUtil.tryCatchMethod();
             //CoreHelper.catchLog("输出带参结果:" + FuncMethodUtil.tryCatchMethodReturnBoolean());
         });
+        //方法扩展
+        findViewById(R.id.btn4_layout_fuc).setOnClickListener(v -> {
+
+        });
     }
 
     /**
@@ -55,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
      */
     private void initData() {
         //耗时统计
-        findViewById(R.id.btn1_layout_data).setOnClickListener(v -> FuncMethodUtil.calculateTimeMethod());
+        findViewById(R.id.btn1_layout_data).setOnClickListener(v -> DataMethodUtil.calculateTimeMethod());
         //参数统计
         findViewById(R.id.btn2_layout_data).setOnClickListener(v -> {
             boolean bool = true;
@@ -74,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            FuncMethodUtil.testParams(bool, byte_v, char_v, short_v, int_v, long_v,
+            DataMethodUtil.testParams(bool, byte_v, char_v, short_v, int_v, long_v,
                     float_v, double_v, string_v, int_arr, testJsonObj);
         });
     }

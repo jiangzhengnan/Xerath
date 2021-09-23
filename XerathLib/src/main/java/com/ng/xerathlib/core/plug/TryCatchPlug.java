@@ -8,11 +8,11 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
-import javafx.util.Pair;
-
 import static org.objectweb.asm.Opcodes.ALOAD;
 import static org.objectweb.asm.Opcodes.ASTORE;
 import static org.objectweb.asm.Opcodes.INVOKESTATIC;
+
+import com.ng.xerathlib.utils.Pair;
 
 /**
  * 描述: 统计耗时
@@ -79,9 +79,9 @@ public class TryCatchPlug extends AnnotationPlug {
             mv.visitInsn(Opcodes.ATHROW);
         }
         // catch结束，方法返回默认值收工
-        Pair<Integer, Integer> defaultVo = ASMUtil.getDefaultByDesc(mMethodDesc);
-        int value = defaultVo.getKey();
-        int opcode = defaultVo.getValue();
+        Pair defaultVo = ASMUtil.getDefaultByDesc(mMethodDesc);
+        int value = defaultVo.key;
+        int opcode = defaultVo.value;
         if (value >= 0) {
             mv.visitInsn(value);
         }

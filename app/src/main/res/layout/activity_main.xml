@@ -35,6 +35,6 @@
         android:inputType="textMultiLine"
         android:scrollbars="vertical"
         android:textColor="@color/black"
-        android:textSize="11dp" />
+        android:textSize="10dp" />
 
 </LinearLayout>
