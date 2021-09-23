@@ -1,11 +1,15 @@
 package com.ng.xerath;
 
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.ng.xerath.func.FuncMethodUtil;
 import com.ng.xerath.func.ViewMethodUtil;
+import com.ng.xerathcore.CoreHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,7 +17,8 @@ import org.json.JSONObject;
 /**
  * @author pumpkin
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHelperListener {
+    private TextView mShowTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,27 +27,37 @@ public class MainActivity extends AppCompatActivity {
         initFunc();
         initView();
         initData();
+
+        CoreHelper.onCoreHelperListener = this;
+        mShowTv = findViewById(R.id.tv_show);
+        mShowTv.setText("初始化日志---");
+        mShowTv.setMovementMethod(ScrollingMovementMethod.getInstance());
     }
 
     /**
      * 功能
      */
     private void initFunc() {
-        //耗时统计
-        findViewById(R.id.btn1_layout_fuc).setOnClickListener(v -> FuncMethodUtil.calculateTimeMethod());
         //限频调用
-        findViewById(R.id.btn2_layout_fuc).setOnClickListener(v -> {
+        findViewById(R.id.btn1_layout_fuc).setOnClickListener(v -> {
             FuncMethodUtil.doubleClick();
-            //System.out.println("输出带参结果:" + FuncMethodUtil.doubleClickReturnBoolean());
+            //CoreHelper.catchLog("输出带参结果:" + FuncMethodUtil.doubleClickReturnBoolean());
         });
         //异常捕获
-        findViewById(R.id.btn3_layout_fuc).setOnClickListener(v -> {
+        findViewById(R.id.btn2_layout_fuc).setOnClickListener(v -> {
             FuncMethodUtil.tryCatchMethod();
-            //System.out.println("输出带参结果:" + FuncMethodUtil.tryCatchMethodReturnBoolean());
+            //CoreHelper.catchLog("输出带参结果:" + FuncMethodUtil.tryCatchMethodReturnBoolean());
         });
+    }
 
+    /**
+     * 数据
+     */
+    private void initData() {
+        //耗时统计
+        findViewById(R.id.btn1_layout_data).setOnClickListener(v -> FuncMethodUtil.calculateTimeMethod());
         //参数统计
-        findViewById(R.id.btn4_layout_fuc).setOnClickListener(v -> {
+        findViewById(R.id.btn2_layout_data).setOnClickListener(v -> {
             boolean bool = true;
             byte byte_v = 1;
             char char_v = 2;
@@ -64,17 +79,27 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void initData() {
+    /**
+     * 视图
+     */
+    private void initView() {
         //弹出toast
         findViewById(R.id.btn1_layout_view).setOnClickListener(v -> {
             ViewMethodUtil.popToast();
         });
     }
 
-    private void initView() {
-    }
-
-    public void testMethod() {
+    @Override
+    public void onCatchLog(@Nullable String s) {
+        if (s != null) {
+            mShowTv.append("\n");
+            mShowTv.append(s, 0, s.length());
+            int offset = mShowTv.getLineCount() * mShowTv.getLineHeight();
+            if (offset > mShowTv.getHeight()) {
+                mShowTv.scrollTo(0, offset - mShowTv.getHeight());
+            }
+            mShowTv.append("\n");
+        }
     }
 
 }

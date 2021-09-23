@@ -17,7 +17,7 @@ import java.util.List;
  * @author : jiangzhengnan.jzn@alibaba-inc.com
  * @creation : 2021/09/20
  * @description :
- * 打印入参和出参
+ * 收集入参和出参
  */
 public class CollectParamsPlug extends AnnotationPlug {
     //当前方法对应的参数列表
@@ -115,16 +115,16 @@ public class CollectParamsPlug extends AnnotationPlug {
         mv.visitVarInsn(Opcodes.LSTORE, index);
 
         mv.visitLdcInsn(mMethodName);   //parameter 2 string
-        mv.visitVarInsn(Opcodes.LLOAD, index); //parameter 3 long
+        //mv.visitVarInsn(Opcodes.LLOAD, index); //parameter 3 long
         //parameter 4
-        if(returnType != Type.VOID_TYPE || opcode == Opcodes.ATHROW) {
+        if (returnType != Type.VOID_TYPE || opcode == Opcodes.ATHROW) {
             int loadOpcode = OpcodesUtils.getLoadOpcodeFromType(returnType);
-            if(opcode == Opcodes.ATHROW) {
+            if (opcode == Opcodes.ATHROW) {
                 loadOpcode = Opcodes.ALOAD;
                 returnDesc = "Ljava/lang/Object;";
             }
             mv.visitVarInsn(loadOpcode, resultTempValIndex);
-            String formatDesc = String.format("(Ljava/lang/String;J%s)V", returnDesc);
+            String formatDesc = String.format("(Ljava/lang/String;%s)V", returnDesc);
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/utils/ResultPrinter", "print", formatDesc, false);
             mv.visitVarInsn(loadOpcode, resultTempValIndex);
         } else {

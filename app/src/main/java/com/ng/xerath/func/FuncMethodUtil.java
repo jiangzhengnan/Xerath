@@ -1,8 +1,8 @@
 package com.ng.xerath.func;
 
-import com.ng.xerath.utils.LogUtil;
-import com.ng.xerathcore.annotation.Xerath_CollectParams;
+import com.ng.xerathcore.CoreHelper;
 import com.ng.xerathcore.annotation.Xerath_CalculateTime;
+import com.ng.xerathcore.annotation.Xerath_CollectParams;
 import com.ng.xerathcore.annotation.Xerath_LimitCall;
 import com.ng.xerathcore.annotation.Xerath_TryCatch;
 
@@ -50,13 +50,13 @@ public class FuncMethodUtil {
      */
     @Xerath_CalculateTime
     public static void calculateTimeMethod() {
-        LogUtil.println("CalculateTimeMethod start ...");
+        CoreHelper.catchLog("CalculateTimeMethod start ...");
         try {
             Thread.sleep(100);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LogUtil.println("CalculateTimeMethod end ...");
+        CoreHelper.catchLog("CalculateTimeMethod end ...");
     }
 
     /**
@@ -81,7 +81,7 @@ public class FuncMethodUtil {
      */
     @Xerath_LimitCall(time = 8000L)
     public static void doubleClick() {
-        LogUtil.println("click");
+        CoreHelper.catchLog("click");
     }
 
     /**
@@ -89,7 +89,7 @@ public class FuncMethodUtil {
      */
     @Xerath_LimitCall(time = 1000L)
     public static boolean doubleClickReturnBoolean() {
-        LogUtil.println("click");
+        CoreHelper.catchLog("click");
         return false;
     }
 

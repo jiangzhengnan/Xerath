@@ -1,47 +1,49 @@
 package com.ng.xerathcore.utils;
 
+import com.ng.xerathcore.CoreHelper;
+
 import java.util.Arrays;
 
 public class ResultPrinter {
-    public static final String RETURN_PRINT_FORMAT = "出参统计 %s[%sms]=\"%s\"";
+    public static final String RETURN_PRINT_FORMAT = "出参统计 %s=\"%s\"";
 
-    public static void print(String methodName, long costedMilles, byte returnVal) {
-        LogUtil.print(String.format(RETURN_PRINT_FORMAT, methodName, costedMilles + "", returnVal + ""));
+    public static void print(String methodName, byte returnVal) {
+        CoreHelper.catchLog(String.format(RETURN_PRINT_FORMAT, methodName, returnVal + ""));
     }
 
-    public static void print(String methodName, long costedMilles, char returnVal) {
-        LogUtil.print(String.format(RETURN_PRINT_FORMAT, methodName, costedMilles + "", returnVal + ""));
+    public static void print(String methodName, char returnVal) {
+        CoreHelper.catchLog(String.format(RETURN_PRINT_FORMAT, methodName, returnVal + ""));
     }
 
-    public static void print(String methodName, long costedMilles, short returnVal) {
-        LogUtil.print(String.format(RETURN_PRINT_FORMAT, methodName, costedMilles + "", returnVal + ""));
+    public static void print(String methodName, short returnVal) {
+        CoreHelper.catchLog(String.format(RETURN_PRINT_FORMAT, methodName, returnVal + ""));
     }
 
-    public static void print(String methodName, long costedMilles, int returnVal) {
-        LogUtil.print(String.format(RETURN_PRINT_FORMAT, methodName, costedMilles + "", returnVal + ""));
+    public static void print(String methodName, int returnVal) {
+        CoreHelper.catchLog(String.format(RETURN_PRINT_FORMAT, methodName, returnVal + ""));
     }
 
-    public static void print(String methodName, long costedMilles, boolean returnVal) {
-        LogUtil.print(String.format(RETURN_PRINT_FORMAT, methodName, costedMilles + "", returnVal + ""));
+    public static void print(String methodName, boolean returnVal) {
+        CoreHelper.catchLog(String.format(RETURN_PRINT_FORMAT, methodName, returnVal + ""));
     }
 
-    public static void print(String methodName, long costedMilles, long returnVal) {
-        LogUtil.print(String.format(RETURN_PRINT_FORMAT, methodName, costedMilles + "", returnVal + ""));
+    public static void print(String methodName, long returnVal) {
+        CoreHelper.catchLog(String.format(RETURN_PRINT_FORMAT, methodName, returnVal + ""));
     }
 
-    public static void print(String methodName, long costedMilles, float returnVal) {
-        LogUtil.print(String.format(RETURN_PRINT_FORMAT, methodName, costedMilles + "", returnVal + ""));
+    public static void print(String methodName, float returnVal) {
+        CoreHelper.catchLog(String.format(RETURN_PRINT_FORMAT, methodName, returnVal + ""));
     }
 
-    public static void print(String methodName, long costedMilles, double returnVal) {
-        LogUtil.print(String.format(RETURN_PRINT_FORMAT, methodName, costedMilles + "", returnVal + ""));
+    public static void print(String methodName, double returnVal) {
+        CoreHelper.catchLog(String.format(RETURN_PRINT_FORMAT, methodName, returnVal + ""));
     }
 
-    public static void print(String methodName, long costedMilles, Object returnVal) {
+    public static void print(String methodName, Object returnVal) {
         if (returnVal != null && returnVal.getClass().isArray()) {
-            LogUtil.print(String.format(RETURN_PRINT_FORMAT, methodName, costedMilles + "", arrayToString(returnVal)));
+            CoreHelper.catchLog(String.format(RETURN_PRINT_FORMAT, methodName, arrayToString(returnVal)));
         } else {
-            LogUtil.print(String.format(RETURN_PRINT_FORMAT, methodName, costedMilles + "", returnVal));
+            CoreHelper.catchLog(String.format(RETURN_PRINT_FORMAT, methodName, returnVal));
         }
     }
 

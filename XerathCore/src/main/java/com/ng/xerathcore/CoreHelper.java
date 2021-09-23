@@ -2,6 +2,8 @@ package com.ng.xerathcore;
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.ng.xerathcore.utils.LogUtil;
 
 /**
@@ -12,7 +14,14 @@ import com.ng.xerathcore.utils.LogUtil;
  * TODO 存储数据
  */
 public class CoreHelper {
-    private final static String TAG = "CoreHelper";
+    private static final String TAG = "[ Xerath ] ";
+
+    @Nullable
+    public static CoreHelperListener onCoreHelperListener;
+
+    public interface CoreHelperListener {
+        void onCatchLog(@Nullable String s);
+    }
 
     /**
      * 抓取异常
@@ -21,15 +30,21 @@ public class CoreHelper {
         if (exception == null) {
             return;
         }
-        LogUtil.print(TAG + " 抓取到了异常: " + Log.getStackTraceString(exception));
+        String exceptionStr = Log.getStackTraceString(exception);
+        LogUtil.print(TAG + " 抓取到了异常: " + exceptionStr);
+        if (onCoreHelperListener != null) {
+            onCoreHelperListener.onCatchLog(exceptionStr);
+        }
     }
 
     /**
      * 抓取日志
      */
-    public static void catchLog(String s) {
+    public static void catchLog(@Nullable String s) {
         LogUtil.print(TAG + " 抓取到了日志: " + s);
+        if (onCoreHelperListener != null) {
+            onCoreHelperListener.onCatchLog(s);
+        }
     }
-
 
 }
