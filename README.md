@@ -7,11 +7,11 @@ Xerath 是一个通过 [自定义注解]+[ASM](https://asm.ow2.io/) + [Gradle Tr
 本项目为AOP思想在Android上的运用与实战，功能部分对标基于AspectJ的开源项目[AopArms](https://github.com/AICareless/AopArms)<br/>
 <img src="https://github.com/jiangzhengnan/Xerath/blob/master/app/src/main/res/raw/ic_bg.png" width="50%"/><br />
 
-### 1.引入方式
+### 引入方式
 待上传到Maven,目前可以clone项目然后主动依赖
 <br/>
 
-### 2.基本使用
+### 基本使用
 1.统计方法耗时<br/>
 在目标方法上增加@CalculateTime注解<br/>
 ```
@@ -74,8 +74,21 @@ Xerath 是一个通过 [自定义注解]+[ASM](https://asm.ow2.io/) + [Gradle Tr
     }
 ```
 
-### 3.功能列表(补充中)
+### 功能列表(补充中)
 <img src="https://github.com/jiangzhengnan/Xerath/blob/master/app/src/main/res/raw/ic_func.jpg" width="30%" /><br />
+
+### 参与贡献
+1.  Fork 本仓库
+2.  新建 Feat_xxx 分支
+3.  提交代码
+4.  新建 Pull Request
+
+## 鸣谢
+
+- [ByteX](https://github.com/bytedance/ByteX) 
+- [Hunter](https://github.com/Leaking/Hunter/blob/master)
+- [AopArms](https://github.com/AICareless/AopArms)
+
 
 ### License
 
