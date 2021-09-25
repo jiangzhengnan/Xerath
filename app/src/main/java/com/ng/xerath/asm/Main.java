@@ -3,6 +3,8 @@ package com.ng.xerath.asm;
 
 import com.ng.xerath.asm.visitor.TestClassVisitor;
 import com.ng.xerath.asm.visitor.TestPreLoadClassVisitor;
+import com.ng.xerath.func.chain.ChainD;
+import com.ng.xerathcore.CoreHelper;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
@@ -21,7 +23,7 @@ public class Main {
 
     public static void main(String[] args) {
         //testChild();
-        startHook();
+        //startHook();
     }
 
     //Child 的 class文件路径

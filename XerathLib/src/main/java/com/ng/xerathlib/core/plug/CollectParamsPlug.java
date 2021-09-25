@@ -14,7 +14,7 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
 import java.util.List;
 
 /**
- * @author : jiangzhengnan.jzn@alibaba-inc.com
+ * @author : jiangzhengnan.jzn
  * @creation : 2021/09/20
  * @description :
  * 收集入参和出参
@@ -36,7 +36,6 @@ public class CollectParamsPlug extends AnnotationPlug {
     public void onHookMethodStart(MethodVisitor mv) {
         //获取参数列表
         loadParams();
-
         int printUtilsVarIndex = mAdapter.newLocal(Type.getObjectType("com/ng/xerathcore/utils/ParameterPrinter"));
         mv.visitTypeInsn(Opcodes.NEW, "com/ng/xerathcore/utils/ParameterPrinter");
         mv.visitInsn(Opcodes.DUP);

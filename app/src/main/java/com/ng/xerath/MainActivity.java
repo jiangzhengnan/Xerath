@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.ng.xerath.func.DataMethodUtil;
 import com.ng.xerath.func.FuncMethodUtil;
 import com.ng.xerath.func.ViewMethodUtil;
+import com.ng.xerath.func.chain.ChainD;
 import com.ng.xerathcore.CoreHelper;
 
 import org.json.JSONException;
@@ -53,6 +54,12 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
         //方法扩展
         findViewById(R.id.btn4_layout_fuc).setOnClickListener(v -> {
 
+        });
+        //获取调用链
+        findViewById(R.id.btn5_layout_fuc).setOnClickListener(v -> {
+            CoreHelper.catchLog("调用链路测试开始");
+            ChainD chainD = new ChainD();
+            chainD.getCallChain();
         });
     }
 

@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.os.Looper;
 
 /**
- * @author : jiangzhengnan.jzn@alibaba-inc.com
+ * @author : jiangzhengnan.jzn
  * @creation : 2021/09/20
  * @description :
  */

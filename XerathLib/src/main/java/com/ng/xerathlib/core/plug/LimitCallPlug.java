@@ -12,7 +12,7 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
 
 
 /**
- * @author : jiangzhengnan.jzn@alibaba-inc.com
+ * @author : jiangzhengnan.jzn
  * @creation : 2021/09/19
  * @description :
  */

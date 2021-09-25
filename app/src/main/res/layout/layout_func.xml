@@ -56,7 +56,8 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="方法扩展"
+            android:text="方法扩展(ing)"
+            android:textAllCaps="false"
             android:textSize="11dp" />
 
         <Button
@@ -65,9 +66,9 @@
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:text=" "
-            android:textSize="11dp"
-            android:visibility="invisible" />
+            android:text="调用链路(ing)"
+            android:textAllCaps="false"
+            android:textSize="11dp" />
 
         <Button
             android:id="@+id/btn6_layout_fuc"

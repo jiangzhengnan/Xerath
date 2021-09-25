@@ -1,7 +1,7 @@
 package com.ng.xerath.asm;
 
 /**
- * @author : jiangzhengnan.jzn@alibaba-inc.com
+ * @author : jiangzhengnan.jzn
  * @creation : 2021/09/16
  * @description :
  */

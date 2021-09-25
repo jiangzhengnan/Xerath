@@ -5,9 +5,10 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 import com.ng.xerathcore.utils.LogUtil;
+import com.ng.xerathcore.utils.ReflectUtil;
 
 /**
- * @author : jiangzhengnan.jzn@alibaba-inc.com
+ * @author : jiangzhengnan.jzn
  * @creation : 2021/09/01
  * @description :
  * 数据收集入口
@@ -21,6 +22,15 @@ public class CoreHelper {
 
     public interface CoreHelperListener {
         void onCatchLog(@Nullable String s);
+    }
+
+    /**
+     * 抓取调用链路
+     */
+    public static void catchCallChain(@Nullable Object object) {
+        if (object != null) {
+            ReflectUtil.monitor(object);
+        }
     }
 
     /**

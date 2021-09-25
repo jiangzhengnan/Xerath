@@ -3,7 +3,7 @@ package com.ng.xerathcore.utils;
 import com.ng.xerathcore.constants.PlugConstant;
 
 /**
- * @author : jiangzhengnan.jzn@alibaba-inc.com
+ * @author : jiangzhengnan.jzn
  * @creation : 2021/09/19
  * @description :
  */
