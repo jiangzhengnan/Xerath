@@ -10,7 +10,6 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
  * @author : jiangzhengnan
  * @creation : 2021/08/25
  * @description :
- * 使用 AdviceAdapter 是 MethodVisitor 的子类，功能更全
  */
 public class TestAdviceAdapter extends LocalVariablesSorter implements Opcodes {
     //启动时间
@@ -33,50 +32,19 @@ public class TestAdviceAdapter extends LocalVariablesSorter implements Opcodes {
      */
     @Override
     public void visitLocalVariable(String name, String desc, String signature, Label start, Label end, int index) {
-        System.out.println("【visitLocalVariable】");
+        System.out.println("【visitLocalVariable】 name:" + name);
         super.visitLocalVariable(name, desc, signature, start, end, index);
     }
 
     @Override
-    public void visitCode() {
-//        System.out.println("【visitCode】");
-//        int printUtilsVarIndex = newLocal(Type.getObjectType("com.ng.xerath.utils/ParameterPrinter"));
-//        mv.visitTypeInsn(NEW, "com.ng.xerath.utils/ParameterPrinter");
-//        mv.visitInsn(DUP);
-//        mv.visitLdcInsn(className);
-//        mv.visitLdcInsn(methodName);
-//        mv.visitMethodInsn(INVOKESPECIAL, "com.ng.xerath.utils/ParameterPrinter", "<init>", "(Ljava/lang/String;Ljava/lang/String;)V", false);
-//        mv.visitVarInsn(ASTORE, printUtilsVarIndex);
-//        for (int i = 0; i < parameters.size(); i++) {
-//            Parameter parameter = parameters.get(i);
-//            String name = parameter.name;
-//            String desc = parameter.desc;
-//            int index = parameter.index;
-//            int opcode = Utils.getLoadOpcodeFromDesc(desc);
-//            String fullyDesc = String.format("(Ljava/lang/String;%s)Lcom.ng.xerath.utils/ParameterPrinter;", desc);
-//            visitPrint(printUtilsVarIndex, index, opcode, name, fullyDesc);
-//        }
-//        mv.visitVarInsn(ALOAD, printUtilsVarIndex);
-//        if (debugMethod) {
-//            mv.visitMethodInsn(INVOKEVIRTUAL, "com.ng.xerath.utils/ParameterPrinter", "print", "()V", false);
-//        } else if (debugMethodWithCustomLogger) {
-//            mv.visitMethodInsn(INVOKEVIRTUAL, "com.ng.xerath.utils/ParameterPrinter", "printWithCustomLogger", "()V", false);
-//        }
-//        //Timing
-//        timingStartVarIndex = newLocal(Type.LONG_TYPE);
-//        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
-//        mv.visitVarInsn(Opcodes.LSTORE, timingStartVarIndex);
+    public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+        //INVOKESTATIC = 184;
+        System.out.println("【visitMethodInsn】 opcode:" + opcode);
+        super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
     }
 
-    private void visitPrint(int varIndex, int localIndex, int opcode, String name, String desc) {
-        mv.visitVarInsn(ALOAD, varIndex);
-        mv.visitLdcInsn(name);
-        mv.visitVarInsn(opcode, localIndex);
-        mv.visitMethodInsn(INVOKEVIRTUAL,
-                "com.ng.xerath.utils/ParameterPrinter",
-                "append",
-                desc, false);
-        mv.visitInsn(POP);
+    @Override
+    public void visitCode() {
     }
 
     @Override
@@ -85,11 +53,9 @@ public class TestAdviceAdapter extends LocalVariablesSorter implements Opcodes {
         super.visitLabel(label);
     }
 
-
     @Override
     public void visitInsn(int opcode) {
         System.out.println("【visitInsn】");
-
         if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
         }
         super.visitInsn(opcode);

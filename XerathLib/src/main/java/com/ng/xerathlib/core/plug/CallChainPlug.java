@@ -2,6 +2,7 @@ package com.ng.xerathlib.core.plug;
 
 import com.ng.xerathlib.core.XerathHookHelper;
 import com.ng.xerathlib.core.plug.base.AnnotationPlug;
+import com.ng.xerathlib.utils.LogUtil;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -17,12 +18,20 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
 public class CallChainPlug extends AnnotationPlug {
 
     @Override
-    public void init(LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
-        super.init(adapter, owner, name, methodDesc);
+    public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
+        super.init(access, adapter, owner, name, methodDesc);
+        LogUtil.print("access:" + access);
+        LogUtil.print("owner:" + owner);
+        LogUtil.print("name:" + name);
+        LogUtil.print("methodDesc:" + methodDesc);
     }
 
     @Override
     public void onHookMethodStart(MethodVisitor mv) {
+        if (isStaticMethod()) {
+            //防止静态方法下造成的crash
+            return;
+        }
         Label label0 = new Label();
         mv.visitLabel(label0);
         mv.visitLineNumber(19, label0);

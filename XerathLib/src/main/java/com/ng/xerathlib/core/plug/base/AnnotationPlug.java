@@ -1,5 +1,6 @@
 package com.ng.xerathlib.core.plug.base;
 
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
 /**
@@ -10,17 +11,22 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
  */
 public abstract class AnnotationPlug implements IAnnotationPlug {
     // 方法返回值类型描述符
+    protected int mMethodAccess;
     protected String mMethodDesc;
     protected String mOwner;
     protected String mMethodName;
     protected LocalVariablesSorter mAdapter;
 
-
     @Override
-    public void init(LocalVariablesSorter adapter, String owner, String name,String methodDesc) {
+    public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
+        this.mMethodAccess = access;
         this.mAdapter = adapter;
         this.mOwner = owner;
         this.mMethodName = name;
         this.mMethodDesc = methodDesc;
+    }
+
+    protected boolean isStaticMethod() {
+        return ((Opcodes.ACC_STATIC & mMethodAccess) != 0);
     }
 }

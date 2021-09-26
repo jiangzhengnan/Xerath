@@ -13,7 +13,6 @@ import static org.objectweb.asm.Opcodes.ASM5;
 public class TestClassVisitor extends ClassVisitor {
     private String className;
 
-
     public TestClassVisitor(ClassVisitor visitor) {
         super(ASM5, visitor);
     }
@@ -28,7 +27,7 @@ public class TestClassVisitor extends ClassVisitor {
     @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions);
-        if (name.equals("testParams")) {
+        if (name.equals("test")) {
             return new TestAdviceAdapter(ASM5, access, descriptor, methodVisitor);
         }
         return methodVisitor;

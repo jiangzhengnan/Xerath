@@ -29,12 +29,12 @@ public class XerathPreLoadMethodAdapter extends MethodVisitor implements Opcodes
     private String mMethodKey;
     private String mMethodName;
 
-    public XerathPreLoadMethodAdapter(String name, String descriptor, MethodVisitor methodVisitor,
+    public XerathPreLoadMethodAdapter(int access, String name, String descriptor, MethodVisitor methodVisitor,
                                       String owner) {
         super(Opcodes.ASM5, methodVisitor);
         mMethodKey = name + descriptor;
         mMethodName = name;
-        XerathHookHelper.getInstance().init(owner, name, descriptor);
+        XerathHookHelper.getInstance().init(access, owner, name, descriptor);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class XerathPreLoadMethodAdapter extends MethodVisitor implements Opcodes
                 XerathHookHelper.getInstance().putMethodParams(mMethodKey, parameters);
                 LogUtil.printPre(" 参数列表:" + XerathHookHelper.getInstance().getMethodParamsMap().toString());
             }
-            LogUtil.printPre("结束("+mMethodName+")---");
+            LogUtil.printPre("结束(" + mMethodName + ")---");
         }
     }
 

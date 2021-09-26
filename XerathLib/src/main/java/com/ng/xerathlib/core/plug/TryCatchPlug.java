@@ -35,8 +35,8 @@ public class TryCatchPlug extends AnnotationPlug {
     private final Label returnLabel = new Label();
 
     @Override
-    public void init(LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
-        super.init(adapter, owner, name, methodDesc);
+    public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
+        super.init(access, adapter, owner, name, methodDesc);
         //增加自定义异常处理类
         exceptionHandleClass = "com/ng/xerathcore/CoreHelper";
         exceptionHandleMethod = "handleException";

@@ -13,8 +13,14 @@ public class ChainA {
     public ChainB child;
 
     @Xerath_CallChain
-    public void doSomeThing(){
+    public void doSomeThing() {
         //hook完整调用链路
+        //CoreHelper.catchCallChain(this);
+    }
+
+    @Xerath_CallChain
+    public static void doSomeThing2() {
+        //hook完整调用链路,static下，默认会不处理,防止crash
         //CoreHelper.catchCallChain(this);
     }
 }

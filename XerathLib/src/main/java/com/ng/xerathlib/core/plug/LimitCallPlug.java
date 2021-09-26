@@ -29,8 +29,8 @@ public class LimitCallPlug extends AnnotationPlug {
     private long clickTime = 0;
 
     @Override
-    public void init(LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
-        super.init(adapter, owner, name, methodDesc);
+    public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
+        super.init(access, adapter, owner, name, methodDesc);
     }
 
     @Override

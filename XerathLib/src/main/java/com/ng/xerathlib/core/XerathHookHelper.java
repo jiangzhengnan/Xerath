@@ -26,6 +26,8 @@ public class XerathHookHelper {
     private String mOwner;
     private String mMethodName;
     private String mMethodDesc;
+    //方法访问符号
+    private int mMethodAccess;
 
     // 注解附带的参数
     private Map<String, Object> mAnnotationParams;
@@ -51,14 +53,16 @@ public class XerathHookHelper {
     }
 
     //preLoad
-    public void init(String owner, String name, String methodDesc) {
+    public void init(int access,String owner, String name, String methodDesc) {
+        this.mMethodAccess = access;
         this.mMethodDesc = methodDesc;
         this.mOwner = owner;
         this.mMethodName = name;
     }
 
     //load
-    public void init(LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
+    public void init(int access,LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
+        this.mMethodAccess = access;
         this.mAdapter = adapter;
         this.mOwner = owner;
         this.mMethodName = name;
@@ -72,7 +76,7 @@ public class XerathHookHelper {
         mPlug = AnnotationPlugCreator.createPlug(annotationStr);
         if (mPlug != null) {
             //LogUtil.print("初始化plug:" + mMethodName + " " + mMethodDesc);
-            mPlug.init(mAdapter, mOwner, mMethodName, mMethodDesc);
+            mPlug.init(mMethodAccess,mAdapter, mOwner, mMethodName, mMethodDesc);
             return true;
         }
         return false;

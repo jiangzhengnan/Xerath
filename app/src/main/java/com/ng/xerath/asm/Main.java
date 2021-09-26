@@ -23,7 +23,8 @@ public class Main {
 
     public static void main(String[] args) {
         //testChild();
-        //startHook();
+        startHook();
+
     }
 
     //Child 的 class文件路径

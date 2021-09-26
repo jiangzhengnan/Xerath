@@ -5,6 +5,7 @@ import com.ng.xerathlib.utils.LogUtil;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
 import static org.objectweb.asm.Opcodes.ASM5;
@@ -34,7 +35,7 @@ class XerathMethodAdapter extends LocalVariablesSorter {
         super(ASM5, access, descriptor, methodVisitor);
         this.onChangedListener = onChangedListener;
         this.mMethodName = name;
-        XerathHookHelper.getInstance().init(this, owner, name, descriptor);
+        XerathHookHelper.getInstance().init(access,this, owner, name, descriptor);
     }
 
 
@@ -66,7 +67,7 @@ class XerathMethodAdapter extends LocalVariablesSorter {
     @Override
     public void visitInsn(int opcode) {
         if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
-            XerathHookHelper.getInstance().onHookMethodReturn(opcode,mv);
+            XerathHookHelper.getInstance().onHookMethodReturn(opcode, mv);
         }
         super.visitInsn(opcode);
     }

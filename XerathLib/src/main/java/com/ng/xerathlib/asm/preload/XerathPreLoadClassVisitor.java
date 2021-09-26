@@ -35,7 +35,7 @@ public class XerathPreLoadClassVisitor extends ClassVisitor {
         if (!isInterface && mv != null && !name.equals("<init>")) {
             //LogUtil.printPre("方法：" + name + " des:" + descriptor + " ");
             //将MethodVisitor交由 XerathPreLoadAdviceAdapter 代理
-            mv = new XerathPreLoadMethodAdapter(name, descriptor, mv, owner);
+            mv = new XerathPreLoadMethodAdapter(access,name, descriptor, mv, owner);
         }
         return mv;
 

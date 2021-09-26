@@ -25,12 +25,10 @@ public class CollectParamsPlug extends AnnotationPlug {
 
     private int timingStartVarIndex;
 
-
     @Override
-    public void init(LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
-        super.init(adapter, owner, name, methodDesc);
+    public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
+        super.init(access, adapter, owner, name, methodDesc);
     }
-
     //进行入参统计
     @Override
     public void onHookMethodStart(MethodVisitor mv) {

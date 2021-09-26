@@ -39,6 +39,7 @@ public class FuncMethodUtil {
         chainD.getCallChain();
         //hook
         chainA.doSomeThing();
+        chainA.doSomeThing2();
     }
 
     /**

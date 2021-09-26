@@ -15,9 +15,10 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
  */
 public class PopToastPlug extends AnnotationPlug {
 
+
     @Override
-    public void init(LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
-        super.init(adapter, owner, name, methodDesc);
+    public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
+        
     }
 
     @Override
