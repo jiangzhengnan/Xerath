@@ -89,14 +89,14 @@ public class ReflectUtil {
                         childNode.setFieldName(field.getName());
                         node.addChild(childNode);
                         String geneticInfo = childNode.getGeneticInfo();
-                        CoreHelper.catchLog("JSONObject genetic info:" + geneticInfo);
                         Object jsonObject = field.get(inputObject);
                         if (jsonObject instanceof JSONObject) {
                             CoreHelper.catchLog("JSONObject content:" + ((JSONObject) jsonObject).toString());
                         } else if (jsonObject instanceof JSONArray) {
                             CoreHelper.catchLog("JSONArray content:" + ((JSONArray) jsonObject).toString());
                         }
-                        CoreHelper.catchLog("---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                        CoreHelper.catchLog("完整链路:" + geneticInfo);
+                        CoreHelper.catchLog("-------------------------------------------JSON--------------------------------------------------------------------------------------------------------------------------------------------");
                     }
                 } catch (IllegalAccessException e) {
                     e.printStackTrace();
@@ -121,7 +121,9 @@ public class ReflectUtil {
                     //    CoreHelper.catchLog( "JSONObject genetic info:" + geneticInfo);
                     //    CoreHelper.catchLog("打印 " + clazz.getSimpleName() + " 内的属性:" + field.getName() + ":" + simpleFileName + " " + field.get(inputObject));
                     //}
+                    String geneticInfo = node.getGeneticInfo();
                     CoreHelper.catchLog("打印 " + clazz.getSimpleName() + " 内的属性:" + field.getName() + ":" + simpleFileName + " " + field.get(inputObject));
+                    CoreHelper.catchLog( "完整链路:" + geneticInfo);
                 } catch (IllegalAccessException e) {
                     //CoreHelper.catchLog("报错:" + e.getMessage());
                     e.printStackTrace();

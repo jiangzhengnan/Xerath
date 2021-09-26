@@ -15,7 +15,6 @@ import com.ng.xerathcore.utils.ReflectUtil;
  * TODO 存储数据
  */
 public class CoreHelper {
-    private static final String TAG = "[ Xerath ] ";
 
     @Nullable
     public static CoreHelperListener onCoreHelperListener;
@@ -41,7 +40,7 @@ public class CoreHelper {
             return;
         }
         String exceptionStr = Log.getStackTraceString(exception);
-        LogUtil.print(TAG + " 抓取到了异常: " + exceptionStr);
+        LogUtil.print("抓取到了异常: " + exceptionStr);
         if (onCoreHelperListener != null) {
             onCoreHelperListener.onCatchLog(exceptionStr);
         }
@@ -51,7 +50,7 @@ public class CoreHelper {
      * 抓取日志
      */
     public static void catchLog(@Nullable String s) {
-        LogUtil.print(TAG + " 抓取到了日志: " + s);
+        LogUtil.print("抓取到了日志: " + s);
         if (onCoreHelperListener != null) {
             onCoreHelperListener.onCatchLog(s);
         }

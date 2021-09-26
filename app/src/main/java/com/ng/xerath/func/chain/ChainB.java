@@ -7,4 +7,6 @@ package com.ng.xerath.func.chain;
  */
 public class ChainB extends ChainA{
     public String b_params = "b_params";
+
+    public ChainC child;
 }

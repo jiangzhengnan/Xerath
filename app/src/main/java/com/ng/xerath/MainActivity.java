@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.ng.xerath.func.DataMethodUtil;
 import com.ng.xerath.func.FuncMethodUtil;
 import com.ng.xerath.func.ViewMethodUtil;
+import com.ng.xerath.func.chain.ChainA;
+import com.ng.xerath.func.chain.ChainB;
+import com.ng.xerath.func.chain.ChainC;
 import com.ng.xerath.func.chain.ChainD;
 import com.ng.xerathcore.CoreHelper;
 
@@ -43,11 +46,13 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
     private void initFunc() {
         //限频调用
         findViewById(R.id.btn1_layout_fuc).setOnClickListener(v -> {
+            pushNewLine();
             FuncMethodUtil.doubleClick();
             //CoreHelper.catchLog("输出带参结果:" + FuncMethodUtil.doubleClickReturnBoolean());
         });
         //异常捕获
         findViewById(R.id.btn2_layout_fuc).setOnClickListener(v -> {
+            pushNewLine();
             FuncMethodUtil.tryCatchMethod();
             //CoreHelper.catchLog("输出带参结果:" + FuncMethodUtil.tryCatchMethodReturnBoolean());
         });
@@ -57,9 +62,8 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
         });
         //获取调用链
         findViewById(R.id.btn5_layout_fuc).setOnClickListener(v -> {
-            CoreHelper.catchLog("调用链路测试开始");
-            ChainD chainD = new ChainD();
-            chainD.getCallChain();
+            pushNewLine();
+            FuncMethodUtil.testCallChain();
         });
     }
 
@@ -68,9 +72,13 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
      */
     private void initData() {
         //耗时统计
-        findViewById(R.id.btn1_layout_data).setOnClickListener(v -> DataMethodUtil.calculateTimeMethod());
+        findViewById(R.id.btn1_layout_data).setOnClickListener(v -> {
+            pushNewLine();
+            DataMethodUtil.calculateTimeMethod();
+        });
         //参数统计
         findViewById(R.id.btn2_layout_data).setOnClickListener(v -> {
+            pushNewLine();
             boolean bool = true;
             byte byte_v = 1;
             char char_v = 2;
@@ -98,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
     private void initView() {
         //弹出toast
         findViewById(R.id.btn1_layout_view).setOnClickListener(v -> {
+            pushNewLine();
             ViewMethodUtil.popToast();
         });
     }
@@ -111,8 +120,11 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
             if (offset > mShowTv.getHeight()) {
                 mShowTv.scrollTo(0, offset - mShowTv.getHeight());
             }
-            mShowTv.append("\n");
         }
+    }
+
+    private void pushNewLine() {
+        onCatchLog("\n");
     }
 
 }

@@ -1,6 +1,7 @@
 package com.ng.xerathlib.core;
 
 import com.ng.xerathlib.core.plug.CalculateTimePlug;
+import com.ng.xerathlib.core.plug.CallChainPlug;
 import com.ng.xerathlib.core.plug.CollectParamsPlug;
 import com.ng.xerathlib.core.plug.LimitCallPlug;
 import com.ng.xerathlib.core.plug.PopToastPlug;
@@ -9,8 +10,7 @@ import com.ng.xerathlib.core.plug.base.IAnnotationPlug;
 
 /**
  * 描述:
- * plug构建器
- *
+ * 注解 plug构建器
  * @author Jzn
  * @date 2021/9/14
  */
@@ -27,6 +27,8 @@ public class AnnotationPlugCreator {
     public final static String POP_TOAST = ANNOTATION_PATH + "Xerath_PopToast;";
 
     public final static String CALCULATE_PARAMS = ANNOTATION_PATH + "Xerath_CollectParams;";
+
+    public final static String CALL_CHAIN = ANNOTATION_PATH + "Xerath_CallChain;";
 
     public static IAnnotationPlug createPlug(String annotationStr) {
         IAnnotationPlug resultPlug = null;
@@ -47,11 +49,14 @@ public class AnnotationPlugCreator {
             case AnnotationPlugCreator.CALCULATE_PARAMS:
                 resultPlug = new CollectParamsPlug();
                 break;
+            case AnnotationPlugCreator.CALL_CHAIN:
+                resultPlug = new CallChainPlug();
+                break;
             default:
                 break;
         }
         if (resultPlug != null) {
-            //LogUtil.print("     注解:" + annotationStr + " 需要hook");
+            //LogUtil.print(" 注解:" + annotationStr + " 需要hook");
         }
         return resultPlug;
     }

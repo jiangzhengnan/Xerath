@@ -7,4 +7,6 @@ package com.ng.xerath.func.chain;
  */
 public class ChainC {
     public String c_params = "c_params";
+
+    public ChainD child;
 }

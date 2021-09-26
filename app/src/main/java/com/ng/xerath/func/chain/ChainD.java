@@ -11,20 +11,19 @@ import org.json.JSONObject;
  * @description :
  */
 public class ChainD extends ChainB {
+    public JSONObject chainDJson;
 
     /**
      * 获取指定返回值或者指定参数的调用链路
      * 不能用static修饰!
      */
     public JSONObject getCallChain() {
-        JSONObject testJson = new JSONObject();
+        chainDJson = new JSONObject();
         try {
-            testJson.put("ChainD", "ChainD");
+            chainDJson.put("ChainD_key", "ChainD_value");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        CoreHelper.catchCallChain(this);
-        return testJson;
+        return chainDJson;
     }
 }
