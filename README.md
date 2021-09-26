@@ -40,28 +40,10 @@ Xerath 是一个通过 [自定义注解]+[ASM](https://asm.ow2.io/) + [Gradle Tr
 在目标方法上增加@Xerath_CollectParams<br/>
 ```
     @Xerath_CollectParams
-    public static String testParams(boolean boolParam,
-                                    byte byteParam,
-                                    char charParam,
-                                    short shortParam,
-                                    int intParam,
-                                    long longParam,
-                                    float floatParam,
-                                    double doubleParam,
-                                    String stringParam,
-                                    int[] intArrParam,
-                                    JSONObject json) {
-        String result = boolParam + " " +
-                byteParam + " " +
-                charParam + " " +
-                shortParam + " " +
-                intParam + " " +
-                longParam + " " +
-                floatParam + " " +
-                doubleParam + " " +
-                stringParam + " " +
-                intArrParam.length +
-                json.toString();
+    public static String testParams(boolean boolParam, byte byteParam, char charParam, short shortParam, int intParam, long longParam,
+                                    float floatParam, double doubleParam, String stringParam, int[] intArrParam, JSONObject json) {
+        String result = boolParam + " " + byteParam + " " + charParam + " " + shortParam + " " + intParam + " " +
+                longParam + " " + floatParam + " " + doubleParam + " " + stringParam + " " + intArrParam.length + json.toString();
         return result;
     }
 ```
