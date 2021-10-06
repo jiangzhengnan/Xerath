@@ -1,12 +1,18 @@
 package com.ng.xerathlib.asm.load;
 
+import com.ng.xerathlib.asm.preload.Parameter;
 import com.ng.xerathlib.core.XerathHookHelper;
 import com.ng.xerathlib.utils.LogUtil;
+import com.ng.xerathlib.utils.OpcodesUtils;
 
 import org.objectweb.asm.AnnotationVisitor;
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.LocalVariablesSorter;
+
+import java.util.List;
 
 import static org.objectweb.asm.Opcodes.ASM5;
 import static org.objectweb.asm.Opcodes.ATHROW;
@@ -22,6 +28,7 @@ class XerathMethodAdapter extends LocalVariablesSorter {
     private boolean isAnnotationed;
     private OnChangedListener onChangedListener;
     private String mMethodName;
+    private String mOwner;
 
     public interface OnChangedListener {
         /**
@@ -30,12 +37,15 @@ class XerathMethodAdapter extends LocalVariablesSorter {
         void onChanged();
     }
 
+
     public XerathMethodAdapter(int access, String name, String descriptor, MethodVisitor methodVisitor,
                                String owner, OnChangedListener onChangedListener) {
         super(ASM5, access, descriptor, methodVisitor);
         this.onChangedListener = onChangedListener;
         this.mMethodName = name;
-        XerathHookHelper.getInstance().init(access,this, owner, name, descriptor);
+        this.mOwner = owner;
+        XerathHookHelper.getInstance().init(access, this, owner, name, descriptor);
+
     }
 
 
@@ -51,7 +61,9 @@ class XerathMethodAdapter extends LocalVariablesSorter {
     @Override
     public void visitFieldInsn(int opcode, String owner, String name, String descriptor) {
         super.visitFieldInsn(opcode, owner, name, descriptor);
+
     }
+
 
     @Override
     public void visitIntInsn(int opcode, int operand) {
@@ -100,10 +112,33 @@ class XerathMethodAdapter extends LocalVariablesSorter {
     public void visitMaxs(int maxStack, int maxLocals) {
         XerathHookHelper.getInstance().onHookMethodEnd(mv);
         super.visitMaxs(maxStack, maxLocals);
-
         if (isAnnotationed) {
             LogUtil.print("正式处理结束(" + mMethodName + ")---");
         }
+    }
+
+    @Override
+    public void visitLineNumber(int line, Label start) {
+        super.visitLineNumber(line, start);
+    }
+
+
+    @Override
+    public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+        ////LogUtil.print("全局方法替换: owner:" + owner + " name:" + name + " desc:" + descriptor);
+        ////实现全局方法替换
+        //if ("org/json/JSONObject".equals(owner)) {
+        //    if ("put".equals(name)) {
+        //        if ("(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;".equals(descriptor)) {
+        //            //LogUtil.print("全局方法替换 in");
+        //            super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
+        //            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/utils/JsonPrinter", "print", "(Ljava/lang/String;Ljava/lang/Object;)V", false);
+        //            onChangedListener.onChanged();
+        //            return;
+        //        }
+        //    }
+        //}
+        super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
     }
 
     @Override

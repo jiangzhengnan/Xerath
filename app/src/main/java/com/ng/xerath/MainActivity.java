@@ -2,6 +2,7 @@ package com.ng.xerath;
 
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -56,9 +57,35 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
             FuncMethodUtil.tryCatchMethod();
             //CoreHelper.catchLog("输出带参结果:" + FuncMethodUtil.tryCatchMethodReturnBoolean());
         });
-        //方法扩展
-        findViewById(R.id.btn4_layout_fuc).setOnClickListener(v -> {
+        //全局方法扩展，修改方法内部结构
+        findViewById(R.id.btn3_layout_fuc).setOnClickListener(v -> {
+            pushNewLine();
+            JSONObject testJson = new JSONObject();
+            try {
+                testJson.put("name", "jzn");
+                testJson.put("age", "26");
+                testJson.put("height", "178");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            String result = testJson.toString();
+            onCatchLog(result);
+        });
 
+        //全局方法替换,替换诸如log之类的
+        findViewById(R.id.btn4_layout_fuc).setOnClickListener(v -> {
+            pushNewLine();
+            //需要打开XerathMethodAdapter 中visitMethodInsn注释并重新运行
+            JSONObject testJson = new JSONObject();
+            try {
+                testJson.put("name", "jzn");
+                testJson.put("age", "26");
+                testJson.put("height", "178");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            String result = testJson.toString();
+            onCatchLog(result);
         });
         //获取调用链
         findViewById(R.id.btn5_layout_fuc).setOnClickListener(v -> {
@@ -98,6 +125,12 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
             DataMethodUtil.testParams(bool, byte_v, char_v, short_v, int_v, long_v,
                     float_v, double_v, string_v, int_arr, testJsonObj);
         });
+        //成员变量抓取
+        findViewById(R.id.btn3_layout_data).setOnClickListener(v -> {
+            pushNewLine();
+
+        });
+
     }
 
     /**

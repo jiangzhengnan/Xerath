@@ -49,11 +49,17 @@ public class CoreHelper {
     /**
      * 抓取日志
      */
-    public static void catchLog(@Nullable String s) {
+    public static void catchLog(String s) {
         LogUtil.print("抓取到了日志: " + s);
         if (onCoreHelperListener != null) {
             onCoreHelperListener.onCatchLog(s);
         }
     }
 
+    public static void catchTest() {
+        LogUtil.print("catchTest");
+        if (onCoreHelperListener != null) {
+            onCoreHelperListener.onCatchLog("catchTest");
+        }
+    }
 }

@@ -18,10 +18,16 @@ class XerathTransform extends Transform {
     Set<QualifiedContent.ContentType> getInputTypes() {
         return TransformManager.CONTENT_CLASS
     }
+    private static final Set<QualifiedContent.Scope> SCOPES = new HashSet<>();
+    static {
+        SCOPES.add(QualifiedContent.Scope.PROJECT)
+        SCOPES.add(QualifiedContent.Scope.SUB_PROJECTS)
+        SCOPES.add(QualifiedContent.Scope.EXTERNAL_LIBRARIES)
+    }
 
     @Override
     Set<? super QualifiedContent.Scope> getScopes() {
-        return TransformManager.SCOPE_FULL_PROJECT
+        return SCOPES
     }
 
     @Override

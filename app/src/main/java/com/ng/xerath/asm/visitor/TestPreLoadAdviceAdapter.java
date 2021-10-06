@@ -1,6 +1,7 @@
 package com.ng.xerath.asm.visitor;
 
 import com.ng.xerath.asm.Parameter;
+import com.ng.xerathcore.utils.LogUtil;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -87,5 +88,4 @@ public class TestPreLoadAdviceAdapter extends MethodVisitor implements Opcodes {
     private void print(String s) {
         System.out.println(TAG + s);
     }
-
 }

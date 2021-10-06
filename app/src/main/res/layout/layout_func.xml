@@ -22,7 +22,7 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:text="限频调用"
-            android:textSize="11dp" />
+            android:textSize="9dp" />
 
         <Button
             android:id="@+id/btn2_layout_fuc"
@@ -31,7 +31,7 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text="异常捕获"
-            android:textSize="11dp" />
+            android:textSize="9dp" />
 
         <Button
             android:id="@+id/btn3_layout_fuc"
@@ -39,9 +39,9 @@
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
+            android:text="方法扩展"
             android:enabled="false"
-            android:text="方法移除"
-            android:textSize="11dp" />
+            android:textSize="9dp" />
 
     </LinearLayout>
 
@@ -56,9 +56,9 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="方法扩展(ing)"
+            android:text="方法替换"
             android:textAllCaps="false"
-            android:textSize="11dp" />
+            android:textSize="9dp" />
 
         <Button
             android:id="@+id/btn5_layout_fuc"
@@ -68,7 +68,7 @@
             android:layout_weight="1"
             android:text="调用链路"
             android:textAllCaps="false"
-            android:textSize="11dp" />
+            android:textSize="9dp" />
 
         <Button
             android:id="@+id/btn6_layout_fuc"
@@ -77,7 +77,7 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:enabled="false"
-            android:text=" "
+            android:text=""
             android:visibility="invisible" />
 
 

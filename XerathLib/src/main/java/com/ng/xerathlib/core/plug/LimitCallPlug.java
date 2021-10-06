@@ -42,7 +42,6 @@ public class LimitCallPlug extends AnnotationPlug {
         mv.visitLabel(judgeLabel);
         mv.visitLineNumber(0, judgeLabel);
 
-
         mv.visitLdcInsn(clickTime);
 
         mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/utils/CoreUtils",

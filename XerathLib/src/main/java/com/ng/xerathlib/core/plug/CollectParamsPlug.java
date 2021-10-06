@@ -23,7 +23,6 @@ public class CollectParamsPlug extends AnnotationPlug {
     //当前方法对应的参数列表
     private List<Parameter> mParameters;
 
-    private int timingStartVarIndex;
 
     @Override
     public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
@@ -53,11 +52,6 @@ public class CollectParamsPlug extends AnnotationPlug {
         mv.visitVarInsn(Opcodes.ALOAD, printUtilsVarIndex);
         mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/ng/xerathcore/utils/ParameterPrinter", "print", "()V", false);
 
-
-        //Timing
-        timingStartVarIndex = mAdapter.newLocal(Type.LONG_TYPE);
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
-        mv.visitVarInsn(Opcodes.LSTORE, timingStartVarIndex);
     }
 
     //访问打印参数方法
@@ -104,15 +98,7 @@ public class CollectParamsPlug extends AnnotationPlug {
             mv.visitVarInsn(storeOpcocde, resultTempValIndex);
         }
 
-        //parameter1 parameter2
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
-        mv.visitVarInsn(Opcodes.LLOAD, timingStartVarIndex);
-        mv.visitInsn(Opcodes.LSUB);
-        int index = mAdapter.newLocal(Type.LONG_TYPE);
-        mv.visitVarInsn(Opcodes.LSTORE, index);
-
-        mv.visitLdcInsn(mMethodName);   //parameter 2 string
-        //mv.visitVarInsn(Opcodes.LLOAD, index); //parameter 3 long
+        mv.visitLdcInsn(mMethodName);
         //parameter 4
         if (returnType != Type.VOID_TYPE || opcode == Opcodes.ATHROW) {
             int loadOpcode = OpcodesUtils.getLoadOpcodeFromType(returnType);

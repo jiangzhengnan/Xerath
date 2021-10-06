@@ -25,7 +25,7 @@
             android:enabled="true"
             android:text="弹出Toast"
             android:textAllCaps="false"
-            android:textSize="11dp" />
+            android:textSize="9dp" />
 
         <Button
             android:id="@+id/btn2_layout_view"
@@ -35,7 +35,7 @@
             android:layout_weight="1"
             android:enabled="false"
             android:text="弹出通知栏"
-            android:textSize="11dp" />
+            android:textSize="9dp" />
 
         <Button
             android:id="@+id/btn3_layout_view"
@@ -45,6 +45,6 @@
             android:layout_weight="1"
             android:enabled="false"
             android:text="弹出对话框"
-            android:textSize="11dp" />
+            android:textSize="9dp" />
     </LinearLayout>
 </merge>

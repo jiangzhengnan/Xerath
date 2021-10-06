@@ -1,5 +1,7 @@
 package com.ng.xerath.asm.visitor;
 
+import com.ng.xerathcore.utils.LogUtil;
+
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -37,13 +39,6 @@ public class TestAdviceAdapter extends LocalVariablesSorter implements Opcodes {
     }
 
     @Override
-    public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
-        //INVOKESTATIC = 184;
-        System.out.println("【visitMethodInsn】 opcode:" + opcode);
-        super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
-    }
-
-    @Override
     public void visitCode() {
     }
 
@@ -67,5 +62,27 @@ public class TestAdviceAdapter extends LocalVariablesSorter implements Opcodes {
         super.visitMaxs(maxStack, maxLocals);
     }
 
+
+    @Override
+    public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+        //LogUtil.print("全局方法扩展 0: owner:" + owner + " name:" + name + " desc:" + descriptor);
+        System.out.println("【visitMethodInsn】 owner:" + owner + " name:" + name + " desc:" + descriptor);
+        //全局方法扩展
+        if ("org/json/JSONObject".equals(owner)) {
+            //String linenumberConst = lineNumber + "";
+            if ("put".equals(name)) {
+                if ("(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;".equals(descriptor)) {
+                    LogUtil.print("全局方法扩展 33~");
+                    //mv.visitLdcInsn(linenumberConst);
+                    //mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/utils/JsonPrinter", "print", "(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/String;)V", false);
+
+
+                    mv.visitLdcInsn("【异常捕获】开始");
+                    mv.visitMethodInsn(INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchLog", "(Ljava/lang/String;)V", false);
+                }
+            }
+        }
+        super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
+    }
 
 }
