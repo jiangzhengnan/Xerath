@@ -7,6 +7,7 @@ import com.ng.xerathlib.utils.LogUtil;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,11 @@ public class XerathHookHelper {
     private Map<String, Object> mAnnotationParams;
     // 方法参数map
     private Map<String, List<Parameter>> mMethodParametersMap;
+
+    //静态成员变量
+    private List<String> mStaticFiledList = new ArrayList<>();
+    //成员变量
+    private List<String> mFiledList = new ArrayList<>();
 
     private static XerathHookHelper mInstance;
 
@@ -133,7 +139,7 @@ public class XerathHookHelper {
     }
 
     // 清空数据
-    public void reset() {
+    public void resetOnMethodEnd() {
         mPlug = null;
         //清空注解附带参数
         mAnnotationParams.clear();
@@ -141,4 +147,16 @@ public class XerathHookHelper {
         mMethodParametersMap.clear();
     }
 
+    public void resetOnClass(){
+        mStaticFiledList.clear();
+        mFiledList.clear();
+    }
+
+    public List<String> getStaticFiledList() {
+        return mStaticFiledList;
+    }
+
+    public List<String> getFiledList() {
+        return mFiledList;
+    }
 }

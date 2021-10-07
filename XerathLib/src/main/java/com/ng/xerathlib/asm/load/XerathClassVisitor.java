@@ -1,9 +1,16 @@
 package com.ng.xerathlib.asm.load;
 
+import com.ng.xerathlib.core.XerathHookHelper;
+import com.ng.xerathlib.utils.LogUtil;
+
 import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 
+import java.util.ArrayList;
+
 import static org.objectweb.asm.Opcodes.ACC_INTERFACE;
+import static org.objectweb.asm.Opcodes.ACC_STATIC;
 import static org.objectweb.asm.Opcodes.ASM5;
 
 /**
@@ -29,6 +36,24 @@ public class XerathClassVisitor extends ClassVisitor {
         cv.visit(version, access, name, signature, superName, interfaces);
         owner = name;
         isInterface = (access & ACC_INTERFACE) != 0;
+
+        XerathHookHelper.getInstance().resetOnClass();
+    }
+
+    @Override
+    public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
+        ////成员变量抓取
+        //if ("Lorg/json/JSONObject;".equals(descriptor)) {
+        //    LogUtil.print("抓取 成员变量: owner:" + owner + " name:" + name + " desc:" + descriptor + " access:" + access
+        //            + " 是否是静态:" + ((access & ACC_STATIC) != 0));
+        //    String temp = owner + " " + name + " " + descriptor;
+        //    if ((access & ACC_STATIC) != 0) {
+        //        XerathHookHelper.getInstance().getStaticFiledList().add(temp);
+        //    } else {
+        //        XerathHookHelper.getInstance().getFiledList().add(temp);
+        //    }
+        //}
+        return super.visitField(access, name, descriptor, signature, value);
     }
 
     @Override

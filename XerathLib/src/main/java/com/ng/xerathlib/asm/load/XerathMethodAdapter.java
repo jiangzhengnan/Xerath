@@ -12,7 +12,10 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.objectweb.asm.Opcodes.ASM5;
 import static org.objectweb.asm.Opcodes.ATHROW;
@@ -29,6 +32,7 @@ class XerathMethodAdapter extends LocalVariablesSorter {
     private OnChangedListener onChangedListener;
     private String mMethodName;
     private String mOwner;
+
 
     public interface OnChangedListener {
         /**
@@ -61,9 +65,7 @@ class XerathMethodAdapter extends LocalVariablesSorter {
     @Override
     public void visitFieldInsn(int opcode, String owner, String name, String descriptor) {
         super.visitFieldInsn(opcode, owner, name, descriptor);
-
     }
-
 
     @Override
     public void visitIntInsn(int opcode, int operand) {
@@ -80,6 +82,23 @@ class XerathMethodAdapter extends LocalVariablesSorter {
     public void visitInsn(int opcode) {
         if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
             XerathHookHelper.getInstance().onHookMethodReturn(opcode, mv);
+
+            if (XerathHookHelper.getInstance().getFiledList().size() > 0 || XerathHookHelper.getInstance().getStaticFiledList().size() > 0) {
+                // test 抓取成员变量 json
+                for (int i = 0; i < XerathHookHelper.getInstance().getFiledList().size(); i++) {
+                    String[] values = XerathHookHelper.getInstance().getFiledList().get(i).split(" ");
+                    mv.visitVarInsn(Opcodes.ALOAD, 0);
+                    mv.visitFieldInsn(Opcodes.GETFIELD, values[0], values[1], values[2]);
+                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchJsonFiled", "(Lorg/json/JSONObject;)V", false);
+                }
+                for (int i = 0; i < XerathHookHelper.getInstance().getStaticFiledList().size(); i++) {
+                    String[] values = XerathHookHelper.getInstance().getStaticFiledList().get(i).split(" ");
+                    mv.visitVarInsn(Opcodes.ALOAD, 0);
+                    mv.visitFieldInsn(Opcodes.GETSTATIC, values[0], values[1], values[2]);
+                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchJsonFiled", "(Lorg/json/JSONObject;)V", false);
+                }
+                onChangedListener.onChanged();
+            }
         }
         super.visitInsn(opcode);
     }
@@ -125,8 +144,7 @@ class XerathMethodAdapter extends LocalVariablesSorter {
 
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
-        ////LogUtil.print("全局方法替换: owner:" + owner + " name:" + name + " desc:" + descriptor);
-        ////实现全局方法替换
+        //实现全局方法替换
         //if ("org/json/JSONObject".equals(owner)) {
         //    if ("put".equals(name)) {
         //        if ("(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;".equals(descriptor)) {
@@ -144,6 +162,6 @@ class XerathMethodAdapter extends LocalVariablesSorter {
     @Override
     public void visitEnd() {
         super.visitEnd();
-        XerathHookHelper.getInstance().reset();
+        XerathHookHelper.getInstance().resetOnMethodEnd();
     }
 }

@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import com.ng.xerathcore.utils.LogUtil;
 import com.ng.xerathcore.utils.ReflectUtil;
 
+import org.json.JSONObject;
+
 /**
  * @author : jiangzhengnan.jzn
  * @creation : 2021/09/01
@@ -60,6 +62,14 @@ public class CoreHelper {
         LogUtil.print("catchTest");
         if (onCoreHelperListener != null) {
             onCoreHelperListener.onCatchLog("catchTest");
+        }
+    }
+
+    public static void catchJsonFiled(JSONObject jsonObject) {
+        if (jsonObject!=null) {
+            if (onCoreHelperListener != null) {
+                onCoreHelperListener.onCatchLog("抓到了json:" + jsonObject);
+            }
         }
     }
 }

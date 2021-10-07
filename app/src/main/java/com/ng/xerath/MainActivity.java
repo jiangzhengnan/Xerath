@@ -2,8 +2,6 @@ package com.ng.xerath;
 
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -12,10 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.ng.xerath.func.DataMethodUtil;
 import com.ng.xerath.func.FuncMethodUtil;
 import com.ng.xerath.func.ViewMethodUtil;
-import com.ng.xerath.func.chain.ChainA;
-import com.ng.xerath.func.chain.ChainB;
-import com.ng.xerath.func.chain.ChainC;
-import com.ng.xerath.func.chain.ChainD;
+import com.ng.xerath.func.member.TestMember1;
 import com.ng.xerathcore.CoreHelper;
 
 import org.json.JSONException;
@@ -127,8 +122,11 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
         });
         //成员变量抓取
         findViewById(R.id.btn3_layout_data).setOnClickListener(v -> {
+            //需要打开注释 //成员变量抓取
             pushNewLine();
-
+            TestMember1 testMember1 = new TestMember1();
+            testMember1.test();
+            //onCatchLog(testMember1.json1.toString());
         });
 
     }
