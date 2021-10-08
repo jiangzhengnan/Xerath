@@ -70,7 +70,8 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
         //全局方法替换,替换诸如log之类的
         findViewById(R.id.btn4_layout_fuc).setOnClickListener(v -> {
             pushNewLine();
-            //需要打开XerathMethodAdapter 中visitMethodInsn注释并重新运行
+            //因为和全局变量抓取冲突,所以暂时注释了
+            //需要打开XerathMethodAdapter 中的注释[实现全局方法替换],并更新插件
             JSONObject testJson = new JSONObject();
             try {
                 testJson.put("name", "jzn");
@@ -120,13 +121,11 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
             DataMethodUtil.testParams(bool, byte_v, char_v, short_v, int_v, long_v,
                     float_v, double_v, string_v, int_arr, testJsonObj);
         });
-        //成员变量抓取
+        //全局 [成员,类，局部]变量 抓取
         findViewById(R.id.btn3_layout_data).setOnClickListener(v -> {
-            //需要打开注释 //成员变量抓取
             pushNewLine();
             TestMember1 testMember1 = new TestMember1();
             testMember1.test();
-            //onCatchLog(testMember1.json1.toString());
         });
 
     }

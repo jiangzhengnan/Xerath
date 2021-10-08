@@ -9,6 +9,9 @@ import com.ng.xerathcore.utils.ReflectUtil;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author : jiangzhengnan.jzn
  * @creation : 2021/09/01
@@ -65,11 +68,41 @@ public class CoreHelper {
         }
     }
 
-    public static void catchJsonFiled(JSONObject jsonObject) {
-        if (jsonObject!=null) {
+    //暂时存储单个方法中的临时变量
+    private static List<JSONObject> mCatchJsonFiled = new ArrayList<>();
+
+    public static void catchJsonFiled(Object jsonObject) {
+        if (jsonObject instanceof JSONObject) {
             if (onCoreHelperListener != null) {
-                onCoreHelperListener.onCatchLog("抓到了json:" + jsonObject);
+                onCoreHelperListener.onCatchLog("抓到了json:" + jsonObject.toString());
             }
         }
+    }
+
+    public static void catchTempJsonFiled(Object jsonObject) {
+        if (jsonObject ==null) {
+            return;
+        }
+        if (jsonObject.getClass().isArray()){
+            return;
+        }
+        if (jsonObject instanceof JSONObject) {
+            mCatchJsonFiled.add((JSONObject) jsonObject);
+        }
+    }
+
+    public static void onCatchTempJsonFileFinish() {
+        if (mCatchJsonFiled.size() == 0) {
+            return;
+        }
+
+        for (JSONObject jsonObject : mCatchJsonFiled) {
+            if (jsonObject != null) {
+                if (onCoreHelperListener != null) {
+                    onCoreHelperListener.onCatchLog("抓到了json:" + jsonObject);
+                }
+            }
+        }
+        mCatchJsonFiled.clear();
     }
 }

@@ -40,7 +40,7 @@
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:text="成员变量抓取"
+            android:text="全局变量抓取"
             android:textAllCaps="false"
             android:textSize="9dp" />
 

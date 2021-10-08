@@ -42,17 +42,17 @@ public class XerathClassVisitor extends ClassVisitor {
 
     @Override
     public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
-        ////成员变量抓取
-        //if ("Lorg/json/JSONObject;".equals(descriptor)) {
-        //    LogUtil.print("抓取 成员变量: owner:" + owner + " name:" + name + " desc:" + descriptor + " access:" + access
-        //            + " 是否是静态:" + ((access & ACC_STATIC) != 0));
-        //    String temp = owner + " " + name + " " + descriptor;
-        //    if ((access & ACC_STATIC) != 0) {
-        //        XerathHookHelper.getInstance().getStaticFiledList().add(temp);
-        //    } else {
-        //        XerathHookHelper.getInstance().getFiledList().add(temp);
-        //    }
-        //}
+        //成员变量抓取
+        if ("Lorg/json/JSONObject;".equals(descriptor)) {
+            String temp = owner + " " + name + " " + descriptor;
+            if ((access & ACC_STATIC) != 0) {
+                LogUtil.print("抓取 [类] 变量: owner:" + owner + " name:" + name + " desc:" + descriptor);
+                XerathHookHelper.getInstance().getStaticFiledList().add(temp);
+            } else {
+                LogUtil.print("抓取 [成员] 变量: owner:" + owner + " name:" + name + " desc:" + descriptor);
+                XerathHookHelper.getInstance().getFiledList().add(temp);
+            }
+        }
         return super.visitField(access, name, descriptor, signature, value);
     }
 

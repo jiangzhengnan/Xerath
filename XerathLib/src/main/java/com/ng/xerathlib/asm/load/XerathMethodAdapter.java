@@ -17,6 +17,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.objectweb.asm.Opcodes.ACC_STATIC;
 import static org.objectweb.asm.Opcodes.ASM5;
 import static org.objectweb.asm.Opcodes.ATHROW;
 import static org.objectweb.asm.Opcodes.IRETURN;
@@ -59,6 +60,7 @@ class XerathMethodAdapter extends LocalVariablesSorter {
     @Override
     public void visitCode() {
         super.visitCode();
+        isFinish = false;
         XerathHookHelper.getInstance().onHookMethodStart(mv);
     }
 
@@ -68,10 +70,48 @@ class XerathMethodAdapter extends LocalVariablesSorter {
     }
 
     @Override
+    public void visitLocalVariable(String name, String descriptor, String signature, Label start, Label end, int index) {
+        super.visitLocalVariable(name, descriptor, signature, start, end, index);
+    }
+
+    @Override
     public void visitIntInsn(int opcode, int operand) {
         super.visitIntInsn(opcode, operand);
     }
 
+    boolean isFinish = false;
+
+    @Override
+    public void visitVarInsn(int opcode, int var) {
+        super.visitVarInsn(opcode, var);
+        if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
+            isFinish = true;
+        }
+        //更好的方法？
+        if (!isFinish && opcode == Opcodes.ASTORE) {
+            LogUtil.print("注入 [临时] 变量: opcode:" + opcode + " var:" + var);
+            Label l2 = new Label();
+            mv.visitLabel(l2);
+            mv.visitVarInsn(Opcodes.ALOAD, var);
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchTempJsonFiled", "(Ljava/lang/Object;)V", false);
+        }
+
+
+//        // 临时变量
+//        for (int i = 0; i < XerathHookHelper.getInstance().getTempFiledList().size(); i++) {
+//            String[] values = XerathHookHelper.getInstance().getTempFiledList().get(i).split(" ");
+//            //name + " " + desc + " " + index;
+//            String name = values[0];
+//            String desc = values[1];
+//            int localIndex = Integer.parseInt(values[2]);
+//            int localOpcode = OpcodesUtils.getLoadOpcodeFromDesc(desc);
+//            if (opcode == localOpcode && var == localIndex) {
+//                //LogUtil.print("注入 [临时] 变量: name:" + name + " desc:" + desc);
+//                mv.visitVarInsn(localOpcode, localIndex);
+//                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchTempJsonFiled", "(Ljava/lang/Object;)V", false);
+//            }
+//        }
+    }
 
     /**
      * 遍历操作码 判断是否是return语句 如果是return 就插入我们的代码
@@ -83,20 +123,31 @@ class XerathMethodAdapter extends LocalVariablesSorter {
         if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
             XerathHookHelper.getInstance().onHookMethodReturn(opcode, mv);
 
-            if (XerathHookHelper.getInstance().getFiledList().size() > 0 || XerathHookHelper.getInstance().getStaticFiledList().size() > 0) {
-                // test 抓取成员变量 json
-                for (int i = 0; i < XerathHookHelper.getInstance().getFiledList().size(); i++) {
-                    String[] values = XerathHookHelper.getInstance().getFiledList().get(i).split(" ");
-                    mv.visitVarInsn(Opcodes.ALOAD, 0);
-                    mv.visitFieldInsn(Opcodes.GETFIELD, values[0], values[1], values[2]);
-                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchJsonFiled", "(Lorg/json/JSONObject;)V", false);
-                }
-                for (int i = 0; i < XerathHookHelper.getInstance().getStaticFiledList().size(); i++) {
-                    String[] values = XerathHookHelper.getInstance().getStaticFiledList().get(i).split(" ");
-                    mv.visitVarInsn(Opcodes.ALOAD, 0);
-                    mv.visitFieldInsn(Opcodes.GETSTATIC, values[0], values[1], values[2]);
-                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchJsonFiled", "(Lorg/json/JSONObject;)V", false);
-                }
+            // 成员变量
+            for (int i = 0; i < XerathHookHelper.getInstance().getFiledList().size(); i++) {
+                String[] values = XerathHookHelper.getInstance().getFiledList().get(i).split(" ");
+                mv.visitVarInsn(Opcodes.ALOAD, 0);
+                mv.visitFieldInsn(Opcodes.GETFIELD, values[0], values[1], values[2]);
+                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchJsonFiled", "(Ljava/lang/Object;)V", false);
+            }
+            // 类变量
+            for (int i = 0; i < XerathHookHelper.getInstance().getStaticFiledList().size(); i++) {
+                String[] values = XerathHookHelper.getInstance().getStaticFiledList().get(i).split(" ");
+                mv.visitVarInsn(Opcodes.ALOAD, 0);
+                mv.visitFieldInsn(Opcodes.GETSTATIC, values[0], values[1], values[2]);
+                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchJsonFiled", "(Ljava/lang/Object;)V", false);
+            }
+
+            // 收集局部变量
+            if (XerathHookHelper.getInstance().getTempFiledList().size() > 0) {
+                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "onCatchTempJsonFileFinish", "()V", false);
+            }
+
+
+            if (XerathHookHelper.getInstance().getFiledList().size() > 0 ||
+                    XerathHookHelper.getInstance().getStaticFiledList().size() > 0 ||
+                    XerathHookHelper.getInstance().getTempFiledList().size() > 0) {
+                LogUtil.print("数量:" + XerathHookHelper.getInstance().getFiledList().size() + " " + XerathHookHelper.getInstance().getStaticFiledList().size() + " " + XerathHookHelper.getInstance().getTempFiledList().size());
                 onChangedListener.onChanged();
             }
         }
@@ -144,7 +195,7 @@ class XerathMethodAdapter extends LocalVariablesSorter {
 
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
-        //实现全局方法替换
+        //[实现全局方法替换]
         //if ("org/json/JSONObject".equals(owner)) {
         //    if ("put".equals(name)) {
         //        if ("(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;".equals(descriptor)) {
@@ -158,6 +209,12 @@ class XerathMethodAdapter extends LocalVariablesSorter {
         //}
         super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
     }
+
+    @Override
+    public void visitParameter(String name, int access) {
+        super.visitParameter(name, access);
+    }
+
 
     @Override
     public void visitEnd() {

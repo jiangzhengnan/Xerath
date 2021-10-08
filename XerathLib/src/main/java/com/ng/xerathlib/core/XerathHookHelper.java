@@ -39,6 +39,8 @@ public class XerathHookHelper {
     private List<String> mStaticFiledList = new ArrayList<>();
     //成员变量
     private List<String> mFiledList = new ArrayList<>();
+    //临时变量
+    private List<String> mTempFiledList = new ArrayList<>();
 
     private static XerathHookHelper mInstance;
 
@@ -145,6 +147,9 @@ public class XerathHookHelper {
         mAnnotationParams.clear();
         //清空方法参数
         mMethodParametersMap.clear();
+
+        //如果有两个方法会有问题吗?
+        mTempFiledList.clear();
     }
 
     public void resetOnClass(){
@@ -158,5 +163,9 @@ public class XerathHookHelper {
 
     public List<String> getFiledList() {
         return mFiledList;
+    }
+
+    public List<String> getTempFiledList() {
+        return mTempFiledList;
     }
 }
