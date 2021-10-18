@@ -1,7 +1,12 @@
 package com.ng.xerathlib.asm.preload;
 
+import com.ng.xerathlib.core.XerathHookHelper;
+import com.ng.xerathlib.utils.LogUtil;
+
 import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import static org.objectweb.asm.Opcodes.ACC_INTERFACE;
 import static org.objectweb.asm.Opcodes.ASM5;
@@ -16,7 +21,10 @@ public class XerathPreLoadClassVisitor extends ClassVisitor {
     private String owner;
 
     private boolean isInterface;
-
+    /**
+     * 是否被修改过
+     */
+    public boolean changed;
 
     public XerathPreLoadClassVisitor(ClassVisitor visitor) {
         super(ASM5, visitor);
@@ -27,6 +35,9 @@ public class XerathPreLoadClassVisitor extends ClassVisitor {
         super.visit(version, access, name, signature, superName, interfaces);
         this.owner = name;
         isInterface = (access & ACC_INTERFACE) != 0;
+
+        LogUtil.print("清空资源");
+        XerathHookHelper.getInstance().resetOnClass();
     }
 
     @Override
@@ -39,5 +50,11 @@ public class XerathPreLoadClassVisitor extends ClassVisitor {
         }
         return mv;
 
+    }
+
+
+    @Override
+    public void visitEnd() {
+        super.visitEnd();
     }
 }

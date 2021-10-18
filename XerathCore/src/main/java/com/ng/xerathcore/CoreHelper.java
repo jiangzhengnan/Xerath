@@ -72,6 +72,9 @@ public class CoreHelper {
     private static List<JSONObject> mCatchJsonFiled = new ArrayList<>();
 
     public static void catchJsonFiled(Object jsonObject) {
+        if (onCoreHelperListener != null) {
+            onCoreHelperListener.onCatchLog("catchJsonFiled  :" + jsonObject == null ? "null" : jsonObject.toString());
+        }
         if (jsonObject instanceof JSONObject) {
             if (onCoreHelperListener != null) {
                 onCoreHelperListener.onCatchLog("抓到了json:" + jsonObject.toString());
@@ -80,14 +83,66 @@ public class CoreHelper {
     }
 
     public static void catchTempJsonFiled(Object jsonObject) {
-        if (jsonObject ==null) {
+        if (onCoreHelperListener != null) {
+            onCoreHelperListener.onCatchLog("抓到了obj:" + jsonObject.getClass().getName() + " " + jsonObject.toString());
+        }
+
+        if (jsonObject == null) {
             return;
         }
-        if (jsonObject.getClass().isArray()){
+        if (jsonObject.getClass().isArray()) {
             return;
         }
         if (jsonObject instanceof JSONObject) {
             mCatchJsonFiled.add((JSONObject) jsonObject);
+        }
+    }
+
+    public static void catchTempJsonFiled(boolean value) {
+        if (onCoreHelperListener != null) {
+            onCoreHelperListener.onCatchLog("抓到了 boolean:" + value);
+        }
+    }
+
+    public static void catchTempJsonFiled(int value) {
+        if (onCoreHelperListener != null) {
+            onCoreHelperListener.onCatchLog("抓到了 int:" + value);
+        }
+    }
+
+    public static void catchTempJsonFiled(short value) {
+        if (onCoreHelperListener != null) {
+            onCoreHelperListener.onCatchLog("抓到了 short:" + value);
+        }
+    }
+
+    public static void catchTempJsonFiled(byte value) {
+        if (onCoreHelperListener != null) {
+            onCoreHelperListener.onCatchLog("抓到了 byte:" + value);
+        }
+    }
+
+    public static void catchTempJsonFiled(char value) {
+        if (onCoreHelperListener != null) {
+            onCoreHelperListener.onCatchLog("抓到了 char:" + value);
+        }
+    }
+
+    public static void catchTempJsonFiled(long value) {
+        if (onCoreHelperListener != null) {
+            onCoreHelperListener.onCatchLog("抓到了 long:" + value);
+        }
+    }
+
+    public static void catchTempJsonFiled(double value) {
+        if (onCoreHelperListener != null) {
+            onCoreHelperListener.onCatchLog("抓到了 double:" + value);
+        }
+    }
+
+    public static void catchTempJsonFiled(float value) {
+        if (onCoreHelperListener != null) {
+            onCoreHelperListener.onCatchLog("抓到了 float:" + value);
         }
     }
 

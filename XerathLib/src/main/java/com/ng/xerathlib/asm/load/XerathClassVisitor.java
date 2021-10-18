@@ -6,6 +6,7 @@ import com.ng.xerathlib.utils.LogUtil;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
 
 import java.util.ArrayList;
 
@@ -29,6 +30,8 @@ public class XerathClassVisitor extends ClassVisitor {
 
     public XerathClassVisitor(ClassVisitor visitor) {
         super(ASM5, visitor);
+
+
     }
 
     @Override
@@ -37,22 +40,21 @@ public class XerathClassVisitor extends ClassVisitor {
         owner = name;
         isInterface = (access & ACC_INTERFACE) != 0;
 
-        XerathHookHelper.getInstance().resetOnClass();
     }
 
     @Override
     public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
-        //成员变量抓取
-        if ("Lorg/json/JSONObject;".equals(descriptor)) {
-            String temp = owner + " " + name + " " + descriptor;
-            if ((access & ACC_STATIC) != 0) {
-                LogUtil.print("抓取 [类] 变量: owner:" + owner + " name:" + name + " desc:" + descriptor);
-                XerathHookHelper.getInstance().getStaticFiledList().add(temp);
-            } else {
-                LogUtil.print("抓取 [成员] 变量: owner:" + owner + " name:" + name + " desc:" + descriptor);
-                XerathHookHelper.getInstance().getFiledList().add(temp);
-            }
-        }
+//        //成员变量抓取
+//        if ("Lorg/json/JSONObject;".equals(descriptor)) {
+//            String temp = owner + " " + name + " " + descriptor;
+//            if ((access & ACC_STATIC) != 0) {
+//                LogUtil.print("抓取 [类] 变量: owner:" + owner + " name:" + name + " desc:" + descriptor);
+//                XerathHookHelper.getInstance().getStaticFiledList().add(temp);
+//            } else {
+//                LogUtil.print("抓取 [成员] 变量: owner:" + owner + " name:" + name + " desc:" + descriptor);
+//                XerathHookHelper.getInstance().getFiledList().add(temp);
+//            }
+//        }
         return super.visitField(access, name, descriptor, signature, value);
     }
 
@@ -72,6 +74,5 @@ public class XerathClassVisitor extends ClassVisitor {
         }
         return mv;
     }
-
 
 }

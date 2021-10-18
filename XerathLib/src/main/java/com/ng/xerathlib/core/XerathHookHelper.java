@@ -148,13 +148,13 @@ public class XerathHookHelper {
         //清空方法参数
         mMethodParametersMap.clear();
 
-        //如果有两个方法会有问题吗?
-        mTempFiledList.clear();
     }
 
     public void resetOnClass(){
         mStaticFiledList.clear();
         mFiledList.clear();
+        //每个类清理一次
+        mTempFiledList.clear();
     }
 
     public List<String> getStaticFiledList() {

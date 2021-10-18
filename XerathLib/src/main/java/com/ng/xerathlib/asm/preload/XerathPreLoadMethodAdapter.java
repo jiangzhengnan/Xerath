@@ -2,7 +2,6 @@ package com.ng.xerathlib.asm.preload;
 
 import com.ng.xerathlib.core.XerathHookHelper;
 import com.ng.xerathlib.utils.LogUtil;
-import com.ng.xerathlib.utils.OpcodesUtils;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Label;
@@ -38,6 +37,7 @@ public class XerathPreLoadMethodAdapter extends MethodVisitor implements Opcodes
         mMethodName = name;
         this.mOwner = owner;
         XerathHookHelper.getInstance().init(access, owner, name, descriptor);
+
     }
 
     @Override
@@ -73,12 +73,12 @@ public class XerathPreLoadMethodAdapter extends MethodVisitor implements Opcodes
                 parameters.add(new Parameter(name, desc, index));
             }
         }
-        //临时变量抓取
-        if ("Lorg/json/JSONObject;".equals(desc)) {
-            String temp = name + " " + desc + " " + index;
-            LogUtil.print("抓取 [临时] 变量: temp:" + temp);
-            XerathHookHelper.getInstance().getTempFiledList().add(temp);
-        }
+        //存储局部变量表
+        String temp = mMethodName + "|" + name + "|" + desc + "|" + index;
+        LogUtil.print("抓取 [临时] 变量: temp:" + temp + "           size:" + XerathHookHelper.getInstance().getTempFiledList().size());
+        XerathHookHelper.getInstance().getTempFiledList().add(temp);
+
+
         super.visitLocalVariable(name, desc, signature, start, end, index);
     }
 

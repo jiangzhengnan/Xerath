@@ -124,8 +124,12 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
         //全局 [成员,类，局部]变量 抓取
         findViewById(R.id.btn3_layout_data).setOnClickListener(v -> {
             pushNewLine();
+            onCatchLog("全局变量抓取");
             TestMember1 testMember1 = new TestMember1();
-            testMember1.test();
+            //testMember1.test();
+            testMember1.test2();
+            testMember1.test3();
+
         });
 
     }
