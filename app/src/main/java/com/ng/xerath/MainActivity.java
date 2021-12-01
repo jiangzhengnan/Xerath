@@ -126,10 +126,7 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
             pushNewLine();
             onCatchLog("全局变量抓取");
             TestMember1 testMember1 = new TestMember1();
-            //testMember1.test();
-            testMember1.test2();
-            testMember1.test3();
-
+            testMember1.test();
         });
 
     }
