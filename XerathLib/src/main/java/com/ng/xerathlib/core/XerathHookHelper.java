@@ -1,6 +1,6 @@
 package com.ng.xerathlib.core;
 
-import com.ng.xerathlib.asm.preload.Parameter;
+import com.ng.xerathlib.asm.base.Parameter;
 import com.ng.xerathlib.core.plug.base.IAnnotationPlug;
 import com.ng.xerathlib.utils.LogUtil;
 

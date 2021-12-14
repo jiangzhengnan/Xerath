@@ -1,5 +1,6 @@
 package com.ng.xerathlib.asm.preload;
 
+import com.ng.xerathlib.asm.base.Parameter;
 import com.ng.xerathlib.core.XerathHookHelper;
 import com.ng.xerathlib.utils.LogUtil;
 

@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
         initView();
         initData();
 
-
         CoreHelper.onCoreHelperListener = this;
         mShowTv = findViewById(R.id.tv_show);
         mShowTv.setText("初始化日志---");

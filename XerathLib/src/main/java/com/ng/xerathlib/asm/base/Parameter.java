@@ -1,4 +1,4 @@
-package com.ng.xerathlib.asm.preload;
+package com.ng.xerathlib.asm.base;
 
 public class Parameter {
 
