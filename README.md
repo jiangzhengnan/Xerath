@@ -71,7 +71,10 @@ Xerath 是一个通过 [自定义注解]+[ASM](https://asm.ow2.io/) + [Gradle Tr
 - [Hunter](https://github.com/Leaking/Hunter/blob/master)
 - [AopArms](https://github.com/AICareless/AopArms)
 
-
+## 待完成需求
+- [x] 增加方法移除功能
+- [x] 增加生效控制(全局，包类名)范围
+- [x] 增加快速部署功能，可供第三方应用进行快速部署ASM插件 
 ### License
 
     Copyright 2021, Jiang Zhengnan
