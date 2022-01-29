@@ -1,5 +1,9 @@
 简体中文 | [English](./README.en.md) |<br />
 ### Xerath
+![Groovy](https://img.shields.io/badge/language-Groovy-green.svg)
+![Java](https://img.shields.io/badge/language-Java-red.svg)
+![visitors](https://visitor-badge.laobi.icu/badge?page_id=jiangzhengnan.xerath.read.me)
+</br>
 Xerath 是一个通过 [自定义注解]+[ASM](https://asm.ow2.io/) + [Gradle Transform API](http://tools.android.com/tech-docs/new-build-system/transform-api)
 实现的一套功能强大，方便开发，并且能够有效减少重复代码的Android Aop 框架。<br/>
 旨在编译器进行全局性的修改，来完成一些诸如方法耗时统计，异常收集，拦截，动态代理等特殊需求。<br/>
