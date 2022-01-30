@@ -9,7 +9,11 @@ Xerath 是一个通过 [自定义注解]+[ASM](https://asm.ow2.io/) + [Gradle Tr
 旨在编译器进行全局性的修改，来完成一些诸如方法耗时统计，异常收集，拦截，动态代理等特殊需求。<br/>
 核心思想基于AOP编程，AOP为Aspect Oriented Programming的缩写，意为：面向切面编程。<br/>
 本项目为AOP思想在Android上的运用与实战，功能部分对标基于AspectJ的开源项目[AopArms](https://github.com/AICareless/AopArms)<br/>
+<br />
+🔧持续开发中，欢迎共建!<br />
+<br />
 <img src="https://github.com/jiangzhengnan/Xerath/blob/master/app/src/main/res/raw/ic_bg.png" width="50%"/><br />
+
 
 ### 引入方式
 待上传到Maven,目前可以clone项目然后主动依赖
