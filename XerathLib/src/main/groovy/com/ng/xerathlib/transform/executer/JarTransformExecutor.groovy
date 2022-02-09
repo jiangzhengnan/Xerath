@@ -2,6 +2,8 @@ package com.ng.xerathlib.transform.executer
 
 import com.ng.xerathlib.asm.base.ExtendClassWriter
 import com.ng.xerathlib.asm.load.JarClassVisitor
+import com.ng.xerathlib.scene.AnalyseHelper
+import com.ng.xerathlib.scene.RunModel
 import com.ng.xerathlib.transform.util.PkgUtils
 import com.ng.xerathlib.transform.util.TransformUtil
 import org.apache.commons.io.IOUtils
@@ -65,11 +67,8 @@ class JarTransformExecutor {
         if (TransformUtil.isSystemClass(fullQualifiedClassName)) {
             return false
         }
-        //过滤noah类
-        if (PkgUtils.isNoah(fullQualifiedClassName)) {
-            return false
-        }
-        //自定义需要抓取的类
+
+//        //自定义需要抓取的类
 //        if (PkgUtils. (fullQualifiedClassName)) {
 //            println("")
 //            println(fullQualifiedClassName + " 需要hook")
@@ -94,7 +93,6 @@ class JarTransformExecutor {
         //NoahPreLoadClassVisitor preAdapter = new NoahPreLoadClassVisitor(classWriter)
         //classReader.accept(preAdapter, ClassReader.SKIP_FRAMES)
         //正式处理
-        classWriter = new ExtendClassWriter(classLoader, ClassWriter.COMPUTE_FRAMES)
         ClassVisitor classWriterWrapper = new JarClassVisitor(classWriter)
         classReader.accept(classWriterWrapper, ClassReader.SKIP_FRAMES)
         return classWriter.toByteArray()

@@ -25,7 +25,7 @@ class AppTransformExecutor {
             hookClassPre(filePath, className)
             hookClass(filePath, className)
 
-            FileUtils.copyDirectory(dirInput.file, dest)
+            FileUtils.copyDirectory(dir, dest)
         }
     }
 
