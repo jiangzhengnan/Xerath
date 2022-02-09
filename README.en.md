@@ -10,40 +10,100 @@ The core idea is based on AOP Programming, AOP is the abbreviation of Aspect Ori
 
 This project is the application and actual combat of AOP idea on Android.<br />
 <img src="https://github.com/jiangzhengnan/Xerath/blob/master/app/src/main/res/raw/ic_bg.png" width="50%"/><br />
+### Get started
+Clone the project to the local directory, execute 
 
-### 1.Introduction method
-Once uploaded to Maven, you can clone projects and actively rely on them<br/>
+```
+sh upload.sh
+```
+Can successfully run.
 
-### 2.Basic usage
-1.Statistical method time-consuming<br/>
-Add the @CalculateTime annotation to the target method<br/>
-```
-    @CalculateTime
-    public static void CalculateTimeMethod() {
-        //do something
-    }
-```
-2.Limit method calls<br/>
-Add the @Xerath_LimitCall (time = 1000L) annotation to the target method, where time is the time threshold for frequent calls<br/>
-```
-    @Xerath_LimitCall(time = 1000L)
-    public static void doubleClick() {
-        //do something
-    }
-```
-3.Try-catch the exception<br/>
-Add the @TryCatch annotation to the target method<br/>
-```
-    @TryCatch
-    public static void tryCatchMethod() {
-        int a = 1 / 0;
-    }
-```
-
-### 3.Feature List (in addition)
-<img src="https://github.com/jiangzhengnan/Xerath/blob/master/app/src/main/res/raw/ic_func.jpg" width="30%" /><br />
+### introduction method
+After uploading to Maven, you can now actively rely on XerathLib to your own projects.
 
 
+
+### Feature List (in addition)
+<img src="https://github.com/jiangzhengnan/Xerath/blob/master/app/src/main/res/raw/ic_func.jpg" width="30%">
+
+
+### Instructions
+1. Limit method calls to 
+ frequently
+Add @xerath_limitCall (time = 1000L) annotation to target method, where time is the time threshold for frequent calls 
+
+```
+@Xerath_LimitCall(time = 1000L)
+public static void doubleClick() {
+//do something
+}
+```
+
+ 
+
+Add @xerath_trycatch annotation to target method 
+
+```
+@TryCatch
+public static void tryCatchMethod() {
+int a = 1 / 0;
+}
+```
+3. Statistical method time-consuming 
+
+Add @xerath_calculateTime annotation to target method 
+
+```
+@CalculateTime
+public static void CalculateTimeMethod() {
+//do something
+}
+```
+
+
+ 
+
+Add @xerath_collectParams 
+ to the target method
+```
+@Xerath_CollectParams
+public static String testParams(boolean boolParam, byte byteParam, char charParam, short shortParam, int intParam,  long longParam,
+float floatParam, double doubleParam, String stringParam, int[] intArrParam, JSONObject json) {
+String result = boolParam + " " + byteParam + " " + charParam + " " + shortParam + " " + intParam + " " +
+longParam + " " + floatParam + " " + doubleParam + " " + stringParam + " " + intArrParam.length + json.toString();
+return result;
+}
+```
+
+
+Add the @xerath_poptoast annotation to the target method, where STR is the content of the Toast to be displayed 
+
+```
+@xerath_poptoast (STR = "test Toast")
+public static void popToast() {
+//do something
+}
+```
+
+### Contribute
+1. The End of the Road
+2. Create a Feat_xxx branch
+3. Submit code
+4. Create a Pull Request
+
+# # thanks
+- [ByteX](https://github.com/bytedance/ByteX)
+- [Hunter](https://github.com/Leaking/Hunter/blob/master)
+- [AopArms](https://github.com/AICareless/AopArms)
+
+## Backlog requirements
+- [x] increases method to remove the function (see: https://mp.weixin.qq.com/s/npT9MW4TQWH - code fKsC_3NCQ deleted without side effects)
+- [x] Adds effective control (global, package class name) range
+- [x] Added the rapid deployment function for third-party applications to rapidly deploy ASM plug-ins
+- [x] added package size optimization function - precompile, statistical optimization before and after the size comparison
+- [x] Adds package size optimization - Deletes unused code
+- [x] added packet size optimization function - method inline optimization
+- [x] Added package size optimization function - static variable optimization
 
 </br>
 ## License

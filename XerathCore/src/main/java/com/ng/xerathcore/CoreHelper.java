@@ -150,11 +150,10 @@ public class CoreHelper {
         if (mCatchJsonFiled.size() == 0) {
             return;
         }
-
         for (JSONObject jsonObject : mCatchJsonFiled) {
             if (jsonObject != null) {
                 if (onCoreHelperListener != null) {
-                    onCoreHelperListener.onCatchLog("抓到了json:" + jsonObject);
+                    onCoreHelperListener.onCatchLog("抓到了json:" + jsonObject.toString());
                 }
             }
         }

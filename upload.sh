@@ -1,10 +1,10 @@
 ./gradlew clean
-# 先发布core
-./gradlew :XerathCore:uploadArchives
-# 再发布gradle组件
+# 发布核心组件
 ./gradlew :XerathLib:uploadArchives
-# 再整体build
-./gradlew build
-# 再运行
-./gradlew installDebug
+# 编译
+./gradlew :app:assembleDebug
+# 安装
+./gradlew :app:installDebug
+# 推到手机
+adb shell am start -n com.ng.xerath/com.ng.xerath.MainActivity
 

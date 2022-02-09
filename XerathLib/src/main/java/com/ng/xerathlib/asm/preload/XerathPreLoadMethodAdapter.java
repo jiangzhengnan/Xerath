@@ -79,7 +79,6 @@ public class XerathPreLoadMethodAdapter extends MethodVisitor implements Opcodes
         LogUtil.print("抓取 [临时] 变量: temp:" + temp + "           size:" + XerathHookHelper.getInstance().getTempFiledList().size());
         XerathHookHelper.getInstance().getTempFiledList().add(temp);
 
-
         super.visitLocalVariable(name, desc, signature, start, end, index);
     }
 
@@ -92,11 +91,6 @@ public class XerathPreLoadMethodAdapter extends MethodVisitor implements Opcodes
             LogUtil.printPre("注解: " + descriptor);
         }
         return super.visitAnnotation(descriptor, visible);
-    }
-
-    @Override
-    public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
-        super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
     }
 
 

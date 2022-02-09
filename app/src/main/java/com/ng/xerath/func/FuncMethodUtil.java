@@ -77,4 +77,19 @@ public class FuncMethodUtil {
         return false;
     }
 
+    public static void tryExtendMethod() {
+        //因为和全局变量抓取冲突,所以暂时注释了
+        //需要打开XerathMethodAdapter 中的注释[实现全局方法替换],并更新插件
+        JSONObject testJson = new JSONObject();
+        try {
+            testJson.put("name", "jzn");
+            testJson.put("age", "26");
+            testJson.put("height", "178");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        String result = testJson.toString();
+        CoreHelper.catchLog(result);
+    }
+
 }

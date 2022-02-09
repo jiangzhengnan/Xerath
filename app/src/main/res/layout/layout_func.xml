@@ -39,7 +39,7 @@
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:text="全局方法扩展"
+            android:text="方法移除"
             android:enabled="false"
             android:textSize="9dp" />
 
@@ -56,7 +56,7 @@
             android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="全局方法替换"
+            android:text="方法扩展"
             android:textAllCaps="false"
             android:textSize="9dp" />
 

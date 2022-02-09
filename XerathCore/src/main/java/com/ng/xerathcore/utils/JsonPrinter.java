@@ -1,6 +1,9 @@
 package com.ng.xerathcore.utils;
 
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.ng.xerathcore.CoreHelper;
 
 /**
@@ -10,11 +13,11 @@ import com.ng.xerathcore.CoreHelper;
  */
 public class JsonPrinter {
 
-    public static void print(String name, Object value) {
-        if (name != null && value != null) {
+    public static void print(@NonNull String name, @Nullable Object value) {
+        if (value != null) {
             CoreHelper.catchLog("输入json . name:" + name + "  value:" + value.toString());
         } else {
-            CoreHelper.catchLog("输入json 有空的");
+            CoreHelper.catchLog("输入json value 为空");
         }
     }
 }

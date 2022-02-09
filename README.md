@@ -14,38 +14,48 @@ Xerath 是一个通过 [自定义注解]+[ASM](https://asm.ow2.io/) + [Gradle Tr
 <br />
 <img src="https://github.com/jiangzhengnan/Xerath/blob/master/app/src/main/res/raw/ic_bg.png" width="50%"/><br />
 
+### 快速上手
+clone 本工程到本地以后，在根目录执行 <br />
+```
+sh upload.sh 
+```
+即可成功跑起来。
 
 ### 引入方式
-待上传到Maven,目前可以clone项目然后主动依赖
+待上传到Maven,目前可以主动依赖 XerathLib 到你自己的工程中<br />
 <br/>
 
-### 基本使用
-1.统计方法耗时<br/>
-在目标方法上增加@CalculateTime注解<br/>
-```
-    @CalculateTime
-    public static void CalculateTimeMethod() {
-        //do something
-    }
-```
-2.限制方法频繁调用<br/>
-在目标方法上增加@Xerath_LimitCall(time = 1000L)注解,其中time为频繁调用的时间阈值<br/>
+### 功能列表(补充中)
+<img src="https://github.com/jiangzhengnan/Xerath/blob/master/app/src/main/res/raw/ic_func.jpg" width="30%" /><br />
+
+### 使用说明
+1.限制方法频繁调用<br/>
+在目标方法处增加 @Xerath_LimitCall(time = 1000L) 注解,其中time为频繁调用的时间阈值<br/>
 ```
     @Xerath_LimitCall(time = 1000L)
     public static void doubleClick() {
         //do something
     }
 ```
-3.try-catch异常捕获<br/>
-在目标方法上增加@TryCatch注解<br/>
+2.方法try-catch异常捕获<br/>
+在目标方法处增加 @Xerath_TryCatch 注解<br/>
 ```
     @TryCatch
     public static void tryCatchMethod() {
         int a = 1 / 0;
     }
 ```
+3.统计方法耗时<br/>
+在目标方法处增加 @Xerath_CalculateTime 注解<br/>
+```
+    @CalculateTime
+    public static void CalculateTimeMethod() {
+        //do something
+    }
+```
+
 4.方法入参和返回值统计<br/>
-在目标方法上增加@Xerath_CollectParams<br/>
+在目标方法处增加 @Xerath_CollectParams <br/>
 ```
     @Xerath_CollectParams
     public static String testParams(boolean boolParam, byte byteParam, char charParam, short shortParam, int intParam, long longParam,
@@ -56,16 +66,13 @@ Xerath 是一个通过 [自定义注解]+[ASM](https://asm.ow2.io/) + [Gradle Tr
     }
 ```
 5 .弹出Toast<br/>
-在目标方法上增加@Xerath_PopToast注解,其中str为需要显示Toast的内容<br/>
+在目标方法处增加@Xerath_PopToast注解,其中str为需要显示Toast的内容<br/>
 ```
     @Xerath_PopToast(str = "测试Toast")
     public static void popToast() {
         //do something
     }
 ```
-
-### 功能列表(补充中)
-<img src="https://github.com/jiangzhengnan/Xerath/blob/master/app/src/main/res/raw/ic_func.jpg" width="30%" /><br />
 
 ### 参与贡献
 1.  Fork 本仓库
@@ -74,19 +81,19 @@ Xerath 是一个通过 [自定义注解]+[ASM](https://asm.ow2.io/) + [Gradle Tr
 4.  新建 Pull Request
 
 ## 鸣谢
-
 - [ByteX](https://github.com/bytedance/ByteX) 
 - [Hunter](https://github.com/Leaking/Hunter/blob/master)
 - [AopArms](https://github.com/AICareless/AopArms)
 
 ## 待完成需求
-- [x] 增加方法移除功能
+- [x] 增加方法移除功能(参考:https://mp.weixin.qq.com/s/npT9MW4TQWH--fKsC_3NCQ 删除无副作用代码)
 - [x] 增加生效控制(全局，包类名)范围 
 - [x] 增加快速部署功能，可供第三方应用进行快速部署ASM插件 
 - [x] 增加包size优化功能-预编译，统计优化前后大小对比
 - [x] 增加包size优化功能-删除unused代码
 - [x] 增加包size优化功能-方法内联优化
 - [x] 增加包size优化功能-静态变量优化
+
 ### License
 
     Copyright 2021, Jiang Zhengnan

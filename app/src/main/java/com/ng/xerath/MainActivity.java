@@ -52,36 +52,14 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
             FuncMethodUtil.tryCatchMethod();
             //CoreHelper.catchLog("输出带参结果:" + FuncMethodUtil.tryCatchMethodReturnBoolean());
         });
-        //全局方法扩展，修改方法内部结构
+        //全局方法移除
         findViewById(R.id.btn3_layout_fuc).setOnClickListener(v -> {
-            pushNewLine();
-            JSONObject testJson = new JSONObject();
-            try {
-                testJson.put("name", "jzn");
-                testJson.put("age", "26");
-                testJson.put("height", "178");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            String result = testJson.toString();
-            onCatchLog(result);
         });
 
-        //全局方法替换,替换诸如log之类的
+        //方法扩展,替换 JSONObject.put方法
         findViewById(R.id.btn4_layout_fuc).setOnClickListener(v -> {
             pushNewLine();
-            //因为和全局变量抓取冲突,所以暂时注释了
-            //需要打开XerathMethodAdapter 中的注释[实现全局方法替换],并更新插件
-            JSONObject testJson = new JSONObject();
-            try {
-                testJson.put("name", "jzn");
-                testJson.put("age", "26");
-                testJson.put("height", "178");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            String result = testJson.toString();
-            onCatchLog(result);
+            FuncMethodUtil.tryExtendMethod();
         });
         //获取调用链
         findViewById(R.id.btn5_layout_fuc).setOnClickListener(v -> {
