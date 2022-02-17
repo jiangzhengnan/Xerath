@@ -1,5 +1,9 @@
 package com.ng.xerath.func;
 
+import com.ng.xerath.func.chain.ChainA;
+import com.ng.xerath.func.chain.ChainB;
+import com.ng.xerath.func.chain.ChainC;
+import com.ng.xerath.func.chain.ChainD;
 import com.ng.xerathcore.CoreHelper;
 import com.ng.xerathcore.annotation.Xerath_CalculateTime;
 import com.ng.xerathcore.annotation.Xerath_CollectParams;
@@ -54,5 +58,27 @@ public class DataMethodUtil {
             e.printStackTrace();
         }
         CoreHelper.catchLog("CalculateTimeMethod end ...");
+    }
+
+    /**
+     * 抓取调用链路
+     * 注解添加在最上层基类ChainA中
+     */
+    public static void testCallChain() {
+        CoreHelper.catchLog("调用链路测试开始");
+        ChainA chainA = new ChainA();
+        chainA.a_params = "chainA";
+        ChainB chainB = new ChainB();
+        chainB.b_params = "chainB";
+        ChainC chainC = new ChainC();
+        chainC.c_params = "chainC";
+        ChainD chainD = new ChainD();
+        chainA.child = chainB;
+        chainB.child = chainC;
+        chainC.child = chainD;
+        chainD.getCallChain();
+        //hook
+        chainA.doSomeThing();
+        chainA.doSomeThing2();
     }
 }

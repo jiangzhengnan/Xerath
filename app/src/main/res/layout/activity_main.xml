@@ -15,26 +15,38 @@
         android:layout_marginTop="5dp"
         android:background="#888888" />
 
-    <!--视图-->
-    <include layout="@layout/layout_view" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="5dp"
-        android:background="#888888" />
-
     <!--数据-->
     <include layout="@layout/layout_data" />
 
-    <TextView
-        android:id="@+id/tv_show"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:inputType="textMultiLine"
-        android:scrollbars="vertical"
-        android:textColor="@color/black"
-        android:textSize="10dp" />
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/tv_show"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical"
+            android:textColor="@color/black"
+            android:textSize="10dp" />
+
+        <TextView
+            android:id="@+id/tv_clean"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:enabled="true"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="clean"
+            android:textAllCaps="false"
+            android:textSize="9dp" />
+
+
+    </RelativeLayout>
+
 
 </LinearLayout>

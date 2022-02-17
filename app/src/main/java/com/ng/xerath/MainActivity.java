@@ -2,6 +2,7 @@ package com.ng.xerath;
 
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -27,13 +28,16 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initFunc();
-        initView();
         initData();
 
         CoreHelper.onCoreHelperListener = this;
         mShowTv = findViewById(R.id.tv_show);
-        mShowTv.setText("初始化日志---");
+        mShowTv.setText("初始化日志:");
         mShowTv.setMovementMethod(ScrollingMovementMethod.getInstance());
+
+        findViewById(R.id.tv_clean).setOnClickListener(v -> {
+            mShowTv.setText("");
+        });
     }
 
     /**
@@ -44,27 +48,27 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
         findViewById(R.id.btn1_layout_fuc).setOnClickListener(v -> {
             pushNewLine();
             FuncMethodUtil.doubleClick();
-            //CoreHelper.catchLog("输出带参结果:" + FuncMethodUtil.doubleClickReturnBoolean());
         });
         //异常捕获
         findViewById(R.id.btn2_layout_fuc).setOnClickListener(v -> {
             pushNewLine();
             FuncMethodUtil.tryCatchMethod();
-            //CoreHelper.catchLog("输出带参结果:" + FuncMethodUtil.tryCatchMethodReturnBoolean());
         });
-        //全局方法移除
+        //方法移除
         findViewById(R.id.btn3_layout_fuc).setOnClickListener(v -> {
+            pushNewLine();
+            FuncMethodUtil.tryRemoveMethod(MainActivity.this);
+            CoreHelper.catchLog("只有这一句，说明成功了");
         });
-
-        //修改系统方法,替换 JSONObject.put方法 (参考Hunter的LogLine-Plugin)
+        //方法替换
         findViewById(R.id.btn4_layout_fuc).setOnClickListener(v -> {
             pushNewLine();
             FuncMethodUtil.tryExtendMethod();
         });
-        //获取调用链
+        //弹出toast
         findViewById(R.id.btn5_layout_fuc).setOnClickListener(v -> {
             pushNewLine();
-            FuncMethodUtil.testCallChain();
+            ViewMethodUtil.popToast();
         });
     }
 
@@ -106,18 +110,12 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
             TestMember1 testMember1 = new TestMember1();
             testMember1.test();
         });
-
-    }
-
-    /**
-     * 视图
-     */
-    private void initView() {
-        //弹出toast
-        findViewById(R.id.btn1_layout_view).setOnClickListener(v -> {
+        //获取调用链
+        findViewById(R.id.btn4_layout_data).setOnClickListener(v -> {
             pushNewLine();
-            ViewMethodUtil.popToast();
+            DataMethodUtil.testCallChain();
         });
+
     }
 
     @Override

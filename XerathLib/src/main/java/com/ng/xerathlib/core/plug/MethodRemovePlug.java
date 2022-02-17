@@ -8,6 +8,9 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author : jiangzhengnan.jzn@alibaba-inc.com
  * @creation : 2022/02/16
@@ -17,7 +20,7 @@ public class MethodRemovePlug extends AnnotationPlug {
     @Override
     public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
         super.init(access, adapter, owner, name, methodDesc);
-        LogUtil.print("MethodRemovePlug - init");
+        LogUtil.print("MethodRemovePlug 方法移除 - init");
     }
 
     @Override
@@ -37,29 +40,51 @@ public class MethodRemovePlug extends AnnotationPlug {
 
     @Override
     public boolean onVisitMethodInsn(MethodVisitor mv, int opcode, String owner, String name, String desc, boolean itf) {
-        LogUtil.print("MethodRemovePlug - onVisitMethodInsn");
+        LogUtil.print("MethodReplacePlug - onVisitMethodInsn");
+        Object[] removeMethodObjArray = (Object[]) XerathHookHelper.getInstance().getAnnotationParams("removeMethods");
+        if (removeMethodObjArray == null) {
+            return false;
+        }
+        String[] removeMethods = copyToStringArray(removeMethodObjArray);
 
-        String targetOwner = (String) XerathHookHelper.getInstance().getAnnotationParams("owner");
-        String targetName = (String) XerathHookHelper.getInstance().getAnnotationParams("name");
-        String targetDescriptor = (String) XerathHookHelper.getInstance().getAnnotationParams("descriptor");
+        for (int i = 0; i < removeMethods.length; i++) {
+            String[] removeMethodOpts = removeMethods[i].split("\\|");
+            if (removeMethodOpts.length != 3) {
+                continue;
+            }
+            LogUtil.print("removeMethodSrc 移除方法: i:" + i + " " + removeMethodOpts[i]);
+            String removeOwner = removeMethodOpts[0];
+            String removeName = removeMethodOpts[1];
+            String removeDescriptor = removeMethodOpts[2];
 
-        LogUtil.print("targetOwner:" + targetOwner);
-        LogUtil.print("targetName:" + targetName);
-        LogUtil.print("targetDescriptor:" + targetDescriptor);
+            if (removeOwner == null || removeName == null || removeDescriptor == null) {
+                continue;
+            }
 
-        //[实现 方法替换]
-        if ("org/json/JSONObject".equals(owner)) {
-            String linenumberConst = mLineNumber + "";
-            if ("put".equals(name)) {
-                if ("(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;".equals(desc)) {
-                    LogUtil.print("全局方法替换 in JSONObject");
-                    //mv.visitLdcInsn(linenumberConst);
-                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, targetOwner, targetName, targetDescriptor, false);
-                    return true;
+            if (removeOwner.equals(owner)) {
+                if (removeName.equals(name)) {
+                    if (removeDescriptor.equals(desc)) {
+                        LogUtil.print("MethodRemovePlug 移除成功:" + removeMethods[i]);
+                        return true;
+                    }
                 }
             }
         }
-        return super.onVisitMethodInsn(mv, opcode, owner, name, desc, itf);
+
+        return true;
+    }
+
+    private String[] copyToStringArray(Object[] objArray) {
+        List<String> resultList = new ArrayList<>();
+        if (objArray == null || objArray.length == 0) {
+            return null;
+        }
+        for (Object temp : objArray) {
+            if (temp instanceof String) {
+                resultList.add((String) temp);
+            }
+        }
+        return resultList.toArray(new String[resultList.size()]);
     }
 
 }

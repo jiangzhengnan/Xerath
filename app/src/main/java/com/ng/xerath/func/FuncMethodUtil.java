@@ -1,11 +1,16 @@
 package com.ng.xerath.func;
 
+import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.ng.xerath.func.chain.ChainA;
 import com.ng.xerath.func.chain.ChainB;
 import com.ng.xerath.func.chain.ChainC;
 import com.ng.xerath.func.chain.ChainD;
 import com.ng.xerathcore.CoreHelper;
 import com.ng.xerathcore.annotation.Xerath_LimitCall;
+import com.ng.xerathcore.annotation.Xerath_MethodRemove;
 import com.ng.xerathcore.annotation.Xerath_MethodReplace;
 import com.ng.xerathcore.annotation.Xerath_TryCatch;
 
@@ -19,28 +24,6 @@ import org.json.JSONObject;
  * @date 2021/9/4
  */
 public class FuncMethodUtil {
-
-    /**
-     * 抓取调用链路
-     * 注解添加在最上层基类ChainA中
-     */
-    public static void testCallChain() {
-        CoreHelper.catchLog("调用链路测试开始");
-        ChainA chainA = new ChainA();
-        chainA.a_params = "chainA";
-        ChainB chainB = new ChainB();
-        chainB.b_params = "chainB";
-        ChainC chainC = new ChainC();
-        chainC.c_params = "chainC";
-        ChainD chainD = new ChainD();
-        chainA.child = chainB;
-        chainB.child = chainC;
-        chainC.child = chainD;
-        chainD.getCallChain();
-        //hook
-        chainA.doSomeThing();
-        chainA.doSomeThing2();
-    }
 
     /**
      * try-catch void
@@ -96,4 +79,18 @@ public class FuncMethodUtil {
         CoreHelper.catchLog(result);
     }
 
+    /**
+     * 方法移除
+     */
+    @Xerath_MethodRemove(
+            removeMethods = {
+                    "android/util/Log|d|(Ljava/lang/String;Ljava/lang/String;)I",
+                    "android/widget/Toast|makeText|(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;",
+                    "android/widget/Toast|()V"
+            }
+    )
+    public static void tryRemoveMethod(Context context) {
+        Log.d("nangua","nangua");
+        Toast.makeText(context,"",Toast.LENGTH_SHORT).show();
+    }
 }

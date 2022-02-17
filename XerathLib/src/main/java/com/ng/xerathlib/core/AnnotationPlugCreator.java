@@ -4,6 +4,7 @@ import com.ng.xerathlib.core.plug.CalculateTimePlug;
 import com.ng.xerathlib.core.plug.CallChainPlug;
 import com.ng.xerathlib.core.plug.CollectParamsPlug;
 import com.ng.xerathlib.core.plug.LimitCallPlug;
+import com.ng.xerathlib.core.plug.MethodRemovePlug;
 import com.ng.xerathlib.core.plug.MethodReplacePlug;
 import com.ng.xerathlib.core.plug.PopToastPlug;
 import com.ng.xerathlib.core.plug.TryCatchPlug;
@@ -14,6 +15,7 @@ import org.gradle.internal.impldep.jcifs.smb.ACE;
 /**
  * 描述:
  * 注解 plug构建器
+ *
  * @author Jzn
  * @date 2021/9/14
  */
@@ -34,6 +36,9 @@ public class AnnotationPlugCreator {
     public final static String CALL_CHAIN = ANNOTATION_PATH + "Xerath_CallChain;";
 
     public final static String METHOD_REPLACE = ANNOTATION_PATH + "Xerath_MethodReplace;";
+
+    public final static String METHOD_REMOVE = ANNOTATION_PATH + "Xerath_MethodRemove;";
+
 
     public static IAnnotationPlug createPlug(String annotationStr) {
         IAnnotationPlug resultPlug = null;
@@ -59,6 +64,9 @@ public class AnnotationPlugCreator {
                 break;
             case AnnotationPlugCreator.METHOD_REPLACE:
                 resultPlug = new MethodReplacePlug();
+                break;
+            case AnnotationPlugCreator.METHOD_REMOVE:
+                resultPlug = new MethodRemovePlug();
                 break;
             default:
                 break;

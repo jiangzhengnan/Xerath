@@ -20,14 +20,14 @@ sh upload.sh
 ```
 <br />
 ### 引入方式
-待上传到Maven,目前可以主动依赖 XerathLib 到你自己的工程中<br />
+待上传到Maven,目前可以主动依赖 XerathLib 到你自己的工程中。<br />
 
 ### 功能列表(补充中)
 <img src="https://github.com/jiangzhengnan/Xerath/blob/master/app/src/main/res/raw/ic_func.jpg" width="30%" /><br />
 
 ### 使用说明
 1.限制方法频繁调用<br/>
-在目标方法处增加 @Xerath_LimitCall(time = 1000L) 注解,其中time为频繁调用的时间阈值<br/>
+在目标方法处增加 @Xerath_LimitCall(time = 1000L) 注解,其中time为频繁调用的时间阈值。<br/>
 ```
     @Xerath_LimitCall(time = 1000L)
     public static void doubleClick() {
@@ -35,15 +35,38 @@ sh upload.sh
     }
 ```
 2.方法try-catch异常捕获<br/>
-在目标方法处增加 @Xerath_TryCatch 注解<br/>
+在目标方法处增加 @Xerath_TryCatch 注解。<br/>
 ```
     @TryCatch
     public static void tryCatchMethod() {
         int a = 1 / 0;
     }
 ```
-3.统计方法耗时<br/>
-在目标方法处增加 @Xerath_CalculateTime 注解<br/>
+3.方法移除<br/>
+在目标方法处增加 @Xerath_MethodRemove 注解,其中removeMethods传入需要移除的目标方法，可传多个。<br/>
+```
+    @Xerath_MethodRemove(
+            removeMethods = {
+                    "android/util/Log|d|(Ljava/lang/String;Ljava/lang/String;)I",
+                    "android/widget/Toast|makeText|(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;",
+                    "android/widget/Toast|()V"
+            }
+    )
+    public static void tryRemoveMethod(Context context) {
+        Log.d("nangua","nangua");
+        Toast.makeText(context,"",Toast.LENGTH_SHORT).show();
+    }
+```
+4.弹出Toast<br/>
+在目标方法处增加 @Xerath_PopToast 注解,其中str为需要显示Toast的内容。<br/>
+```
+    @Xerath_PopToast(str = "测试Toast")
+    public static void popToast() {
+        //do something
+    }
+```
+5.统计方法耗时<br/>
+在目标方法处增加 @Xerath_CalculateTime 注解。<br/>
 ```
     @CalculateTime
     public static void CalculateTimeMethod() {
@@ -51,8 +74,8 @@ sh upload.sh
     }
 ```
 
-4.方法入参和返回值统计<br/>
-在目标方法处增加 @Xerath_CollectParams <br/>
+6.方法出入参和返回值统计<br/>
+在目标方法处增加 @Xerath_CollectParams 注解。<br/>
 ```
     @Xerath_CollectParams
     public static String testParams(boolean boolParam, byte byteParam, char charParam, short shortParam, int intParam, long longParam,
@@ -62,14 +85,19 @@ sh upload.sh
         return result;
     }
 ```
-5 .弹出Toast<br/>
-在目标方法处增加@Xerath_PopToast注解,其中str为需要显示Toast的内容<br/>
+
+7.全局遍历抓取<br/>
+
+8.调用链路统计<br/>
+在需要跟踪调用链路的目标方法处增加 @Xerath_CallChain 注解。 <br/>
 ```
-    @Xerath_PopToast(str = "测试Toast")
-    public static void popToast() {
+    @Xerath_CallChain
+    public void doSomeThing() {
         //do something
     }
 ```
+
+
 
 ### 参与贡献
 1.  Fork 本仓库
@@ -93,7 +121,7 @@ sh upload.sh
 
 ### License
 
-    Copyright 2021, Jiang Zhengnan
+    Copyright 2022, Jiang Zhengnan
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.

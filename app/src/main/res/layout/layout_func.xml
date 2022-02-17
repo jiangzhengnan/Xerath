@@ -40,7 +40,7 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text="方法移除"
-            android:enabled="false"
+            android:textAllCaps="false"
             android:textSize="9dp" />
 
     </LinearLayout>
@@ -66,7 +66,7 @@
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
-            android:text="调用链路"
+            android:text="弹出Toast"
             android:textAllCaps="false"
             android:textSize="9dp" />
 
@@ -77,8 +77,51 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:enabled="false"
+            android:text="unused优化"
+            android:textAllCaps="false"
+            android:textSize="9dp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/btn7_layout_fuc"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:text="方法内联优化"
+            android:textAllCaps="false"
+            android:enabled="false"
+            android:textSize="9dp" />
+
+        <Button
+            android:id="@+id/btn8_layout_fuc"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:text="静态变量优化"
+            android:textAllCaps="false"
+            android:textSize="9dp"
+            android:enabled="false" />
+
+        <Button
+            android:id="@+id/btn9_layout_fuc"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
             android:text=""
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            android:textAllCaps="false"
+            android:textSize="9dp"
+            android:enabled="false" />
 
 
     </LinearLayout>

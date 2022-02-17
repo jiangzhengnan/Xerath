@@ -45,7 +45,6 @@ public class MethodReplacePlug extends AnnotationPlug {
         Object[] targetMethodObjArray = (Object[]) XerathHookHelper.getInstance().getAnnotationParams("targetMethods");
         Object[] replaceMethodObjArray = (Object[]) XerathHookHelper.getInstance().getAnnotationParams("replaceMethods");
         if (targetMethodObjArray == null || replaceMethodObjArray == null) {
-            LogUtil.print((targetMethodObjArray == null) + " + " + (replaceMethodObjArray == null));
             return false;
         }
         String[] targetMethods = copyToStringArray(targetMethodObjArray);
