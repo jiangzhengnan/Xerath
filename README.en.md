@@ -24,9 +24,9 @@ This project for the use of AOP thought on Android and actual combat, functions 
 ### Get started
 Clone this project to the local, in the root directory to open the terminal to execute the following command, you can successfully run! 
 
-` ` `
+```
 sh upload.sh
-` ` `
+```
 
 
 ### introduction method
@@ -42,28 +42,28 @@ Once you upload to Maven, you can now actively rely on XerathLib for your own pr
  frequently
 Add the @xerath_limitCall (time = 1000L) annotation to the target method, where time is the time threshold for frequent calls. 
 
-` ` `
+```
 @Xerath_LimitCall(time = 1000L)
 public static void doubleClick() {
 //do something
 }
-` ` `
+```
 
  
 
 Add the @xerath_trycatch annotation to the target method. 
 
-` ` `
+```
 @TryCatch
 public static void tryCatchMethod() {
 int a = 1 / 0;
 }
-` ` `
+```
 
 
 Add @xerath_methodremove annotation to the target method, where removeMethods pass in the target method to be removed. 
 
-` ` `
+```
 @Xerath_MethodRemove(
 removeMethods = {
 "android/util/Log|d|(Ljava/lang/String; Ljava/lang/String;) I",
@@ -75,33 +75,33 @@ public static void tryRemoveMethod(Context context) {
 Log.d("nangua","nangua");
 Toast.makeText(context,"",Toast.LENGTH_SHORT).show();
 }
-` ` `
+```
 4. The pop-up Toast < br / >
 Add the @xerath_poptoast annotation to the target method, where STR is the content of the Toast that needs to be displayed. 
 
-` ` `
+```
 @xerath_poptoast (STR = "test Toast")
 public static void popToast() {
 //do something
 }
-` ` `
+```
 5. Statistical method time-consuming 
 
 Add the @xerath_calculateTime annotation to the target method. 
 
-` ` `
+```
 @CalculateTime
 public static void CalculateTimeMethod() {
 //do something
 }
-` ` `
+```
 
 
  
 
 Add the @xerath_CollectParams annotation to the target method. 
 
-` ` `
+```
 @Xerath_CollectParams
 public static String testParams(boolean boolParam, byte byteParam, char charParam, short shortParam, int intParam,  long longParam,
 float floatParam, double doubleParam, String stringParam, int[] intArrParam, JSONObject json) {
@@ -109,7 +109,7 @@ String result = boolParam + " " + byteParam + " " + charParam + " " + shortParam
 longParam + " " + floatParam + " " + doubleParam + " " + stringParam + " " + intArrParam.length + json.toString();
 return result;
 }
-` ` `
+```
 
 
  
@@ -119,12 +119,12 @@ return result;
 
 Add the @xerath_callchain annotation to the target method that needs to trace the calling link. 
 
-` ` `
+```
 @Xerath_CallChain
 public void doSomeThing() {
 //do something
 }
-` ` `
+```
 
 
 
