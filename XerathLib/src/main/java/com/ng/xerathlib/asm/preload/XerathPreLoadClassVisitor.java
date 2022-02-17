@@ -36,7 +36,6 @@ public class XerathPreLoadClassVisitor extends ClassVisitor {
         this.owner = name;
         isInterface = (access & ACC_INTERFACE) != 0;
 
-        LogUtil.print("清空资源");
         XerathHookHelper.getInstance().resetOnClass();
     }
 

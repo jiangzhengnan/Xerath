@@ -5,9 +5,8 @@ import com.ng.xerath.func.chain.ChainB;
 import com.ng.xerath.func.chain.ChainC;
 import com.ng.xerath.func.chain.ChainD;
 import com.ng.xerathcore.CoreHelper;
-import com.ng.xerathcore.annotation.Xerath_CalculateTime;
-import com.ng.xerathcore.annotation.Xerath_CollectParams;
 import com.ng.xerathcore.annotation.Xerath_LimitCall;
+import com.ng.xerathcore.annotation.Xerath_MethodReplace;
 import com.ng.xerathcore.annotation.Xerath_TryCatch;
 
 import org.json.JSONException;
@@ -77,9 +76,14 @@ public class FuncMethodUtil {
         return false;
     }
 
+    /**
+     * 方法替换
+     */
+    @Xerath_MethodReplace(
+            replaceMethods = {"org/json/JSONObject|put|(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;"},
+            targetMethods = {"com/ng/xerathcore/utils/JsonPrinter|print|(Ljava/lang/String;Ljava/lang/Object;)V"}
+    )
     public static void tryExtendMethod() {
-        //因为和全局变量抓取冲突,所以暂时注释了
-        //需要打开XerathMethodAdapter 中的注释[实现全局方法替换],并更新插件
         JSONObject testJson = new JSONObject();
         try {
             testJson.put("name", "jzn");

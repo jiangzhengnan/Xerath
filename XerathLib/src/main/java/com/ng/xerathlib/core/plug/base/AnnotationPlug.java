@@ -1,5 +1,6 @@
 package com.ng.xerathlib.core.plug.base;
 
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
@@ -16,6 +17,8 @@ public abstract class AnnotationPlug implements IAnnotationPlug {
     protected String mOwner;
     protected String mMethodName;
     protected LocalVariablesSorter mAdapter;
+    protected int mLineNumber;
+
 
     @Override
     public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
@@ -28,5 +31,15 @@ public abstract class AnnotationPlug implements IAnnotationPlug {
 
     protected boolean isStaticMethod() {
         return ((Opcodes.ACC_STATIC & mMethodAccess) != 0);
+    }
+
+    @Override
+    public boolean onVisitMethodInsn(MethodVisitor mv, int opcode, String owner, String name, String desc, boolean itf) {
+        return false;
+    }
+
+    @Override
+    public void setLineNumber(int lineNumber) {
+        mLineNumber = lineNumber;
     }
 }

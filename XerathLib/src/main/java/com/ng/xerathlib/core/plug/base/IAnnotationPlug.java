@@ -18,4 +18,8 @@ public interface IAnnotationPlug {
     void onHookMethodReturn(int opcode,MethodVisitor mv);
 
     void onHookMethodEnd(MethodVisitor mv);
+
+    boolean onVisitMethodInsn(MethodVisitor mv, int opcode, String owner, String name, String desc, boolean itf);
+
+    void setLineNumber(int lineNumber);
 }

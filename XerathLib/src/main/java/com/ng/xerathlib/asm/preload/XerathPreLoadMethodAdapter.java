@@ -17,6 +17,7 @@ import java.util.List;
  * @author : jiangzhengnan
  * @creation : 2021/08/25
  * @description :
+ * 只做参数收集，不做更改
  */
 public class XerathPreLoadMethodAdapter extends MethodVisitor implements Opcodes {
     //是否需要预加载
@@ -54,7 +55,7 @@ public class XerathPreLoadMethodAdapter extends MethodVisitor implements Opcodes
         if (isNeedPreLoad) {
             if (parameters.size() > 0) {
                 XerathHookHelper.getInstance().putMethodParams(mMethodKey, parameters);
-                LogUtil.printPre(" 参数列表:" + XerathHookHelper.getInstance().getMethodParamsMap().toString());
+                //LogUtil.printPre(" 参数列表:" + XerathHookHelper.getInstance().getMethodParamsMap().toString());
             }
             LogUtil.printPre("结束(" + mMethodName + ")---");
         }
@@ -76,7 +77,7 @@ public class XerathPreLoadMethodAdapter extends MethodVisitor implements Opcodes
         }
         //存储局部变量表
         String temp = mMethodName + "|" + name + "|" + desc + "|" + index;
-        LogUtil.print("抓取 [临时] 变量: temp:" + temp + "           size:" + XerathHookHelper.getInstance().getTempFiledList().size());
+        //LogUtil.print("抓取 [临时] 变量: temp:" + temp + "           size:" + XerathHookHelper.getInstance().getTempFiledList().size());
         XerathHookHelper.getInstance().getTempFiledList().add(temp);
 
         super.visitLocalVariable(name, desc, signature, start, end, index);

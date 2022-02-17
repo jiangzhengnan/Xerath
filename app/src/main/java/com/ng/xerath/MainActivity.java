@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements CoreHelper.CoreHe
         findViewById(R.id.btn3_layout_fuc).setOnClickListener(v -> {
         });
 
-        //方法扩展,替换 JSONObject.put方法
+        //修改系统方法,替换 JSONObject.put方法 (参考Hunter的LogLine-Plugin)
         findViewById(R.id.btn4_layout_fuc).setOnClickListener(v -> {
             pushNewLine();
             FuncMethodUtil.tryExtendMethod();

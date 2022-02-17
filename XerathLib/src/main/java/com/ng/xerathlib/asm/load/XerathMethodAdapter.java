@@ -25,7 +25,6 @@ class XerathMethodAdapter extends LocalVariablesSorter {
     private String mMethodName;
     private String mOwner;
 
-
     public interface OnChangedListener {
         /**
          * 发生了更改
@@ -162,6 +161,22 @@ class XerathMethodAdapter extends LocalVariablesSorter {
                     LogUtil.print("注解: " + descriptor + " 附带参数 key:" + name + " value:" + value.toString());
                     XerathHookHelper.getInstance().putAnnotationParams(name, value);
                 }
+
+                @Override
+                public AnnotationVisitor visitArray(String name) {
+                    //这里比较绕，访问者模式。。
+                    String arrayName = name;
+                    return new AnnotationVisitor(ASM5) {
+                        @Override
+                        public void visit(String name, Object value) {
+                            LogUtil.print("注解 visitArray: " + descriptor + " 附带参数 key:" + arrayName +" value:" + value);
+                            XerathHookHelper.getInstance().putAnnotationArrayParams(arrayName, value);
+                            super.visit(name, value);
+                        }
+                    };
+                }
+
+
             };
         }
         return super.visitAnnotation(descriptor, visible);
@@ -178,23 +193,17 @@ class XerathMethodAdapter extends LocalVariablesSorter {
 
     @Override
     public void visitLineNumber(int line, Label start) {
+        XerathHookHelper.getInstance().setLineNumber(line);
         super.visitLineNumber(line, start);
     }
 
-
     @Override
-    public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
-        //[实现方法替换]
-//        if ("org/json/JSONObject".equals(owner)) {
-//            if ("put".equals(name)) {
-//                if ("(Ljava/lang/String;Ljava/lang/Object;)Lorg/json/JSONObject;".equals(descriptor)) {
-//                    LogUtil.print("全局方法替换 in JSONObject");
-//                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/utils/JsonPrinter", "print", "(Ljava/lang/String;Ljava/lang/Object;)V", false);
-//                    onChangedListener.onChanged();
-//                }
-//            }
-//        }
-        super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
+    public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
+        if (XerathHookHelper.getInstance().onVisitMethodInsn(mv, opcode, owner, name, desc, itf)) {
+            //是否打断
+            return;
+        }
+        super.visitMethodInsn(opcode, owner, name, desc, itf);
     }
 
     @Override

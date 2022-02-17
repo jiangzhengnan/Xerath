@@ -6,6 +6,8 @@ import androidx.annotation.Nullable;
 
 import com.ng.xerathcore.CoreHelper;
 
+import org.json.JSONException;
+
 /**
  * @author : jiangzhengnan.jzn@alibaba-inc.com
  * @creation : 2021/10/06
@@ -13,7 +15,7 @@ import com.ng.xerathcore.CoreHelper;
  */
 public class JsonPrinter {
 
-    public static void print(@NonNull String name, @Nullable Object value) {
+    public static void print(@NonNull String name, @Nullable Object value) throws JSONException {
         if (value != null) {
             CoreHelper.catchLog("输入json . name:" + name + "  value:" + value.toString());
         } else {

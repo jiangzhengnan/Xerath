@@ -1,5 +1,6 @@
 package com.ng.xerathlib.core;
 
+import com.android.tools.r8.graph.O;
 import com.ng.xerathlib.asm.base.Parameter;
 import com.ng.xerathlib.core.plug.base.IAnnotationPlug;
 import com.ng.xerathlib.utils.LogUtil;
@@ -8,6 +9,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,8 @@ public class XerathHookHelper {
     private String mMethodDesc;
     //方法访问符号
     private int mMethodAccess;
+    //当前行数
+    private int mLineNumber;
 
     // 注解附带的参数
     private Map<String, Object> mAnnotationParams;
@@ -61,7 +65,7 @@ public class XerathHookHelper {
     }
 
     //preLoad
-    public void init(int access,String owner, String name, String methodDesc) {
+    public void init(int access, String owner, String name, String methodDesc) {
         this.mMethodAccess = access;
         this.mMethodDesc = methodDesc;
         this.mOwner = owner;
@@ -69,7 +73,7 @@ public class XerathHookHelper {
     }
 
     //load
-    public void init(int access,LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
+    public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
         this.mMethodAccess = access;
         this.mAdapter = adapter;
         this.mOwner = owner;
@@ -84,7 +88,7 @@ public class XerathHookHelper {
         mPlug = AnnotationPlugCreator.createPlug(annotationStr);
         if (mPlug != null) {
             //LogUtil.print("初始化plug:" + mMethodName + " " + mMethodDesc);
-            mPlug.init(mMethodAccess,mAdapter, mOwner, mMethodName, mMethodDesc);
+            mPlug.init(mMethodAccess, mAdapter, mOwner, mMethodName, mMethodDesc);
             return true;
         }
         return false;
@@ -97,6 +101,20 @@ public class XerathHookHelper {
 
     public void putAnnotationParams(String key, Object value) {
         mAnnotationParams.put(key, value);
+    }
+
+    public void putAnnotationArrayParams(String key, Object value) {
+        Object[] values;
+        if (mAnnotationParams.containsKey(key)) {
+            values = (Object[]) mAnnotationParams.get(key);
+            Object[] newValues = new Object[values.length + 1];
+            System.arraycopy(values, 0, newValues, 0, values.length);
+            newValues[values.length] = value;
+            mAnnotationParams.put(key, newValues);
+        } else {
+            values = new Object[]{value};
+            mAnnotationParams.put(key, values);
+        }
     }
 
     public Object getAnnotationParams(String key) {
@@ -128,15 +146,29 @@ public class XerathHookHelper {
         }
     }
 
-    public void onHookMethodReturn(int opcode,MethodVisitor mv) {
+    public void onHookMethodReturn(int opcode, MethodVisitor mv) {
         if (mPlug != null) {
-            mPlug.onHookMethodReturn(opcode,mv);
+            mPlug.onHookMethodReturn(opcode, mv);
         }
     }
 
     public void onHookMethodEnd(MethodVisitor mv) {
         if (mPlug != null) {
             mPlug.onHookMethodEnd(mv);
+        }
+    }
+
+    public boolean onVisitMethodInsn(MethodVisitor mv, int opcode, String owner, String name, String desc, boolean itf) {
+        if (mPlug != null) {
+            return mPlug.onVisitMethodInsn(mv, opcode, owner, name, desc, itf);
+        }
+        return false;
+    }
+
+    public void setLineNumber(int lineNumber) {
+        mLineNumber = lineNumber;
+        if (mPlug != null) {
+            mPlug.setLineNumber(mLineNumber);
         }
     }
 
@@ -150,7 +182,8 @@ public class XerathHookHelper {
 
     }
 
-    public void resetOnClass(){
+    public void resetOnClass() {
+        LogUtil.print("XerathHookHelper-清空");
         mStaticFiledList.clear();
         mFiledList.clear();
         //每个类清理一次
