@@ -111,7 +111,6 @@ sh upload.sh
 - [AopArms](https://github.com/AICareless/AopArms)
 
 ## 待完成需求
-- [x] 增加方法移除功能(参考:https://mp.weixin.qq.com/s/npT9MW4TQWH--fKsC_3NCQ 删除无副作用代码)
 - [x] 增加生效控制(全局，包类名)范围 
 - [x] 增加快速部署功能，可供第三方应用进行快速部署ASM插件 
 - [x] 增加包size优化功能-预编译，统计优化前后大小对比
