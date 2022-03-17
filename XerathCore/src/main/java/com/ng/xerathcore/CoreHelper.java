@@ -2,6 +2,7 @@ package com.ng.xerathcore;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.ng.xerathcore.utils.LogUtil;
@@ -21,8 +22,8 @@ import java.util.List;
  */
 public class CoreHelper {
 
-    @Nullable
-    public static CoreHelperListener onCoreHelperListener;
+    @NonNull
+    public static List<CoreHelperListener> onCoreHelperListenerList = new ArrayList<>();
 
     public interface CoreHelperListener {
         void onCatchLog(@Nullable String s);
@@ -46,9 +47,7 @@ public class CoreHelper {
         }
         String exceptionStr = Log.getStackTraceString(exception);
         LogUtil.print("抓取到了异常: " + exceptionStr);
-        if (onCoreHelperListener != null) {
-            onCoreHelperListener.onCatchLog(exceptionStr);
-        }
+        callBackCatch(exceptionStr);
     }
 
     /**
@@ -56,37 +55,26 @@ public class CoreHelper {
      */
     public static void catchLog(String s) {
         LogUtil.print("抓取到了日志: " + s);
-        if (onCoreHelperListener != null) {
-            onCoreHelperListener.onCatchLog(s);
-        }
+        callBackCatch(s);
     }
 
     public static void catchTest() {
         LogUtil.print("catchTest");
-        if (onCoreHelperListener != null) {
-            onCoreHelperListener.onCatchLog("catchTest");
-        }
+        callBackCatch("catchTest");
     }
 
     //暂时存储单个方法中的临时变量
     private static List<JSONObject> mCatchJsonFiled = new ArrayList<>();
 
     public static void catchJsonFiled(Object jsonObject) {
-        if (onCoreHelperListener != null) {
-            onCoreHelperListener.onCatchLog("catchJsonFiled  :" + jsonObject == null ? "null" : jsonObject.toString());
-        }
+        callBackCatch("catchJsonFiled  :" + jsonObject == null ? "null" : jsonObject.toString());
         if (jsonObject instanceof JSONObject) {
-            if (onCoreHelperListener != null) {
-                onCoreHelperListener.onCatchLog("抓到了json:" + jsonObject.toString());
-            }
+            callBackCatch("抓到了json:" + jsonObject.toString());
         }
     }
 
     public static void catchTempJsonFiled(Object jsonObject) {
-        if (onCoreHelperListener != null) {
-            onCoreHelperListener.onCatchLog("抓到了obj:" + jsonObject.getClass().getName() + " " + jsonObject.toString());
-        }
-
+        callBackCatch("抓到了obj:" + jsonObject.getClass().getName() + " " + jsonObject.toString());
         if (jsonObject == null) {
             return;
         }
@@ -99,51 +87,35 @@ public class CoreHelper {
     }
 
     public static void catchTempJsonFiled(boolean value) {
-        if (onCoreHelperListener != null) {
-            onCoreHelperListener.onCatchLog("抓到了 boolean:" + value);
-        }
+        callBackCatch("抓到了 boolean:" + value);
     }
 
     public static void catchTempJsonFiled(int value) {
-        if (onCoreHelperListener != null) {
-            onCoreHelperListener.onCatchLog("抓到了 int:" + value);
-        }
+        callBackCatch("抓到了 int:" + value);
     }
 
     public static void catchTempJsonFiled(short value) {
-        if (onCoreHelperListener != null) {
-            onCoreHelperListener.onCatchLog("抓到了 short:" + value);
-        }
+        callBackCatch("抓到了 short:" + value);
     }
 
     public static void catchTempJsonFiled(byte value) {
-        if (onCoreHelperListener != null) {
-            onCoreHelperListener.onCatchLog("抓到了 byte:" + value);
-        }
+        callBackCatch("抓到了 byte:" + value);
     }
 
     public static void catchTempJsonFiled(char value) {
-        if (onCoreHelperListener != null) {
-            onCoreHelperListener.onCatchLog("抓到了 char:" + value);
-        }
+        callBackCatch("抓到了 char:" + value);
     }
 
     public static void catchTempJsonFiled(long value) {
-        if (onCoreHelperListener != null) {
-            onCoreHelperListener.onCatchLog("抓到了 long:" + value);
-        }
+        callBackCatch("抓到了 long:" + value);
     }
 
     public static void catchTempJsonFiled(double value) {
-        if (onCoreHelperListener != null) {
-            onCoreHelperListener.onCatchLog("抓到了 double:" + value);
-        }
+        callBackCatch("抓到了 double:" + value);
     }
 
     public static void catchTempJsonFiled(float value) {
-        if (onCoreHelperListener != null) {
-            onCoreHelperListener.onCatchLog("抓到了 float:" + value);
-        }
+        callBackCatch("抓到了 float:" + value);
     }
 
     public static void onCatchTempJsonFileFinish() {
@@ -152,11 +124,18 @@ public class CoreHelper {
         }
         for (JSONObject jsonObject : mCatchJsonFiled) {
             if (jsonObject != null) {
-                if (onCoreHelperListener != null) {
-                    onCoreHelperListener.onCatchLog("抓到了json:" + jsonObject.toString());
-                }
+                callBackCatch("抓到了json:" + jsonObject.toString());
             }
         }
         mCatchJsonFiled.clear();
+    }
+
+    private static void callBackCatch(String s) {
+        if (onCoreHelperListenerList == null || onCoreHelperListenerList.size() == 0) {
+            return;
+        }
+        for (CoreHelperListener temp : onCoreHelperListenerList) {
+            temp.onCatchLog(s + "");
+        }
     }
 }

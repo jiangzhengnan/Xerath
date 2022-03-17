@@ -3,25 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:orientation="vertical">
 
-    <!--功能-->
-    <include layout="@layout/layout_func" />
-
-    <View
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/vp_main"
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="5dp"
-        android:background="#888888" />
+        android:layout_height="250dp">
 
-    <!--数据-->
-    <include layout="@layout/layout_data" />
+        <androidx.viewpager.widget.PagerTabStrip
+            android:id="@+id/pts_main"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="top"
+            android:background="@color/white"
+            android:elevation="5dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:translationZ="5dp" />
+
+    </androidx.viewpager.widget.ViewPager>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/tv_show"

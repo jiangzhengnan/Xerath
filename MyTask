@@ -1,0 +1,20 @@
+0.增加tree 和core 分类的api包
+
+0.增加覆盖率工具
+
+1.如何方便的修改接入的三方sdk代码？
+
+2.增加作用域的概念，在gradle中输入/初始化代码定义
+方法生效/类生效/包下生效/全局生效
+
+3.优化方法移除功能：
+参考:https://github.com/bytedance/ByteX
+method-call-opt-plugin（干净地删除某些方法调用，如Log.d）
+抖音Android包体积优化探索：从Class字节码入手精简DEX体积
+参考实现:https://mp.weixin.qq.com/s/npT9MW4TQWH--fKsC_3NCQ(1. 查找终止指令位置)
+
+4.包size优化部分插件
+参考:
+https://ata.alibaba-inc.com/articles/202302?spm=ata.23639746.0.0.65e75902yLBT1C
+R文件优化:R Inline:
+https://ata.alibaba-inc.com/articles/193318?spm=ata.23639746.0.0.65e75902yLBT1C

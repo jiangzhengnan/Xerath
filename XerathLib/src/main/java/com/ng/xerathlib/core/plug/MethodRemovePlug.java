@@ -24,21 +24,6 @@ public class MethodRemovePlug extends AnnotationPlug {
     }
 
     @Override
-    public void onHookMethodStart(MethodVisitor mv) {
-
-    }
-
-    @Override
-    public void onHookMethodReturn(int opcode, MethodVisitor mv) {
-
-    }
-
-    @Override
-    public void onHookMethodEnd(MethodVisitor mv) {
-
-    }
-
-    @Override
     public boolean onVisitMethodInsn(MethodVisitor mv, int opcode, String owner, String name, String desc, boolean itf) {
         LogUtil.print("MethodReplacePlug - onVisitMethodInsn");
         Object[] removeMethodObjArray = (Object[]) XerathHookHelper.getInstance().getAnnotationParams("removeMethods");

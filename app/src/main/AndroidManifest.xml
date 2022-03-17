@@ -9,7 +9,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/Theme.Xerath">
-        <activity android:name=".MainActivity">
+
+        <activity
+            android:name=".ui.HomePageActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

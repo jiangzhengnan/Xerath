@@ -10,6 +10,7 @@ import com.ng.xerath.func.chain.ChainC;
 import com.ng.xerath.func.chain.ChainD;
 import com.ng.xerathcore.CoreHelper;
 import com.ng.xerathcore.annotation.Xerath_LimitCall;
+import com.ng.xerathcore.annotation.Xerath_MethodCompleteRemove;
 import com.ng.xerathcore.annotation.Xerath_MethodRemove;
 import com.ng.xerathcore.annotation.Xerath_MethodReplace;
 import com.ng.xerathcore.annotation.Xerath_TryCatch;
@@ -90,7 +91,30 @@ public class FuncMethodUtil {
             }
     )
     public static void tryRemoveMethod(Context context) {
-        Log.d("nangua","nangua");
-        Toast.makeText(context,"",Toast.LENGTH_SHORT).show();
+        Log.d("tag","A");
+    }
+
+
+    public static String TAG = "test";
+
+    private String abc = "abc";
+    /**
+     * 方法完全移除
+     */
+    @Xerath_MethodCompleteRemove(
+            removeMethods = {
+                    "android/util/Log|d|(Ljava/lang/String;Ljava/lang/String;)I",
+                    "android/widget/Toast|makeText|(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;",
+                    "android/widget/Toast|()V"
+            }
+    )
+    public static void tryRemoveCompleteMethod(Context context) {
+        String tag = "tag";
+        String value = "pumpkin";
+        Log.d(tag,value);
+    }
+
+    public static String getName() {
+        return "pumpkin";
     }
 }

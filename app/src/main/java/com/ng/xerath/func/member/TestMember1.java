@@ -1,11 +1,7 @@
 package com.ng.xerath.func.member;
 
-import com.ng.xerathcore.CoreHelper;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Random;
 
 /**
  * @author : jiangzhengnan.jzn@alibaba-inc.com
@@ -26,7 +22,6 @@ public class TestMember1 {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
 
         //临时变量
         JSONObject json3 = new JSONObject();

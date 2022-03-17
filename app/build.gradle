@@ -3,12 +3,12 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
 
     defaultConfig {
         applicationId "com.ng.xerath"
         minSdkVersion 16
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode 1
         versionName "1.0"
 
@@ -44,6 +44,12 @@ dependencies {
         //core 引入注解依赖
         implementation 'com.ng.xerathlib:XerathCore:1.0.0'
     }
+    implementation "androidx.core:core-ktx:1.7.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31"
 }
 
 apply plugin: 'ng-xerath-plugin'
+apply plugin: 'kotlin-android'
+repositories {
+    mavenCentral()
+}
