@@ -1,12 +1,10 @@
 package com.ng.xerathlib.asm.preload;
 
+import com.ng.xerathlib.asm.base.BaseClassVisitor;
 import com.ng.xerathlib.core.XerathHookHelper;
-import com.ng.xerathlib.utils.LogUtil;
 
 import org.objectweb.asm.ClassVisitor;
-import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
 import static org.objectweb.asm.Opcodes.ACC_INTERFACE;
 import static org.objectweb.asm.Opcodes.ASM5;
@@ -17,17 +15,10 @@ import static org.objectweb.asm.Opcodes.ASM5;
  * @description :
  * 预加载数据 ClassVisitor
  */
-public class XerathPreLoadClassVisitor extends ClassVisitor {
-    private String owner;
+public class PreLoadClassVisitor extends BaseClassVisitor {
 
-    private boolean isInterface;
-    /**
-     * 是否被修改过
-     */
-    public boolean changed;
-
-    public XerathPreLoadClassVisitor(ClassVisitor visitor) {
-        super(ASM5, visitor);
+    public PreLoadClassVisitor(ClassVisitor visitor) {
+        super(visitor);
     }
 
     @Override
@@ -45,7 +36,7 @@ public class XerathPreLoadClassVisitor extends ClassVisitor {
         if (!isInterface && mv != null && !name.equals("<init>")) {
             //LogUtil.printPre("方法：" + name + " des:" + descriptor + " ");
             //将MethodVisitor交由 XerathPreLoadAdviceAdapter 代理
-            mv = new XerathPreLoadMethodAdapter(access,name, descriptor, mv, owner);
+            mv = new PreLoadMethodAdapter(access,name, descriptor, mv, owner);
         }
         return mv;
 

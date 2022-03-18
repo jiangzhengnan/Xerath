@@ -1,6 +1,6 @@
 package com.ng.xerathlib.asm.preload;
 
-import com.ng.xerathlib.asm.base.Parameter;
+import com.ng.xerathlib.utils.Parameter;
 import com.ng.xerathlib.core.XerathHookHelper;
 import com.ng.xerathlib.utils.LogUtil;
 
@@ -19,7 +19,7 @@ import java.util.List;
  * @description :
  * 只做参数收集，不做更改
  */
-public class XerathPreLoadMethodAdapter extends MethodVisitor implements Opcodes {
+public class PreLoadMethodAdapter extends MethodVisitor implements Opcodes {
     //是否需要预加载
     private boolean isNeedPreLoad;
 
@@ -32,8 +32,8 @@ public class XerathPreLoadMethodAdapter extends MethodVisitor implements Opcodes
     private String mMethodName;
     private String mOwner;
 
-    public XerathPreLoadMethodAdapter(int access, String name, String descriptor, MethodVisitor methodVisitor,
-                                      String owner) {
+    public PreLoadMethodAdapter(int access, String name, String descriptor, MethodVisitor methodVisitor,
+                                String owner) {
         super(Opcodes.ASM5, methodVisitor);
         mMethodKey = name + descriptor;
         mMethodName = name;

@@ -87,7 +87,6 @@ class XerathTransform extends Transform {
     }
 
     private void transformJar(File srcJar, File destJar, Status status, SecureClassLoader classLoader) {
-        println("======transformJar ======" + srcJar.name)
         this.waitableExecutor.execute {
             JarTransformExecutor.weave(srcJar, destJar, classLoader)
         }

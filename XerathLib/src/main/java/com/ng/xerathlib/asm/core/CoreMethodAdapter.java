@@ -1,4 +1,4 @@
-package com.ng.xerathlib.asm.load;
+package com.ng.xerathlib.asm.core;
 
 import com.ng.xerathlib.core.XerathHookHelper;
 import com.ng.xerathlib.utils.LogUtil;
@@ -18,7 +18,7 @@ import static org.objectweb.asm.Opcodes.RETURN;
 /**
  * 继承自LocalVariablesSorter 有序遍历素有方法
  */
-class XerathMethodAdapter extends LocalVariablesSorter {
+class CoreMethodAdapter extends LocalVariablesSorter {
 
     private boolean isAnnotationed;
     private OnChangedListener onChangedListener;
@@ -33,8 +33,8 @@ class XerathMethodAdapter extends LocalVariablesSorter {
     }
 
 
-    public XerathMethodAdapter(int access, String name, String descriptor, MethodVisitor methodVisitor,
-                               String owner, OnChangedListener onChangedListener) {
+    public CoreMethodAdapter(int access, String name, String descriptor, MethodVisitor methodVisitor,
+                             String owner, OnChangedListener onChangedListener) {
         super(ASM5, access, descriptor, methodVisitor);
         this.onChangedListener = onChangedListener;
         this.mMethodName = name;

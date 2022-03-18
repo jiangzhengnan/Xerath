@@ -1,4 +1,4 @@
-package com.ng.xerathlib.asm.load;
+package com.ng.xerathlib.asm.jar;
 
 
 import org.objectweb.asm.MethodVisitor;

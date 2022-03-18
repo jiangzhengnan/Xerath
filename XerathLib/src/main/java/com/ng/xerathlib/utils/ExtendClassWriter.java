@@ -1,4 +1,4 @@
-package com.ng.xerathlib.asm.base;
+package com.ng.xerathlib.utils;
 
 
 import org.objectweb.asm.ClassReader;

@@ -1,6 +1,6 @@
-package com.ng.xerathlib.asm.load;
+package com.ng.xerathlib.asm.core;
 
-import com.ng.xerathlib.asm.load.bytex.RemoveMethodCallOptMethodVisitor;
+import com.ng.xerathlib.asm.base.BaseClassVisitor;
 import com.ng.xerathlib.core.XerathHookHelper;
 import com.ng.xerathlib.utils.LogUtil;
 
@@ -17,26 +17,10 @@ import static org.objectweb.asm.Opcodes.ASM5;
  * @date 2020/6/22
  * @describe
  */
-public class XerathClassVisitor extends ClassVisitor {
+public class CoreClassVisitor extends BaseClassVisitor {
 
-    /**
-     * 是否被修改过
-     */
-    public boolean changed;
-    private String owner;
-    private boolean isInterface;
-
-    public XerathClassVisitor(ClassVisitor visitor) {
-        super(ASM5, visitor);
-
-
-    }
-
-    @Override
-    public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-        cv.visit(version, access, name, signature, superName, interfaces);
-        owner = name;
-        isInterface = (access & ACC_INTERFACE) != 0;
+    public CoreClassVisitor(ClassVisitor visitor) {
+        super(visitor);
     }
 
     @Override
@@ -60,19 +44,12 @@ public class XerathClassVisitor extends ClassVisitor {
         MethodVisitor mv = super.visitMethod(access, name, descriptor, signature, exceptions);
         if (!isInterface && mv != null && !name.equals("<init>")) {
             //LogUtil.print("方法：" + name + " des:" + descriptor + " ");
-            //将 MethodVisitor交由 XerathMethodAdapter 代理
-            mv = new XerathMethodAdapter(access, name, descriptor, mv, owner, new XerathMethodAdapter.OnChangedListener() {
+            mv = new CoreMethodAdapter(access, name, descriptor, mv, owner, new CoreMethodAdapter.OnChangedListener() {
                 @Override
                 public void onChanged() {
                     changed = true;
                 }
             });
-
-//            //强行测试接入方法移除
-//            if (name.contains("tryRemoveMethod")) {
-//                mv = new RemoveMethodCallOptMethodVisitor(mv, access, name, descriptor, signature, exceptions);
-//                changed = true;
-//            }
         }
         return mv;
     }

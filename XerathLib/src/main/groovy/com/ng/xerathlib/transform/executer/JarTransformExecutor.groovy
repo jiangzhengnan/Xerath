@@ -1,10 +1,7 @@
 package com.ng.xerathlib.transform.executer
 
-import com.ng.xerathlib.asm.base.ExtendClassWriter
-import com.ng.xerathlib.asm.load.JarClassVisitor
-import com.ng.xerathlib.scene.AnalyseHelper
-import com.ng.xerathlib.scene.RunModel
-import com.ng.xerathlib.transform.util.PkgUtils
+import com.ng.xerathlib.utils.ExtendClassWriter
+import com.ng.xerathlib.asm.jar.JarClassVisitor
 import com.ng.xerathlib.transform.util.TransformUtil
 import org.apache.commons.io.IOUtils
 import org.objectweb.asm.ClassReader

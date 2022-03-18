@@ -1,5 +1,7 @@
-package com.ng.xerathlib.asm.load.bytex;
+package com.ng.xerathlib.asm.tree;
 
+
+import com.ng.xerathlib.utils.OpcodesUtils;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
