@@ -1,16 +1,14 @@
 package com.ng.xerathlib.asm.core;
 
 import com.ng.xerathlib.asm.base.BaseClassVisitor;
-import com.ng.xerathlib.core.XerathHookHelper;
+import com.ng.xerathlib.hook.XerathHookHelper;
 import com.ng.xerathlib.utils.LogUtil;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.FieldVisitor;
 import org.objectweb.asm.MethodVisitor;
 
-import static org.objectweb.asm.Opcodes.ACC_INTERFACE;
 import static org.objectweb.asm.Opcodes.ACC_STATIC;
-import static org.objectweb.asm.Opcodes.ASM5;
 
 /**
  * @Project ASMCostTime

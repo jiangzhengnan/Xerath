@@ -14,6 +14,8 @@ class XerathTransformPlugin implements Plugin<Project> {
     void apply(Project project) {
         println("======XerathTransformPlugin apply 插件开始注册   ======")
         registerForApp(project)
+        //registerForLib(project)
+
     }
 
     /**

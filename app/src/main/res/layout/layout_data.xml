@@ -1,89 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:padding="10dp"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="数据"
-        android:textColor="@color/black"
-        android:textSize="16dp"
-        android:textStyle="bold" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text="数据"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn1_layout_data"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:text="方法耗时统计"
-            android:textSize="9dp" />
+                android:id="@+id/btn1_layout_data"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="方法耗时统计"
+                android:textSize="9dp" />
 
         <Button
-            android:id="@+id/btn2_layout_data"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:text="方法出入参统计"
-            android:textSize="9dp" />
+                android:id="@+id/btn2_layout_data"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="方法出入参统计"
+                android:textSize="9dp" />
 
         <Button
-            android:id="@+id/btn3_layout_data"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:text="全局变量抓取"
-            android:textAllCaps="false"
-            android:textSize="9dp" />
+                android:id="@+id/btn3_layout_data"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="全局变量抓取"
+                android:textAllCaps="false"
+                android:textSize="9dp" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="5dp"
-        android:orientation="horizontal">
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn4_layout_data"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:text="调用链路"
-            android:textSize="9dp" />
+                android:id="@+id/btn4_layout_data"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:text="属性依赖"
+                android:textSize="9dp" />
 
         <Button
-            android:id="@+id/btn5_layout_data"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:text=""
-            android:textSize="9dp"
-            android:visibility="invisible" />
+                android:id="@+id/btn5_layout_data"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text="调用链路统计"
+                android:textSize="9dp" />
 
         <Button
-            android:id="@+id/btn6_layout_data"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginLeft="10dp"
-            android:layout_weight="1"
-            android:text=""
-            android:textAllCaps="false"
-            android:textSize="9dp"
-            android:visibility="invisible" />
+                android:id="@+id/btn6_layout_data"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:text=""
+                android:textAllCaps="false"
+                android:textSize="9dp"
+                android:visibility="invisible" />
 
     </LinearLayout>
 </LinearLayout>

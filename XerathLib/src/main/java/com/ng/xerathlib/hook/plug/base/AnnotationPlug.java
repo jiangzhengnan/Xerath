@@ -1,4 +1,4 @@
-package com.ng.xerathlib.core.plug.base;
+package com.ng.xerathlib.hook.plug.base;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;

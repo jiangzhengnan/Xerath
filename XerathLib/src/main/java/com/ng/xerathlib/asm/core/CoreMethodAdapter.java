@@ -1,12 +1,11 @@
 package com.ng.xerathlib.asm.core;
 
-import com.ng.xerathlib.core.XerathHookHelper;
+import com.ng.xerathlib.hook.XerathHookHelper;
 import com.ng.xerathlib.utils.LogUtil;
-
+import javax.annotation.Nullable;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
 import static org.objectweb.asm.Opcodes.ASM5;
@@ -21,6 +20,7 @@ import static org.objectweb.asm.Opcodes.RETURN;
 class CoreMethodAdapter extends LocalVariablesSorter {
 
     private boolean isAnnotationed;
+    @Nullable
     private OnChangedListener onChangedListener;
     private String mMethodName;
     private String mOwner;
@@ -74,32 +74,32 @@ class CoreMethodAdapter extends LocalVariablesSorter {
     @Override
     public void visitVarInsn(int opcode, int var) {
         super.visitVarInsn(opcode, var);
-//        if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
-//            isFinish = true;
-//        }
-//
-//        if (!isFinish && opcode == Opcodes.ASTORE) {
-//            LogUtil.print("注入 [临时] 变量: opcode:" + opcode + " var:" + var);
-//            Label l2 = new Label();
-//            mv.visitLabel(l2);
-//            mv.visitVarInsn(Opcodes.ALOAD, var);
-//            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchTempJsonFiled", "(Ljava/lang/Object;)V", false);
-//        }
+        //        if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
+        //            isFinish = true;
+        //        }
+        //
+        //        if (!isFinish && opcode == Opcodes.ASTORE) {
+        //            LogUtil.print("注入 [临时] 变量: opcode:" + opcode + " var:" + var);
+        //            Label l2 = new Label();
+        //            mv.visitLabel(l2);
+        //            mv.visitVarInsn(Opcodes.ALOAD, var);
+        //            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchTempJsonFiled", "(Ljava/lang/Object;)V", false);
+        //        }
 
-//        // 临时变量
-//        for (int i = 0; i < XerathHookHelper.getInstance().getTempFiledList().size(); i++) {
-//            String[] values = XerathHookHelper.getInstance().getTempFiledList().get(i).split(" ");
-//            //name + " " + desc + " " + index;
-//            String name = values[0];
-//            String desc = values[1];
-//            int localIndex = Integer.parseInt(values[2]);
-//            int localOpcode = OpcodesUtils.getLoadOpcodeFromDesc(desc);
-//            if (opcode == localOpcode && var == localIndex) {
-//                //LogUtil.print("注入 [临时] 变量: name:" + name + " desc:" + desc);
-//                mv.visitVarInsn(localOpcode, localIndex);
-//                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchTempJsonFiled", "(Ljava/lang/Object;)V", false);
-//            }
-//        }
+        //        // 临时变量
+        //        for (int i = 0; i < XerathHookHelper.getInstance().getTempFiledList().size(); i++) {
+        //            String[] values = XerathHookHelper.getInstance().getTempFiledList().get(i).split(" ");
+        //            //name + " " + desc + " " + index;
+        //            String name = values[0];
+        //            String desc = values[1];
+        //            int localIndex = Integer.parseInt(values[2]);
+        //            int localOpcode = OpcodesUtils.getLoadOpcodeFromDesc(desc);
+        //            if (opcode == localOpcode && var == localIndex) {
+        //                //LogUtil.print("注入 [临时] 变量: name:" + name + " desc:" + desc);
+        //                mv.visitVarInsn(localOpcode, localIndex);
+        //                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchTempJsonFiled", "(Ljava/lang/Object;)V", false);
+        //            }
+        //        }
     }
 
     /**
@@ -111,33 +111,33 @@ class CoreMethodAdapter extends LocalVariablesSorter {
     public void visitInsn(int opcode) {
         if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
             XerathHookHelper.getInstance().onHookMethodReturn(opcode, mv);
-//            // 成员变量
-//            for (int i = 0; i < XerathHookHelper.getInstance().getFiledList().size(); i++) {
-//                String[] values = XerathHookHelper.getInstance().getFiledList().get(i).split(" ");
-//                mv.visitVarInsn(Opcodes.ALOAD, 0);
-//                mv.visitFieldInsn(Opcodes.GETFIELD, values[0], values[1], values[2]);
-//                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchJsonFiled", "(Ljava/lang/Object;)V", false);
-//            }
-//            // 类变量
-//            for (int i = 0; i < XerathHookHelper.getInstance().getStaticFiledList().size(); i++) {
-//                String[] values = XerathHookHelper.getInstance().getStaticFiledList().get(i).split(" ");
-//                mv.visitVarInsn(Opcodes.ALOAD, 0);
-//                mv.visitFieldInsn(Opcodes.GETSTATIC, values[0], values[1], values[2]);
-//                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchJsonFiled", "(Ljava/lang/Object;)V", false);
-//            }
-//
-//            // 收集局部变量
-//            if (XerathHookHelper.getInstance().getTempFiledList().size() > 0) {
-//                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "onCatchTempJsonFileFinish", "()V", false);
-//            }
-//
-//
-//            if (XerathHookHelper.getInstance().getFiledList().size() > 0 ||
-//                    XerathHookHelper.getInstance().getStaticFiledList().size() > 0 ||
-//                    XerathHookHelper.getInstance().getTempFiledList().size() > 0) {
-//                LogUtil.print("数量:" + XerathHookHelper.getInstance().getFiledList().size() + " " + XerathHookHelper.getInstance().getStaticFiledList().size() + " " + XerathHookHelper.getInstance().getTempFiledList().size());
-//                onChangedListener.onChanged();
-//            }
+            //            // 成员变量
+            //            for (int i = 0; i < XerathHookHelper.getInstance().getFiledList().size(); i++) {
+            //                String[] values = XerathHookHelper.getInstance().getFiledList().get(i).split(" ");
+            //                mv.visitVarInsn(Opcodes.ALOAD, 0);
+            //                mv.visitFieldInsn(Opcodes.GETFIELD, values[0], values[1], values[2]);
+            //                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchJsonFiled", "(Ljava/lang/Object;)V", false);
+            //            }
+            //            // 类变量
+            //            for (int i = 0; i < XerathHookHelper.getInstance().getStaticFiledList().size(); i++) {
+            //                String[] values = XerathHookHelper.getInstance().getStaticFiledList().get(i).split(" ");
+            //                mv.visitVarInsn(Opcodes.ALOAD, 0);
+            //                mv.visitFieldInsn(Opcodes.GETSTATIC, values[0], values[1], values[2]);
+            //                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchJsonFiled", "(Ljava/lang/Object;)V", false);
+            //            }
+            //
+            //            // 收集局部变量
+            //            if (XerathHookHelper.getInstance().getTempFiledList().size() > 0) {
+            //                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "onCatchTempJsonFileFinish", "()V", false);
+            //            }
+            //
+            //
+            //            if (XerathHookHelper.getInstance().getFiledList().size() > 0 ||
+            //                    XerathHookHelper.getInstance().getStaticFiledList().size() > 0 ||
+            //                    XerathHookHelper.getInstance().getTempFiledList().size() > 0) {
+            //                LogUtil.print("数量:" + XerathHookHelper.getInstance().getFiledList().size() + " " + XerathHookHelper.getInstance().getStaticFiledList().size() + " " + XerathHookHelper.getInstance().getTempFiledList().size());
+            //                onChangedListener.onChanged();
+            //            }
         }
         super.visitInsn(opcode);
     }
@@ -169,13 +169,13 @@ class CoreMethodAdapter extends LocalVariablesSorter {
                     return new AnnotationVisitor(ASM5) {
                         @Override
                         public void visit(String name, Object value) {
-                            LogUtil.print("注解 visitArray: " + descriptor + " 附带参数 key:" + arrayName +" value:" + value);
-                            XerathHookHelper.getInstance().putAnnotationArrayParams(arrayName, value);
+                            LogUtil.print("注解 visitArray: " + descriptor + " 附带参数 key:" + arrayName + " value:" + value);
+                            XerathHookHelper.getInstance()
+                                            .putAnnotationArrayParams(arrayName, value);
                             super.visit(name, value);
                         }
                     };
                 }
-
 
             };
         }

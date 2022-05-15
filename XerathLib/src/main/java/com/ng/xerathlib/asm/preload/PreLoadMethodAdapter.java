@@ -1,7 +1,7 @@
 package com.ng.xerathlib.asm.preload;
 
 import com.ng.xerathlib.utils.Parameter;
-import com.ng.xerathlib.core.XerathHookHelper;
+import com.ng.xerathlib.hook.XerathHookHelper;
 import com.ng.xerathlib.utils.LogUtil;
 
 import org.objectweb.asm.AnnotationVisitor;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author : jiangzhengnan
  * @creation : 2021/08/25
  * @description :
- * 只做参数收集，不做更改
+ * 参数提前收集
  */
 public class PreLoadMethodAdapter extends MethodVisitor implements Opcodes {
     //是否需要预加载

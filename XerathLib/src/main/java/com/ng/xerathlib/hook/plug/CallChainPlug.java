@@ -1,7 +1,6 @@
-package com.ng.xerathlib.core.plug;
+package com.ng.xerathlib.hook.plug;
 
-import com.ng.xerathlib.core.XerathHookHelper;
-import com.ng.xerathlib.core.plug.base.AnnotationPlug;
+import com.ng.xerathlib.hook.plug.base.AnnotationPlug;
 import com.ng.xerathlib.utils.LogUtil;
 
 import org.objectweb.asm.Label;

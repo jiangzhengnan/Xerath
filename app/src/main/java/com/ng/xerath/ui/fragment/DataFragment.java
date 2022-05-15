@@ -77,10 +77,18 @@ public class DataFragment extends BaseFragment {
             TestMember1 testMember1 = new TestMember1();
             testMember1.test();
         });
-        //获取调用链
+        //获取对象属性依赖关系
         view.findViewById(R.id.btn4_layout_data).setOnClickListener(v -> {
             pushNewLine();
-            DataMethodUtil.testCallChain();
+            DataMethodUtil.testHookParams();
+        });
+        //获取方法调用链路，耗时分析等
+        view.findViewById(R.id.btn5_layout_data).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                pushNewLine();
+                DataMethodUtil.testCallChain();
+            }
         });
 
     }

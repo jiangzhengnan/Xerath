@@ -1,22 +1,26 @@
-package com.ng.xerathlib.core;
-
-import com.ng.xerathlib.utils.Parameter;
-import com.ng.xerathlib.core.plug.base.IAnnotationPlug;
-import com.ng.xerathlib.utils.LogUtil;
-
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.commons.LocalVariablesSorter;
+package com.ng.xerathlib.hook;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ng.xerathlib.hook.plug.AnnotationPlugCreator;
+import com.ng.xerathlib.hook.plug.base.IAnnotationPlug;
+import com.ng.xerathlib.extension.TransformExtConstant;
+import com.ng.xerathlib.utils.LogUtil;
+import com.ng.xerathlib.utils.Parameter;
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.commons.LocalVariablesSorter;
+
 /**
- * 描述:
- *
  * @author Jzn
  * @date 2021/9/14
+ * 描述:
+ * 1.抓取参数
+ * 2.注解工具管理
+ * 3.类工具管理
+ *
  */
 public class XerathHookHelper {
     // 当前操作插件
@@ -83,6 +87,9 @@ public class XerathHookHelper {
      * 判断注解是否需要hook
      */
     public boolean isNeedHook(String annotationStr) {
+        if (!TransformExtConstant.sTransformExt.enableAnnotation) {
+            return false;
+        }
         mPlug = AnnotationPlugCreator.createPlug(annotationStr);
         if (mPlug != null) {
             //LogUtil.print("初始化plug:" + mMethodName + " " + mMethodDesc);
@@ -90,11 +97,6 @@ public class XerathHookHelper {
             return true;
         }
         return false;
-    }
-
-    public void printPrams() {
-        LogUtil.print("方法名:name:" + mMethodName + " 方法描述:methodDesc:" + mMethodDesc);
-        //LogUtil.print("owner:" + mOwner);
     }
 
     public void putAnnotationParams(String key, Object value) {
@@ -177,7 +179,6 @@ public class XerathHookHelper {
         mAnnotationParams.clear();
         //清空方法参数
         mMethodParametersMap.clear();
-
     }
 
     public void resetOnClass() {

@@ -1,6 +1,10 @@
 plugins {
     id 'com.android.application'
 }
+apply plugin: 'kotlin-android'
+repositories {
+    mavenCentral()
+}
 
 android {
     compileSdkVersion 31
@@ -48,8 +52,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31"
 }
 
-apply plugin: 'ng-xerath-plugin'
-apply plugin: 'kotlin-android'
-repositories {
-    mavenCentral()
-}
+//引入插件
+apply from: project.file('plugin-rule.gradle')

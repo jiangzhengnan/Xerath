@@ -2,19 +2,18 @@ package com.ng.xerathlib.transform
 
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
-import com.ng.xerathlib.constants.HookExtensions
-import com.ng.xerathlib.scene.AnalyseHelper
 import com.android.ide.common.internal.WaitableExecutor
-import com.ng.xerathlib.scene.TransformExtension
+import com.ng.xerathlib.extension.bean.TransformExt
+import com.ng.xerathlib.extension.TransformExtConstant
+import com.ng.xerathlib.extension.bean.TrackMethodStack
 import com.ng.xerathlib.transform.executer.AppTransformExecutor
 import com.ng.xerathlib.transform.executer.JarTransformExecutor
 import com.ng.xerathlib.transform.util.ClassLoaderHelper
 import org.apache.commons.io.FileUtils
 import org.gradle.api.Project
-import org.gradle.workers.internal.Worker
 
 import java.security.SecureClassLoader
-import java.util.concurrent.Callable
+
 /**
  * 框架Transform
  */
@@ -25,9 +24,11 @@ class XerathTransform extends Transform {
     private Project project
 
     XerathTransform(Project project) {
+        project.getExtensions().create(TransformExtConstant.XERATH_BASE_EXT, TransformExt.class)
+        project.getExtensions().create(TransformExtConstant.TRACK_METHOD_STACK, TrackMethodStack.class)
+
         this.project = project
         this.waitableExecutor = WaitableExecutor.useGlobalSharedThreadPool()
-        project.getExtensions().create(HookExtensions.XERATH_HOOK_TRAFFIC_INFO, TransformExtension.class)
         println("======NoahTransform 插件初始化======")
     }
 
@@ -54,6 +55,7 @@ class XerathTransform extends Transform {
     @Override
     void transform(TransformInvocation transformInvocation) throws TransformException, InterruptedException, IOException {
         super.transform(transformInvocation)
+        getParams()
         long startTime = System.currentTimeMillis()
         URLClassLoader urlClassLoader = ClassLoaderHelper.getClassLoader(transformInvocation.inputs, transformInvocation.referencedInputs, project)
         transformInvocation.getOutputProvider().deleteAll()
@@ -66,8 +68,8 @@ class XerathTransform extends Transform {
                 println("======transform App ======" + outputDir.name)
                 transformApp(dirInput.file, outputDir)
             }
-            //jar遍历
-            for (JarInput jarInput : input.jarInputs) {//jar（第三方库，module）
+            //jar遍历（第三方库，module）
+            for (JarInput jarInput : input.jarInputs) {
                 File outputJar = transformInvocation.outputProvider.getContentLocation(jarInput.file.absolutePath, jarInput.contentTypes, jarInput.scopes, Format.JAR)
                 FileUtils.copyFile(jarInput.file, outputJar)
                 println("======transform Jar ======" + outputJar.name)
@@ -89,6 +91,22 @@ class XerathTransform extends Transform {
     private void transformJar(File srcJar, File destJar, Status status, SecureClassLoader classLoader) {
         this.waitableExecutor.execute {
             JarTransformExecutor.weave(srcJar, destJar, classLoader)
+        }
+    }
+
+    void getParams() {
+        println("打印输入参数")
+        //获取参数
+        TransformExt baseExt = (TransformExt) project.getExtensions().getByName(TransformExtConstant.XERATH_BASE_EXT)
+        if (baseExt != null) {
+            TransformExtConstant.sTransformExt = baseExt
+            println("xerathTransformExt:" + baseExt.toString())
+        }
+
+        TrackMethodStack trackMethodStackExt = (TrackMethodStack) project.getExtensions().getByName(TransformExtConstant.TRACK_METHOD_STACK)
+        if (trackMethodStackExt != null) {
+            TransformExtConstant.sTrackMethodStack = trackMethodStackExt
+            println("track_method_stack:" + trackMethodStackExt.toString())
         }
     }
 

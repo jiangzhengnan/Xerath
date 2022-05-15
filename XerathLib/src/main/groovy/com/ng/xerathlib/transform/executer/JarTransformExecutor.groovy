@@ -1,8 +1,10 @@
 package com.ng.xerathlib.transform.executer
 
-import com.ng.xerathlib.utils.ExtendClassWriter
-import com.ng.xerathlib.asm.jar.JarClassVisitor
+import com.ng.xerathlib.asm.core.CoreClassVisitor
+import com.ng.xerathlib.asm.preload.PreLoadClassVisitor
+import com.ng.xerathlib.asm.tree.TreeClassVisitor
 import com.ng.xerathlib.transform.util.TransformUtil
+import com.ng.xerathlib.utils.ExtendClassWriter
 import org.apache.commons.io.IOUtils
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassVisitor
@@ -37,7 +39,7 @@ class JarTransformExecutor {
             if (!isWeaveClass(outEntry.getName().replace("/", "."))) {
                 newEntryContent = IOUtils.toByteArray(originalFile)
             } else {
-                newEntryContent = weaveSingleClassToByteArray(originalFile, classLoader)
+                newEntryContent = hookJarClass(originalFile, classLoader)
             }
             CRC32 crc32 = new CRC32()
             crc32.update(newEntryContent)
@@ -64,7 +66,6 @@ class JarTransformExecutor {
         if (TransformUtil.isSystemClass(fullQualifiedClassName)) {
             return false
         }
-
 //        //自定义需要抓取的类
 //        if (PkgUtils. (fullQualifiedClassName)) {
 //            println("")
@@ -81,18 +82,33 @@ class JarTransformExecutor {
 //        }
         return false
     }
+//
+//    //jar注入
+//    static byte[] weaveSingleClassToByteArray(InputStream inputStream, SecureClassLoader classLoader) throws IOException {
+//        ClassReader classReader = new ClassReader(inputStream)
+//        ClassWriter classWriter = new ExtendClassWriter(classLoader, ClassWriter.COMPUTE_FRAMES)
+//        //预处理ClassVisitor
+//        //NoahPreLoadClassVisitor preAdapter = new NoahPreLoadClassVisitor(classWriter)
+//        //classReader.accept(preAdapter, ClassReader.SKIP_FRAMES)
+//        //正式处理
+//        ClassVisitor classWriterWrapper = new JarClassVisitor(classWriter)
+//        classReader.accept(classWriterWrapper, ClassReader.SKIP_FRAMES)
+//        return classWriter.toByteArray()
+//    }
+
 
     //jar注入
-    static byte[] weaveSingleClassToByteArray(InputStream inputStream, SecureClassLoader classLoader) throws IOException {
-        ClassReader classReader = new ClassReader(inputStream)
-        ClassWriter classWriter = new ExtendClassWriter(classLoader, ClassWriter.COMPUTE_FRAMES)
-        //预处理ClassVisitor
-        //NoahPreLoadClassVisitor preAdapter = new NoahPreLoadClassVisitor(classWriter)
-        //classReader.accept(preAdapter, ClassReader.SKIP_FRAMES)
-        //正式处理
-        ClassVisitor classWriterWrapper = new JarClassVisitor(classWriter)
-        classReader.accept(classWriterWrapper, ClassReader.SKIP_FRAMES)
-        return classWriter.toByteArray()
+    static byte[] hookJarClass(InputStream inputStream, SecureClassLoader classLoader) throws IOException {
+        byte[] nowContent = waveSingleCv(inputStream, classLoader, PreLoadClassVisitor)
+        nowContent = waveSingleCv(new ByteArrayInputStream(nowContent), classLoader, CoreClassVisitor)
+        nowContent = waveSingleCv(new ByteArrayInputStream(nowContent), classLoader, TreeClassVisitor)
+        return nowContent
     }
 
+    static byte[] waveSingleCv(InputStream inputStream, SecureClassLoader classLoader, ClassVisitor classVisitor) throws IOException {
+        ClassReader classReader = new ClassReader(inputStream)
+        ClassWriter classWriter = new ExtendClassWriter(classLoader, ClassWriter.COMPUTE_FRAMES)
+        classReader.accept(classVisitor, ClassReader.SKIP_FRAMES)
+        return classWriter.toByteArray()
+    }
 }
