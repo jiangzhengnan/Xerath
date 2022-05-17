@@ -1,5 +1,7 @@
 package com.ng.xerathlib.hook.annotation.plug.base;
 
+import com.ng.xerathlib.hook.params.HookParams;
+
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
@@ -11,7 +13,7 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
  */
 public interface IAnnotationPlug {
 
-    void init(int access,LocalVariablesSorter adapter, String owner, String name,String methodDesc);
+    void init(HookParams params);
 
     void onHookMethodStart(MethodVisitor mv);
 

@@ -29,13 +29,8 @@ public class LimitCallPlug extends AnnotationPlug {
     private long clickTime = 0;
 
     @Override
-    public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
-        super.init(access, adapter, owner, name, methodDesc);
-    }
-
-    @Override
     public void onHookMethodStart(MethodVisitor mv) {
-        Long clickTimeL = (Long) XerathHookHelper.getInstance().getAnnotationParams("time");
+        Long clickTimeL = (Long) XerathHookHelper.getInstance().getParams().getAnnotationParams("time");
         if (clickTimeL != null) {
             clickTime = clickTimeL;
         }

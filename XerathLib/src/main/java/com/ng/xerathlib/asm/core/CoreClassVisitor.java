@@ -28,10 +28,10 @@ public class CoreClassVisitor extends BaseClassVisitor {
             String temp = owner + " " + name + " " + descriptor;
             if ((access & ACC_STATIC) != 0) {
                 LogUtil.print("抓取 [类] 变量: owner:" + owner + " name:" + name + " desc:" + descriptor);
-                XerathHookHelper.getInstance().getStaticFiledList().add(temp);
+                XerathHookHelper.getInstance().getParams().getStaticFiledList().add(temp);
             } else {
                 LogUtil.print("抓取 [成员] 变量: owner:" + owner + " name:" + name + " desc:" + descriptor);
-                XerathHookHelper.getInstance().getFiledList().add(temp);
+                XerathHookHelper.getInstance().getParams().getFiledList().add(temp);
             }
         }
         return super.visitField(access, name, descriptor, signature, value);

@@ -23,11 +23,6 @@ public class CollectParamsPlug extends AnnotationPlug {
     //当前方法对应的参数列表
     private List<Parameter> mParameters;
 
-
-    @Override
-    public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
-        super.init(access, adapter, owner, name, methodDesc);
-    }
     //进行入参统计
     @Override
     public void onHookMethodStart(MethodVisitor mv) {
@@ -70,7 +65,7 @@ public class CollectParamsPlug extends AnnotationPlug {
     private void loadParams() {
         String key = mMethodName + mMethodDesc;
         LogUtil.print("CollectParamsPlug key:" + key);
-        mParameters = XerathHookHelper.getInstance().getMethodParams(key);
+        mParameters = XerathHookHelper.getInstance().getParams().getMethodParams(key);
         if (mParameters != null) {
             LogUtil.print("CollectParamsPlug 参数列表:" + mParameters.toString());
         } else {

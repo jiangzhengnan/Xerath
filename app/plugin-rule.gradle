@@ -23,7 +23,7 @@ buildscript {
 
 apply plugin: 'ng-xerath-plugin'
 xerathTransformExt {
-    enableAnnotation = false
+    enableAnnotation = true
     runVariant = 'DEBUG'
 }
 

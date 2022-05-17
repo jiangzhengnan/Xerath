@@ -1,5 +1,7 @@
 package com.ng.xerathlib.hook.annotation.plug.base;
 
+import com.ng.xerathlib.hook.params.HookParams;
+
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.commons.LocalVariablesSorter;
@@ -17,16 +19,14 @@ public abstract class AnnotationPlug implements IAnnotationPlug {
     protected String mOwner;
     protected String mMethodName;
     protected LocalVariablesSorter mAdapter;
-    protected int mLineNumber;
-
 
     @Override
-    public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
-        this.mMethodAccess = access;
-        this.mAdapter = adapter;
-        this.mOwner = owner;
-        this.mMethodName = name;
-        this.mMethodDesc = methodDesc;
+    public void init(HookParams params) {
+        this.mMethodAccess = params.mMethodAccess;
+        this.mAdapter = params.mAdapter;
+        this.mOwner = params.mOwner;
+        this.mMethodName = params.mMethodName;
+        this.mMethodDesc = params.mMethodDesc;
     }
 
     protected boolean isStaticMethod() {
@@ -55,6 +55,5 @@ public abstract class AnnotationPlug implements IAnnotationPlug {
 
     @Override
     public void setLineNumber(int lineNumber) {
-        mLineNumber = lineNumber;
     }
 }

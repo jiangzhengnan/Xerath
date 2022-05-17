@@ -1,6 +1,7 @@
 package com.ng.xerathlib.hook.annotation.plug;
 
 import com.ng.xerathlib.hook.annotation.plug.base.AnnotationPlug;
+import com.ng.xerathlib.hook.params.HookParams;
 import com.ng.xerathlib.utils.LogUtil;
 
 import org.objectweb.asm.Label;
@@ -17,12 +18,12 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
 public class CallChainPlug extends AnnotationPlug {
 
     @Override
-    public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
-        super.init(access, adapter, owner, name, methodDesc);
-        LogUtil.print("access:" + access);
-        LogUtil.print("owner:" + owner);
-        LogUtil.print("name:" + name);
-        LogUtil.print("methodDesc:" + methodDesc);
+    public void init(HookParams params) {
+        super.init(params);
+        LogUtil.print("access:" + mMethodAccess);
+        LogUtil.print("owner:" + mOwner);
+        LogUtil.print("name:" + mMethodName);
+        LogUtil.print("methodDesc:" + mMethodDesc);
     }
 
     @Override

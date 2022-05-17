@@ -38,7 +38,7 @@ public class PreLoadMethodAdapter extends MethodVisitor implements Opcodes {
         mMethodKey = name + descriptor;
         mMethodName = name;
         this.mOwner = owner;
-        XerathHookHelper.getInstance().init(access, owner, name, descriptor);
+        XerathHookHelper.getInstance().getParams().init(access, owner, name, descriptor);
 
     }
 
@@ -54,7 +54,7 @@ public class PreLoadMethodAdapter extends MethodVisitor implements Opcodes {
         super.visitEnd();
         if (isNeedPreLoad) {
             if (parameters.size() > 0) {
-                XerathHookHelper.getInstance().putMethodParams(mMethodKey, parameters);
+                XerathHookHelper.getInstance().getParams().putMethodParams(mMethodKey, parameters);
                 //LogUtil.printPre(" 参数列表:" + XerathHookHelper.getInstance().getMethodParamsMap().toString());
             }
             LogUtil.printPre("结束(" + mMethodName + ")---");
@@ -78,7 +78,7 @@ public class PreLoadMethodAdapter extends MethodVisitor implements Opcodes {
         //存储局部变量表
         String temp = mMethodName + "|" + name + "|" + desc + "|" + index;
         //LogUtil.print("抓取 [临时] 变量: temp:" + temp + "           size:" + XerathHookHelper.getInstance().getTempFiledList().size());
-        XerathHookHelper.getInstance().getTempFiledList().add(temp);
+        XerathHookHelper.getInstance().getParams().getTempFiledList().add(temp);
 
         super.visitLocalVariable(name, desc, signature, start, end, index);
     }

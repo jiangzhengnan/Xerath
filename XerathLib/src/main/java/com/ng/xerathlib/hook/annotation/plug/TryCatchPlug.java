@@ -1,6 +1,7 @@
 package com.ng.xerathlib.hook.annotation.plug;
 
 import com.ng.xerathlib.hook.annotation.plug.base.AnnotationPlug;
+import com.ng.xerathlib.hook.params.HookParams;
 import com.ng.xerathlib.utils.ASMUtil;
 
 import org.objectweb.asm.Label;
@@ -35,8 +36,8 @@ public class TryCatchPlug extends AnnotationPlug {
     private final Label returnLabel = new Label();
 
     @Override
-    public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
-        super.init(access, adapter, owner, name, methodDesc);
+    public void init(HookParams params) {
+        super.init(params);
         //增加自定义异常处理类
         exceptionHandleClass = "com/ng/xerathcore/CoreHelper";
         exceptionHandleMethod = "handleException";

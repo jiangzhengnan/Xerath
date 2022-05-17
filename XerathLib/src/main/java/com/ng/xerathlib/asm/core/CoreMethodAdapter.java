@@ -39,7 +39,7 @@ class CoreMethodAdapter extends LocalVariablesSorter {
         this.onChangedListener = onChangedListener;
         this.mMethodName = name;
         this.mOwner = owner;
-        XerathHookHelper.getInstance().init(access, this, owner, name, descriptor);
+        XerathHookHelper.getInstance().getParams().init(access, this, owner, name, descriptor);
 
     }
 
@@ -159,7 +159,7 @@ class CoreMethodAdapter extends LocalVariablesSorter {
                 public void visit(String name, Object value) {
                     super.visit(name, value);
                     LogUtil.print("注解: " + descriptor + " 附带参数 key:" + name + " value:" + value.toString());
-                    XerathHookHelper.getInstance().putAnnotationParams(name, value);
+                    XerathHookHelper.getInstance().getParams().putAnnotationParams(name, value);
                 }
 
                 @Override
@@ -170,7 +170,7 @@ class CoreMethodAdapter extends LocalVariablesSorter {
                         @Override
                         public void visit(String name, Object value) {
                             LogUtil.print("注解 visitArray: " + descriptor + " 附带参数 key:" + arrayName + " value:" + value);
-                            XerathHookHelper.getInstance()
+                            XerathHookHelper.getInstance().getParams()
                                             .putAnnotationArrayParams(arrayName, value);
                             super.visit(name, value);
                         }
@@ -193,7 +193,7 @@ class CoreMethodAdapter extends LocalVariablesSorter {
 
     @Override
     public void visitLineNumber(int line, Label start) {
-        XerathHookHelper.getInstance().setLineNumber(line);
+        XerathHookHelper.getInstance().getParams().setLineNumber(line);
         super.visitLineNumber(line, start);
     }
 

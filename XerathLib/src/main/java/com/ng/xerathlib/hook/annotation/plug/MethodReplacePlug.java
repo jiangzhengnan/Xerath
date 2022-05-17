@@ -2,6 +2,7 @@ package com.ng.xerathlib.hook.annotation.plug;
 
 import com.ng.xerathlib.hook.XerathHookHelper;
 import com.ng.xerathlib.hook.annotation.plug.base.AnnotationPlug;
+import com.ng.xerathlib.hook.params.HookParams;
 import com.ng.xerathlib.utils.LogUtil;
 
 import org.objectweb.asm.MethodVisitor;
@@ -18,9 +19,10 @@ import java.util.List;
  * 方法替换组件
  */
 public class MethodReplacePlug extends AnnotationPlug {
+
     @Override
-    public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
-        super.init(access, adapter, owner, name, methodDesc);
+    public void init(HookParams params) {
+        super.init(params);
         LogUtil.print("MethodReplacePlug - init");
     }
 
@@ -42,8 +44,8 @@ public class MethodReplacePlug extends AnnotationPlug {
     @Override
     public boolean onVisitMethodInsn(MethodVisitor mv, int opcode, String owner, String name, String desc, boolean itf) {
         LogUtil.print("MethodReplacePlug - onVisitMethodInsn");
-        Object[] targetMethodObjArray = (Object[]) XerathHookHelper.getInstance().getAnnotationParams("targetMethods");
-        Object[] replaceMethodObjArray = (Object[]) XerathHookHelper.getInstance().getAnnotationParams("replaceMethods");
+        Object[] targetMethodObjArray = (Object[]) XerathHookHelper.getInstance().getParams().getAnnotationParams("targetMethods");
+        Object[] replaceMethodObjArray = (Object[]) XerathHookHelper.getInstance().getParams().getAnnotationParams("replaceMethods");
         if (targetMethodObjArray == null || replaceMethodObjArray == null) {
             return false;
         }

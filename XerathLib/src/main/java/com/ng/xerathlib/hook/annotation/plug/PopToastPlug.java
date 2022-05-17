@@ -17,13 +17,8 @@ public class PopToastPlug extends AnnotationPlug {
 
 
     @Override
-    public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
-        
-    }
-
-    @Override
     public void onHookMethodStart(MethodVisitor mv) {
-        String showStr = (String) XerathHookHelper.getInstance().getAnnotationParams("str");
+        String showStr = (String) XerathHookHelper.getInstance().getParams().getAnnotationParams("str");
         Label label0 = new Label();
         mv.visitLabel(label0);
         mv.visitLineNumber(0, label0);

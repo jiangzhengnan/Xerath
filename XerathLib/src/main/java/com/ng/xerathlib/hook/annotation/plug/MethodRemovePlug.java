@@ -2,6 +2,7 @@ package com.ng.xerathlib.hook.annotation.plug;
 
 import com.ng.xerathlib.hook.XerathHookHelper;
 import com.ng.xerathlib.hook.annotation.plug.base.AnnotationPlug;
+import com.ng.xerathlib.hook.params.HookParams;
 import com.ng.xerathlib.utils.LogUtil;
 
 import org.objectweb.asm.MethodVisitor;
@@ -16,16 +17,18 @@ import java.util.List;
  * @description :
  */
 public class MethodRemovePlug extends AnnotationPlug {
+
     @Override
-    public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
-        super.init(access, adapter, owner, name, methodDesc);
+    public void init(HookParams params) {
+        super.init(params);
         LogUtil.print("MethodRemovePlug 方法移除 - init");
+
     }
 
     @Override
     public boolean onVisitMethodInsn(MethodVisitor mv, int opcode, String owner, String name, String desc, boolean itf) {
         LogUtil.print("MethodReplacePlug - onVisitMethodInsn");
-        Object[] removeMethodObjArray = (Object[]) XerathHookHelper.getInstance().getAnnotationParams("removeMethods");
+        Object[] removeMethodObjArray = (Object[]) XerathHookHelper.getInstance().getParams().getAnnotationParams("removeMethods");
         if (removeMethodObjArray == null) {
             return false;
         }
