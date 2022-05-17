@@ -1,4 +1,4 @@
-package com.ng.xerathlib.hook.plug.base;
+package com.ng.xerathlib.hook.annotation.plug.base;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.commons.LocalVariablesSorter;

@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ng.xerathlib.hook.plug.AnnotationPlugCreator;
-import com.ng.xerathlib.hook.plug.base.IAnnotationPlug;
+import com.ng.xerathlib.hook.annotation.plug.AnnotationPlugCreator;
+import com.ng.xerathlib.hook.annotation.plug.base.IAnnotationPlug;
 import com.ng.xerathlib.extension.TransformExtConstant;
 import com.ng.xerathlib.utils.LogUtil;
 import com.ng.xerathlib.utils.Parameter;
@@ -16,10 +16,20 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
 /**
  * @author Jzn
  * @date 2021/9/14
- * 描述:
- * 1.抓取参数
- * 2.注解工具管理
- * 3.类工具管理
+ * 描述: 外观入口
+ *
+ * 参数管理器
+ * 负责类和方法出入参收集
+ *
+ * 执行管理器
+ * 通过注解定义(annotation)
+ * 通过包类名(normal)
+ *
+ * 生命周期回调
+ * 负责监听/回调 类和方法的各种执行生命周期
+ *
+ * //测试点
+ * 保证以前的功能正常
  *
  */
 public class XerathHookHelper {

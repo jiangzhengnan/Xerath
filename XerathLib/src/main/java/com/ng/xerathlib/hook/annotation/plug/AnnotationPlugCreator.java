@@ -1,6 +1,6 @@
-package com.ng.xerathlib.hook.plug;
+package com.ng.xerathlib.hook.annotation.plug;
 
-import com.ng.xerathlib.hook.plug.base.IAnnotationPlug;
+import com.ng.xerathlib.hook.annotation.plug.base.IAnnotationPlug;
 
 /**
  * 描述:

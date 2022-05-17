@@ -1,8 +1,8 @@
-package com.ng.xerathlib.hook.plug;
+package com.ng.xerathlib.hook.annotation.plug;
 
 import com.ng.xerathlib.utils.Parameter;
 import com.ng.xerathlib.hook.XerathHookHelper;
-import com.ng.xerathlib.hook.plug.base.AnnotationPlug;
+import com.ng.xerathlib.hook.annotation.plug.base.AnnotationPlug;
 import com.ng.xerathlib.utils.LogUtil;
 import com.ng.xerathlib.utils.OpcodesUtils;
 

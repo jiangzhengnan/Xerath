@@ -1,4 +1,4 @@
-package com.ng.xerathlib.hook;
+package com.ng.xerathlib.hook.annotation;
 
 /**
  * @author : jiangzhengnan.jzn@alibaba-inc.com
