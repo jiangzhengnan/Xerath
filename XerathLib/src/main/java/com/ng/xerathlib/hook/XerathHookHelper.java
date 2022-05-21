@@ -2,10 +2,15 @@ package com.ng.xerathlib.hook;
 
 
 import com.android.annotations.NonNull;
-import com.ng.xerathlib.hook.annotation.plug.AnnotationPlugCreator;
+import com.android.annotations.Nullable;
+import com.ng.xerathlib.hook.annotation.AnnotationHookHelper;
+import com.ng.xerathlib.hook.annotation.plug.base.AnnotationPlugCreator;
 import com.ng.xerathlib.hook.annotation.plug.base.IAnnotationPlug;
-import com.ng.xerathlib.extension.TransformExtConstant;
+import com.ng.xerathlib.extension.ExtConstant;
 import com.ng.xerathlib.hook.params.HookParams;
+import com.ng.xerathlib.hook.target.TargetHookHelper;
+import com.ng.xerathlib.hook.target.base.ITargetPlug;
+import com.ng.xerathlib.hook.target.base.TargetPlug;
 import com.ng.xerathlib.utils.LogUtil;
 
 import org.objectweb.asm.MethodVisitor;
@@ -29,8 +34,12 @@ import org.objectweb.asm.MethodVisitor;
  * 保证以前的功能正常
  */
 public class XerathHookHelper {
-    // 当前操作插件
-    private IAnnotationPlug mPlug;
+    // 注解处理插件
+    @Nullable
+    private IAnnotationPlug mAnnotationPlug;
+    // 目标处理插件
+    @Nullable
+    private ITargetPlug mTargetPlug;
     @NonNull
     public HookParams mParams;
 
@@ -59,47 +68,62 @@ public class XerathHookHelper {
     /**
      * 判断注解是否需要hook
      */
-    public boolean isNeedHook(String annotationStr) {
-        if (!TransformExtConstant.sTransformExt.enableAnnotation) {
-            return false;
+    public boolean isAnnotationNeedHook(String annotationStr) {
+        mAnnotationPlug = AnnotationHookHelper.getPlug(annotationStr);
+        if (mAnnotationPlug != null) {
+            mAnnotationPlug.init(mParams);
+            return true;
         }
-        mPlug = AnnotationPlugCreator.createPlug(annotationStr);
-        if (mPlug != null) {
-            //LogUtil.print("初始化plug:" + mMethodName + " " + mMethodDesc);
-            mPlug.init(mParams);
+        return false;
+    }
+
+    public boolean isTargetNeedHook(String className, String methodName) {
+        mTargetPlug = TargetHookHelper.getPlug(className, methodName);
+        if (mTargetPlug != null) {
+            mTargetPlug.init(mParams);
             return true;
         }
         return false;
     }
 
     public void onHookMethodStart(MethodVisitor mv) {
-        if (mPlug != null) {
-            mPlug.onHookMethodStart(mv);
+        if (mAnnotationPlug != null) {
+            mAnnotationPlug.onHookMethodStart(mv);
+        }
+        if (mTargetPlug != null) {
+            mTargetPlug.onHookMethodStart(mv);
         }
     }
 
     public void onHookMethodReturn(int opcode, MethodVisitor mv) {
-        if (mPlug != null) {
-            mPlug.onHookMethodReturn(opcode, mv);
+        if (mAnnotationPlug != null) {
+            mAnnotationPlug.onHookMethodReturn(opcode, mv);
+        }
+        if (mTargetPlug != null) {
+            mTargetPlug.onHookMethodReturn(opcode, mv);
         }
     }
 
     public void onHookMethodEnd(MethodVisitor mv) {
-        if (mPlug != null) {
-            mPlug.onHookMethodEnd(mv);
+        if (mAnnotationPlug != null) {
+            mAnnotationPlug.onHookMethodEnd(mv);
         }
     }
 
     public boolean onVisitMethodInsn(MethodVisitor mv, int opcode, String owner, String name, String desc, boolean itf) {
-        if (mPlug != null) {
-            return mPlug.onVisitMethodInsn(mv, opcode, owner, name, desc, itf);
+        if (mAnnotationPlug != null) {
+            return mAnnotationPlug.onVisitMethodInsn(mv, opcode, owner, name, desc, itf);
+        }
+        if (mTargetPlug != null) {
+            return mTargetPlug.onVisitMethodInsn(mv, opcode, owner, name, desc, itf);
         }
         return false;
     }
 
     // 清空数据
     public void resetOnMethodEnd() {
-        mPlug = null;
+        mAnnotationPlug = null;
+        mTargetPlug = null;
         mParams.clearMethodData();
     }
 

@@ -40,7 +40,7 @@ class CoreMethodAdapter extends LocalVariablesSorter {
         this.mMethodName = name;
         this.mOwner = owner;
         XerathHookHelper.getInstance().getParams().init(access, this, owner, name, descriptor);
-
+        XerathHookHelper.getInstance().isTargetNeedHook(owner, name);
     }
 
 
@@ -150,7 +150,7 @@ class CoreMethodAdapter extends LocalVariablesSorter {
      */
     @Override
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-        isAnnotationed = XerathHookHelper.getInstance().isNeedHook(descriptor);
+        isAnnotationed = XerathHookHelper.getInstance().isAnnotationNeedHook(descriptor);
         if (isAnnotationed && onChangedListener != null) {
             LogUtil.print("正式处理开始(" + mMethodName + ")---");
             onChangedListener.onChanged();

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ivy-module version="2.0" xmlns:m="http://ant.apache.org/ivy/maven">
-  <info organisation="com.ng.xerathlib" module="XerathLib" revision="1.0.0" status="integration" publication="20220517225211"/>
+  <info organisation="com.ng.xerathlib" module="XerathLib" revision="1.0.0" status="integration" publication="20220518224401"/>
   <configurations>
     <conf name="annotationProcessor" visibility="private"/>
     <conf name="apiElements" visibility="private" extends="runtime"/>

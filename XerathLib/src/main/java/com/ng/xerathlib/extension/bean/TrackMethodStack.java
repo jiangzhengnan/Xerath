@@ -28,15 +28,18 @@ public class TrackMethodStack {
     //耗时起点方法 (不传就不会统计耗时,格式包名+$+类名+$+方法名)
     public String timeStartMethod;
 
+    public String logTag;
+
     @Override
     public String toString() {
         return "TrackMethodStack{" +
-               "enable=" + enable +
-               ", targetPackageList=" + targetPackageList +
-               ", targetClassList=" + targetClassList +
-               ", blackPackageList=" + blackPackageList +
-               ", blackClassList=" + blackClassList +
-               ", timeStartMethod='" + timeStartMethod + '\'' +
-               '}';
+                "enable=" + enable +
+                ", targetPackageList=" + targetPackageList +
+                ", targetClassList=" + targetClassList +
+                ", blackPackageList=" + blackPackageList +
+                ", blackClassList=" + blackClassList +
+                ", timeStartMethod='" + timeStartMethod + '\'' +
+                ", logTag='" + logTag + '\'' +
+                '}';
     }
 }

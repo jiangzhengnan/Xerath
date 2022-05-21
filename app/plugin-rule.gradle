@@ -30,5 +30,5 @@ xerathTransformExt {
 track_method_stack{
     enable = true
     targetClassList = ['DataMethodUtil']
-
+    logTag = 'nangua'
 }

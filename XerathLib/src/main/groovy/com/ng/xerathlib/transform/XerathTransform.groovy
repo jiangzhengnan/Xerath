@@ -4,7 +4,7 @@ import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.android.ide.common.internal.WaitableExecutor
 import com.ng.xerathlib.extension.bean.TransformExt
-import com.ng.xerathlib.extension.TransformExtConstant
+import com.ng.xerathlib.extension.ExtConstant
 import com.ng.xerathlib.extension.bean.TrackMethodStack
 import com.ng.xerathlib.transform.executer.AppTransformExecutor
 import com.ng.xerathlib.transform.executer.JarTransformExecutor
@@ -24,8 +24,8 @@ class XerathTransform extends Transform {
     private Project project
 
     XerathTransform(Project project) {
-        project.getExtensions().create(TransformExtConstant.XERATH_BASE_EXT, TransformExt.class)
-        project.getExtensions().create(TransformExtConstant.TRACK_METHOD_STACK, TrackMethodStack.class)
+        project.getExtensions().create(ExtConstant.XERATH_BASE_EXT, TransformExt.class)
+        project.getExtensions().create(ExtConstant.TRACK_METHOD_STACK, TrackMethodStack.class)
 
         this.project = project
         this.waitableExecutor = WaitableExecutor.useGlobalSharedThreadPool()
@@ -97,15 +97,15 @@ class XerathTransform extends Transform {
     void getParams() {
         println("打印输入参数")
         //获取参数
-        TransformExt baseExt = (TransformExt) project.getExtensions().getByName(TransformExtConstant.XERATH_BASE_EXT)
+        TransformExt baseExt = (TransformExt) project.getExtensions().getByName(ExtConstant.XERATH_BASE_EXT)
         if (baseExt != null) {
-            TransformExtConstant.sTransformExt = baseExt
+            ExtConstant.sTransformExt = baseExt
             println("xerathTransformExt:" + baseExt.toString())
         }
 
-        TrackMethodStack trackMethodStackExt = (TrackMethodStack) project.getExtensions().getByName(TransformExtConstant.TRACK_METHOD_STACK)
+        TrackMethodStack trackMethodStackExt = (TrackMethodStack) project.getExtensions().getByName(ExtConstant.TRACK_METHOD_STACK)
         if (trackMethodStackExt != null) {
-            TransformExtConstant.sTrackMethodStack = trackMethodStackExt
+            ExtConstant.sTrackMethodStack = trackMethodStackExt
             println("track_method_stack:" + trackMethodStackExt.toString())
         }
     }

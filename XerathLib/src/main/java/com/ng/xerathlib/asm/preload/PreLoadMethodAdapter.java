@@ -85,7 +85,7 @@ public class PreLoadMethodAdapter extends MethodVisitor implements Opcodes {
 
     @Override
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-        isNeedPreLoad = XerathHookHelper.getInstance().isNeedHook(descriptor);
+        isNeedPreLoad = XerathHookHelper.getInstance().isAnnotationNeedHook(descriptor);
         if (isNeedPreLoad) {
             LogUtil.printPre("开始(" + mMethodName + ")---");
             //XerathHookHelper.getInstance().printPrams();

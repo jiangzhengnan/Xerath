@@ -1,6 +1,7 @@
 package com.ng.xerathlib.hook.params;
 
 import com.android.annotations.NonNull;
+import com.ng.xerathlib.hook.XerathHookHelper;
 import com.ng.xerathlib.utils.Parameter;
 
 import org.objectweb.asm.commons.LocalVariablesSorter;

@@ -3,7 +3,7 @@ package com.ng.xerathlib.extension;
 import com.ng.xerathlib.extension.bean.TrackMethodStack;
 import com.ng.xerathlib.extension.bean.TransformExt;
 
-public class TransformExtConstant {
+public class ExtConstant {
     public static final String XERATH_BASE_EXT = "xerathTransformExt";
 
     public static final String TRACK_METHOD_STACK = "track_method_stack";
