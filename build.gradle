@@ -10,9 +10,9 @@ buildscript {
         maven {
             url uri("${rootProject.projectDir}/repo")
         }
-        maven {
-            url 'https://storage.googleapis.com/r8-releases/raw'
-        }
+//        maven {
+//            url 'https://storage.googleapis.com/r8-releases/raw'
+//        }
 
     }
     dependencies {
@@ -36,9 +36,9 @@ allprojects {
         maven {
             url uri("${rootProject.projectDir}/repo")
         }
-        maven {
-            url 'https://storage.googleapis.com/r8-releases/raw'
-        }
+//        maven {
+//            url 'https://storage.googleapis.com/r8-releases/raw'
+//        }
     }
 }
 
