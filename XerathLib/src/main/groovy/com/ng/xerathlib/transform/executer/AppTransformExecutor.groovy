@@ -19,12 +19,13 @@ class AppTransformExecutor {
             if (!filePath.endsWith(".class")) return
             className = TransformUtil.getClassName(root, filePath)
             if (TransformUtil.isSystemClass(className)) return
-            println "[ Xerath ] --- start hook className: " + className
+            println " "
+            println "[ Xerath ] --- 开始 hook className: " + className
 
             //hook关键代码
             HookClassExecutor.hookAppClass(filePath)
 
-            println "[ Xerath ] --- finish hook className: " + className
+            println "[ Xerath ] --- 结束 hook className: " + className
             FileUtils.copyDirectory(dir, dest)
         }
     }

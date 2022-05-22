@@ -1,17 +1,15 @@
 package com.ng.xerathlib.hook.annotation.plug;
 
-import com.ng.xerathlib.utils.Parameter;
+import java.util.List;
+
 import com.ng.xerathlib.hook.XerathHookHelper;
 import com.ng.xerathlib.hook.annotation.plug.base.AnnotationPlug;
 import com.ng.xerathlib.utils.LogUtil;
 import com.ng.xerathlib.utils.OpcodesUtils;
-
+import com.ng.xerathlib.utils.Parameter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
-import org.objectweb.asm.commons.LocalVariablesSorter;
-
-import java.util.List;
 
 /**
  * @author : jiangzhengnan.jzn
@@ -35,14 +33,16 @@ public class CollectParamsPlug extends AnnotationPlug {
         mv.visitLdcInsn(mMethodName);
         mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "com/ng/xerathcore/utils/ParameterPrinter", "<init>", "(Ljava/lang/String;Ljava/lang/String;)V", false);
         mv.visitVarInsn(Opcodes.ASTORE, printUtilsVarIndex);
-        for (int i = 0; i < mParameters.size(); i++) {
-            Parameter parameter = mParameters.get(i);
-            String name = parameter.name;
-            String desc = parameter.desc;
-            int index = parameter.index;
-            int opcode = OpcodesUtils.getLoadOpcodeFromDesc(desc);
-            String fullyDesc = String.format("(Ljava/lang/String;%s)Lcom/ng/xerathcore/utils/ParameterPrinter;", desc);
-            visitPrint(mv, printUtilsVarIndex, index, opcode, name, fullyDesc);
+        if (mParameters != null) {
+            for (int i = 0; i < mParameters.size(); i++) {
+                Parameter parameter = mParameters.get(i);
+                String name = parameter.name;
+                String desc = parameter.desc;
+                int index = parameter.index;
+                int opcode = OpcodesUtils.getLoadOpcodeFromDesc(desc);
+                String fullyDesc = String.format("(Ljava/lang/String;%s)Lcom/ng/xerathcore/utils/ParameterPrinter;", desc);
+                visitPrint(mv, printUtilsVarIndex, index, opcode, name, fullyDesc);
+            }
         }
         mv.visitVarInsn(Opcodes.ALOAD, printUtilsVarIndex);
         mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "com/ng/xerathcore/utils/ParameterPrinter", "print", "()V", false);
@@ -55,9 +55,9 @@ public class CollectParamsPlug extends AnnotationPlug {
         mv.visitLdcInsn(name);
         mv.visitVarInsn(opcode, localIndex);
         mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-                "com/ng/xerathcore/utils/ParameterPrinter",
-                "append",
-                desc, false);
+                           "com/ng/xerathcore/utils/ParameterPrinter",
+                           "append",
+                           desc, false);
         mv.visitInsn(Opcodes.POP);
     }
 
@@ -89,7 +89,9 @@ public class CollectParamsPlug extends AnnotationPlug {
             }
             resultTempValIndex = mAdapter.newLocal(returnType);
             int storeOpcocde = OpcodesUtils.getStoreOpcodeFromType(returnType);
-            if (opcode == Opcodes.ATHROW) storeOpcocde = Opcodes.ASTORE;
+            if (opcode == Opcodes.ATHROW) {
+                storeOpcocde = Opcodes.ASTORE;
+            }
             mv.visitVarInsn(storeOpcocde, resultTempValIndex);
         }
 

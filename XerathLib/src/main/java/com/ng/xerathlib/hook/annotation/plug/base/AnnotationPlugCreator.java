@@ -8,6 +8,7 @@ import com.ng.xerathlib.hook.annotation.plug.MethodRemovePlug;
 import com.ng.xerathlib.hook.annotation.plug.MethodReplacePlug;
 import com.ng.xerathlib.hook.annotation.plug.PopToastPlug;
 import com.ng.xerathlib.hook.annotation.plug.TryCatchPlug;
+import com.ng.xerathlib.utils.LogUtil;
 
 /**
  * 描述:
@@ -69,7 +70,7 @@ public class AnnotationPlugCreator {
                 break;
         }
         if (resultPlug != null) {
-            //LogUtil.print(" 注解:" + annotationStr + " 需要hook");
+            LogUtil.print(" 注解:" + annotationStr + " 需要hook");
         }
         return resultPlug;
     }

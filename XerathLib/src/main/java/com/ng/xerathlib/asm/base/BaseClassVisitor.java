@@ -30,4 +30,8 @@ public class BaseClassVisitor extends ClassVisitor {
         isInterface = (access & ACC_INTERFACE) != 0;
     }
 
+    @Override
+    public void visitEnd() {
+        super.visitEnd();
+    }
 }

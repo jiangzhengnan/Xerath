@@ -6,6 +6,8 @@ import java.util.List;
  * @author : jiangzhengnan.jzn@alibaba-inc.com
  * @creation : 2022/05/14
  * @description :
+ * track_method_stack
+ *
  * todo
  * 1.出入参
  * 2.进程+线程
@@ -25,7 +27,7 @@ public class TrackMethodStack {
     //过滤类列表 (忽略包，只匹配类名)
     public List<String> blackClassList;
 
-    //耗时起点方法 (不传就不会统计耗时,格式包名+$+类名+$+方法名)
+    //耗时起点方法 (不传就从范围内调用的第一个方法开始统计耗时,格式包名+$+类名+$+方法名)
     public String timeStartMethod;
 
     public String logTag;

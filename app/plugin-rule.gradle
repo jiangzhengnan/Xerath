@@ -29,6 +29,7 @@ xerathTransformExt {
 
 track_method_stack{
     enable = true
+    targetPackageList = ['com.ng.xerath.asm.func']
     targetClassList = ['DataMethodUtil']
     logTag = 'nangua'
 }

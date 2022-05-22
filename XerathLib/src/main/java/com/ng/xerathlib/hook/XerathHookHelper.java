@@ -1,18 +1,14 @@
 package com.ng.xerathlib.hook;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import com.android.annotations.NonNull;
-import com.android.annotations.Nullable;
 import com.ng.xerathlib.hook.annotation.AnnotationHookHelper;
-import com.ng.xerathlib.hook.annotation.plug.base.AnnotationPlugCreator;
-import com.ng.xerathlib.hook.annotation.plug.base.IAnnotationPlug;
-import com.ng.xerathlib.extension.ExtConstant;
 import com.ng.xerathlib.hook.params.HookParams;
 import com.ng.xerathlib.hook.target.TargetHookHelper;
-import com.ng.xerathlib.hook.target.base.ITargetPlug;
-import com.ng.xerathlib.hook.target.base.TargetPlug;
 import com.ng.xerathlib.utils.LogUtil;
-
+import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
 /**
@@ -33,13 +29,10 @@ import org.objectweb.asm.MethodVisitor;
  * //测试点
  * 保证以前的功能正常
  */
-public class XerathHookHelper {
-    // 注解处理插件
-    @Nullable
-    private IAnnotationPlug mAnnotationPlug;
-    // 目标处理插件
-    @Nullable
-    private ITargetPlug mTargetPlug;
+public class XerathHookHelper implements HookLifeCycle {
+    @NonNull
+    private final List<HookLifeCycle> mPlugs = new ArrayList<>();
+
     @NonNull
     public HookParams mParams;
 
@@ -47,6 +40,8 @@ public class XerathHookHelper {
 
     private XerathHookHelper() {
         mParams = new HookParams();
+        mPlugs.add(new TargetHookHelper());
+        mPlugs.add(new AnnotationHookHelper(mParams));
     }
 
     public static XerathHookHelper getInstance() {
@@ -65,70 +60,99 @@ public class XerathHookHelper {
         return mParams;
     }
 
-    /**
-     * 判断注解是否需要hook
-     */
-    public boolean isAnnotationNeedHook(String annotationStr) {
-        mAnnotationPlug = AnnotationHookHelper.getPlug(annotationStr);
-        if (mAnnotationPlug != null) {
-            mAnnotationPlug.init(mParams);
-            return true;
+    @Override
+    public boolean onVisitClass(final int version, final int access, final String name, final String signature, final String superName, final String[] interfaces) {
+        LogUtil.print("XerathHookHelper-onVisitClass-清空");
+        boolean needHook = false;
+        for (HookLifeCycle plug : mPlugs) {
+            if (plug.onVisitClass(version, access, name, signature, superName, interfaces)) {
+                needHook = true;
+            }
         }
-        return false;
+        return needHook;
     }
 
-    public boolean isTargetNeedHook(String className, String methodName) {
-        mTargetPlug = TargetHookHelper.getPlug(className, methodName);
-        if (mTargetPlug != null) {
-            mTargetPlug.init(mParams);
-            return true;
-        }
-        return false;
-    }
-
-    public void onHookMethodStart(MethodVisitor mv) {
-        if (mAnnotationPlug != null) {
-            mAnnotationPlug.onHookMethodStart(mv);
-        }
-        if (mTargetPlug != null) {
-            mTargetPlug.onHookMethodStart(mv);
+    @Override
+    public void visitClassField(final int access, final String name, final String descriptor, final String signature, final Object value) {
+        for (HookLifeCycle plug : mPlugs) {
+            plug.visitClassField(access, name, descriptor, signature, value);
         }
     }
 
-    public void onHookMethodReturn(int opcode, MethodVisitor mv) {
-        if (mAnnotationPlug != null) {
-            mAnnotationPlug.onHookMethodReturn(opcode, mv);
+    @Override
+    public boolean isClassChanged() {
+        boolean changed = false;
+        for (HookLifeCycle plug : mPlugs) {
+            if (plug.isClassChanged()) {
+                changed = true;
+            }
         }
-        if (mTargetPlug != null) {
-            mTargetPlug.onHookMethodReturn(opcode, mv);
+        return changed;
+    }
+
+    @Override
+    public void onVisitMethod(final int access, final String name, final String descriptor, final MethodVisitor methodVisitor, final String owner) {
+        for (HookLifeCycle plug : mPlugs) {
+            plug.onVisitMethod(access, name, descriptor, methodVisitor, owner);
         }
     }
 
-    public void onHookMethodEnd(MethodVisitor mv) {
-        if (mAnnotationPlug != null) {
-            mAnnotationPlug.onHookMethodEnd(mv);
+    @Override
+    public boolean onVisitMethodInsn(final MethodVisitor mv, final int opcode, final String owner, final String name, final String desc, final boolean itf) {
+        boolean result = false;
+        for (HookLifeCycle plug : mPlugs) {
+            if (plug.onVisitMethodInsn(mv, opcode, owner, name, desc, itf)) {
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public void visitMethodCode() {
+        for (HookLifeCycle plug : mPlugs) {
+            plug.visitMethodCode();
         }
     }
 
-    public boolean onVisitMethodInsn(MethodVisitor mv, int opcode, String owner, String name, String desc, boolean itf) {
-        if (mAnnotationPlug != null) {
-            return mAnnotationPlug.onVisitMethodInsn(mv, opcode, owner, name, desc, itf);
+    @Override
+    public void visitLineNumber(final int line, final Label start) {
+        for (HookLifeCycle plug : mPlugs) {
+            plug.visitLineNumber(line, start);
         }
-        if (mTargetPlug != null) {
-            return mTargetPlug.onVisitMethodInsn(mv, opcode, owner, name, desc, itf);
-        }
-        return false;
     }
 
-    // 清空数据
-    public void resetOnMethodEnd() {
-        mAnnotationPlug = null;
-        mTargetPlug = null;
+    @Override
+    public boolean visitMethodAnnotation(final String descriptor, final boolean visible) {
+        boolean needHook = false;
+        for (HookLifeCycle plug : mPlugs) {
+            if (plug.visitMethodAnnotation(descriptor, visible)) {
+                needHook = true;
+            }
+        }
+        return needHook;
+    }
+
+    @Override
+    public void onHookMethodReturn(final int opcode, final MethodVisitor mv) {
+        for (HookLifeCycle plug : mPlugs) {
+            plug.onHookMethodReturn(opcode, mv);
+        }
+    }
+
+    @Override
+    public void onHookMethodEnd(final MethodVisitor mv) {
+        for (HookLifeCycle plug : mPlugs) {
+            plug.onHookMethodEnd(mv);
+        }
+    }
+
+    @Override
+    public void visitEnd() {
+        for (HookLifeCycle plug : mPlugs) {
+            plug.visitEnd();
+        }
         mParams.clearMethodData();
     }
 
-    public void resetOnClass() {
-        LogUtil.print("XerathHookHelper-清空");
-        mParams.clearClassData();
-    }
 }

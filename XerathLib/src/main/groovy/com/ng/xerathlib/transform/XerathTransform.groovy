@@ -95,7 +95,7 @@ class XerathTransform extends Transform {
     }
 
     void getParams() {
-        println("打印输入参数")
+        println("打印输入参数 start")
         //获取参数
         TransformExt baseExt = (TransformExt) project.getExtensions().getByName(ExtConstant.XERATH_BASE_EXT)
         if (baseExt != null) {
@@ -108,6 +108,8 @@ class XerathTransform extends Transform {
             ExtConstant.sTrackMethodStack = trackMethodStackExt
             println("track_method_stack:" + trackMethodStackExt.toString())
         }
+        println("打印输入参数 end")
+        println(" ")
     }
 
 }

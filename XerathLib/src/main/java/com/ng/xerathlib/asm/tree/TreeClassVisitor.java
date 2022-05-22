@@ -9,6 +9,7 @@ import org.objectweb.asm.MethodVisitor;
  * @Project ASMCostTime
  * @date 2020/6/22
  * @describe
+ * 单模式cv，不受框架约束
  */
 public class TreeClassVisitor extends BaseClassVisitor {
 

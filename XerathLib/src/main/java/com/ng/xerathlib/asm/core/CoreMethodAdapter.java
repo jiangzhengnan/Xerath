@@ -2,7 +2,6 @@ package com.ng.xerathlib.asm.core;
 
 import com.ng.xerathlib.hook.XerathHookHelper;
 import com.ng.xerathlib.utils.LogUtil;
-import javax.annotation.Nullable;
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
@@ -13,36 +12,18 @@ import static org.objectweb.asm.Opcodes.ATHROW;
 import static org.objectweb.asm.Opcodes.IRETURN;
 import static org.objectweb.asm.Opcodes.RETURN;
 
-
 /**
  * 继承自LocalVariablesSorter 有序遍历素有方法
  */
 class CoreMethodAdapter extends LocalVariablesSorter {
 
-    private boolean isAnnotationed;
-    @Nullable
-    private OnChangedListener onChangedListener;
-    private String mMethodName;
-    private String mOwner;
-
-    public interface OnChangedListener {
-        /**
-         * 发生了更改
-         */
-        void onChanged();
-    }
-
-
     public CoreMethodAdapter(int access, String name, String descriptor, MethodVisitor methodVisitor,
-                             String owner, OnChangedListener onChangedListener) {
+                             String owner) {
         super(ASM5, access, descriptor, methodVisitor);
-        this.onChangedListener = onChangedListener;
-        this.mMethodName = name;
-        this.mOwner = owner;
-        XerathHookHelper.getInstance().getParams().init(access, this, owner, name, descriptor);
-        XerathHookHelper.getInstance().isTargetNeedHook(owner, name);
+        XerathHookHelper.getInstance().getParams().init(access, methodVisitor,this, owner, name, descriptor);
+        XerathHookHelper.getInstance()
+                        .onVisitMethod(access, name, descriptor, methodVisitor, owner);
     }
-
 
     /**
      * 遍历代码的开始 声明一个局部变量
@@ -50,26 +31,8 @@ class CoreMethodAdapter extends LocalVariablesSorter {
     @Override
     public void visitCode() {
         super.visitCode();
-        isFinish = false;
-        XerathHookHelper.getInstance().onHookMethodStart(mv);
+        XerathHookHelper.getInstance().visitMethodCode();
     }
-
-    @Override
-    public void visitFieldInsn(int opcode, String owner, String name, String descriptor) {
-        super.visitFieldInsn(opcode, owner, name, descriptor);
-    }
-
-    @Override
-    public void visitLocalVariable(String name, String descriptor, String signature, Label start, Label end, int index) {
-        super.visitLocalVariable(name, descriptor, signature, start, end, index);
-    }
-
-    @Override
-    public void visitIntInsn(int opcode, int operand) {
-        super.visitIntInsn(opcode, operand);
-    }
-
-    boolean isFinish = false;
 
     @Override
     public void visitVarInsn(int opcode, int var) {
@@ -150,10 +113,9 @@ class CoreMethodAdapter extends LocalVariablesSorter {
      */
     @Override
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-        isAnnotationed = XerathHookHelper.getInstance().isAnnotationNeedHook(descriptor);
-        if (isAnnotationed && onChangedListener != null) {
-            LogUtil.print("正式处理开始(" + mMethodName + ")---");
-            onChangedListener.onChanged();
+        boolean isAnnotationed = XerathHookHelper.getInstance()
+                                                 .visitMethodAnnotation(descriptor, visible);
+        if (isAnnotationed) {
             return new AnnotationVisitor(ASM5) {
                 @Override
                 public void visit(String name, Object value) {
@@ -186,9 +148,6 @@ class CoreMethodAdapter extends LocalVariablesSorter {
     public void visitMaxs(int maxStack, int maxLocals) {
         XerathHookHelper.getInstance().onHookMethodEnd(mv);
         super.visitMaxs(maxStack, maxLocals);
-        if (isAnnotationed) {
-            LogUtil.print("正式处理结束(" + mMethodName + ")---");
-        }
     }
 
     @Override
@@ -206,15 +165,10 @@ class CoreMethodAdapter extends LocalVariablesSorter {
         super.visitMethodInsn(opcode, owner, name, desc, itf);
     }
 
-    @Override
-    public void visitParameter(String name, int access) {
-        super.visitParameter(name, access);
-    }
-
 
     @Override
     public void visitEnd() {
         super.visitEnd();
-        XerathHookHelper.getInstance().resetOnMethodEnd();
+        XerathHookHelper.getInstance().visitEnd();
     }
 }

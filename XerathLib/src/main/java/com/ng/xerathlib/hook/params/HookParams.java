@@ -4,6 +4,7 @@ import com.android.annotations.NonNull;
 import com.ng.xerathlib.hook.XerathHookHelper;
 import com.ng.xerathlib.utils.Parameter;
 
+import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 public class HookParams {
     // 方法操作类
+    public MethodVisitor mMethodVisitor;
     public LocalVariablesSorter mAdapter;
     public String mOwner;
     public String mMethodName;
@@ -49,7 +51,8 @@ public class HookParams {
     }
 
     //load
-    public void init(int access, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
+    public void init(int access, MethodVisitor methodVisitor, LocalVariablesSorter adapter, String owner, String name, String methodDesc) {
+        this.mMethodVisitor = methodVisitor;
         this.mMethodAccess = access;
         this.mAdapter = adapter;
         this.mOwner = owner;

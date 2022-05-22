@@ -1,5 +1,8 @@
 package com.ng.xerathlib.extension.bean;
 
+/**
+ *
+ */
 public class TransformExt {
     //默认debug 环境
     public RunScene runVariant = RunScene.DEBUG;

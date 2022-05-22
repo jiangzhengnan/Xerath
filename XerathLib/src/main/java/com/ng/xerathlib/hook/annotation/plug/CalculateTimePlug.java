@@ -2,6 +2,7 @@ package com.ng.xerathlib.hook.annotation.plug;
 
 import com.ng.xerathlib.hook.annotation.plug.base.AnnotationPlug;
 
+import com.ng.xerathlib.utils.LogUtil;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
@@ -26,6 +27,7 @@ public class CalculateTimePlug extends AnnotationPlug {
 
     @Override
     public void onHookMethodStart(MethodVisitor mv) {
+        LogUtil.print("耗时统计 plug 开始");
         mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
         time = mAdapter.newLocal(Type.LONG_TYPE);
         mv.visitVarInsn(LSTORE, time);
@@ -55,6 +57,7 @@ public class CalculateTimePlug extends AnnotationPlug {
         //mv.visitMethodInsn(INVOKESTATIC, "android/util/Log", "e", "(Ljava/lang/String;Ljava/lang/String;)I", false);
         mv.visitMethodInsn(INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchLog", "(Ljava/lang/String;)V", false);
 
+        LogUtil.print("耗时统计 plug 结束");
     }
 
     @Override
