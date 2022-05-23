@@ -42,8 +42,8 @@ public class HookClassExecutor {
                 return;
             }
             boolean changed = XerathHookHelper.getInstance().isClassChanged() || nowCv.changed;
-            System.out.println("类:" + cvClassName + " 是否修改了?: " + XerathHookHelper.getInstance()
-                                                                                  .isClassChanged() + " " + nowCv.changed);
+            //System.out.println("类:" + cvClassName + " 是否修改了?: " + XerathHookHelper.getInstance()
+            //                                                                      .isClassChanged() + " " + nowCv.changed);
             if (changed) {
                 byte[] bytes = writer.toByteArray();
                 FileOutputStream fos = new FileOutputStream(new File(filePath));

@@ -40,7 +40,7 @@ public class XerathHookHelper implements HookLifeCycle {
 
     private XerathHookHelper() {
         mParams = new HookParams();
-        mPlugs.add(new TargetHookHelper());
+        mPlugs.add(new TargetHookHelper(mParams));
         mPlugs.add(new AnnotationHookHelper(mParams));
     }
 
