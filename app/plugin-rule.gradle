@@ -23,13 +23,13 @@ buildscript {
 
 apply plugin: 'ng-xerath-plugin'
 xerathTransformExt {
-    enableAnnotation = true
+    enableAnnotation = false
     runVariant = 'DEBUG'
 }
 
 track_method_stack{
     enable = true
-    targetPackageList = ['com.ng.xerath.asm.func']
-    targetClassList = ['DataMethodUtil']
+    targetPackageList = ['']
+    targetClassList = ['com.ng.xerath.func.DataMethodUtil']
     logTag = 'nangua'
 }

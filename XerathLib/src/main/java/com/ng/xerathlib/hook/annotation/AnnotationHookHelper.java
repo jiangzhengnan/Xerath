@@ -51,7 +51,7 @@ public class AnnotationHookHelper implements HookLifeCycle {
         }
         IAnnotationPlug plug = AnnotationPlugCreator.createPlug(annotationStr);
         if (plug != null) {
-            LogUtil.print("初始化plug:" + mParams.mMethodName + " " + mParams.mMethodDesc);
+            LogUtil.print("初始化AnnotationPlug:" + mParams.mMethodName + " " + mParams.mMethodDesc);
             return plug;
         }
         return null;
@@ -95,7 +95,6 @@ public class AnnotationHookHelper implements HookLifeCycle {
     public void visitLineNumber(final int line, final Label start) {
 
     }
-
     @Override
     public boolean visitMethodAnnotation(final String descriptor, final boolean visible) {
         mAnnotationPlug = null;

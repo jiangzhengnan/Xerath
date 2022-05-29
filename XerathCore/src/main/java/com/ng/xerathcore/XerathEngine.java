@@ -45,4 +45,6 @@ public class XerathEngine {
             Toast.makeText(mContext, str, Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }

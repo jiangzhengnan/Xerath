@@ -1,6 +1,7 @@
 package com.ng.xerathlib.hook.params;
 
 import com.android.annotations.NonNull;
+import com.android.annotations.Nullable;
 import com.ng.xerathlib.hook.XerathHookHelper;
 import com.ng.xerathlib.utils.Parameter;
 
@@ -16,6 +17,7 @@ public class HookParams {
     // 方法操作类
     public MethodVisitor mMethodVisitor;
     public LocalVariablesSorter mAdapter;
+    @Nullable
     public String mOwner;
     public String mMethodName;
     public String mMethodDesc;

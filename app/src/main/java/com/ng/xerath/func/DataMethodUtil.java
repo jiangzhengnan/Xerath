@@ -83,7 +83,9 @@ public class DataMethodUtil {
         chainA.doSomeThing2();
     }
 
-    //调用链路统计
+    /**
+     * 调用链路分析
+     */
     public static void testCallChain() {
         method1();
     }
