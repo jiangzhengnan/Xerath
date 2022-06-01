@@ -1,5 +1,7 @@
 package com.ng.xerathcore.func;
 
+import android.util.Log;
+
 import com.ng.xerathcore.CoreHelper;
 
 /**
@@ -24,8 +26,8 @@ public class TrackMethodStackHelper {
         timeConsuming = nowTime - lastTime;
         lastTime = nowTime;
 
-        timeStr = "耗时:" + timeConsuming + "ms    总时长:" + (nowTime - firstTime) + "ms";
-        String result = methodInfo + "\n" + timeStr;
-        CoreHelper.catchLog(result);
+        timeStr = "上一个方法耗时:" + timeConsuming + "ms    总时长:" + (nowTime - firstTime) + "ms";
+        String result = timeStr + "\n" + methodInfo;
+        Log.d("xerath", result);
     }
 }

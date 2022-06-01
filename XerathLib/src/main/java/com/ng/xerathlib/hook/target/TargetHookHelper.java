@@ -6,7 +6,6 @@ import com.ng.xerathlib.hook.HookLifeCycle;
 import com.ng.xerathlib.hook.params.HookParams;
 import com.ng.xerathlib.hook.target.base.ITargetPlug;
 import com.ng.xerathlib.hook.target.plug.TargetPlugCreator;
-import com.ng.xerathlib.utils.LogUtil;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
@@ -36,7 +35,6 @@ public class TargetHookHelper implements HookLifeCycle {
 
     @Override
     public void visitClassField(final int access, final String name, final String descriptor, final String signature, final Object value) {
-
     }
 
     @Override
@@ -48,6 +46,7 @@ public class TargetHookHelper implements HookLifeCycle {
     public void onVisitMethod(final int access, final String name, final String descriptor, final MethodVisitor methodVisitor, final String owner) {
         if (mTargetPlug != null) {
             mTargetPlug.init(mParams);
+            //LogUtil.print("目标插件 onVisitMethod " + mParams.mOwner + " " + mParams.mMethodName + (mTargetPlug != null));
         }
     }
 
@@ -78,6 +77,7 @@ public class TargetHookHelper implements HookLifeCycle {
 
     @Override
     public void onHookMethodReturn(final int opcode, final MethodVisitor mv) {
+
         if (mTargetPlug != null) {
             mTargetPlug.onHookMethodReturn(opcode, mv);
         }

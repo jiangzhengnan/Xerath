@@ -9,6 +9,7 @@ import org.apache.commons.io.IOUtils
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.ClassWriter
+import com.ng.xerathlib.asm.HookClassExecutor
 
 import java.nio.file.Files
 import java.nio.file.attribute.FileTime
@@ -36,23 +37,27 @@ class JarTransformExecutor {
                     new BufferedInputStream(inputZip.getInputStream(entry))
             ZipEntry outEntry = new ZipEntry(entry.getName())
             byte[] newEntryContent
-            if (!isWeaveClass(outEntry.getName().replace("/", "."))) {
+            String fullQualifiedClassName = outEntry.getName().replace("/", ".")
+            if (!isWeaveClass(fullQualifiedClassName)) {
                 newEntryContent = IOUtils.toByteArray(originalFile)
             } else {
-                newEntryContent = hookJarClass(originalFile, classLoader)
+                newEntryContent = HookClassExecutor.hookJarClass(originalFile, classLoader)
+                println "[ Xerath ] --- hook jar className: " + fullQualifiedClassName + "为空？:" + (newEntryContent == null)
             }
-            CRC32 crc32 = new CRC32()
-            crc32.update(newEntryContent)
-            outEntry.setCrc(crc32.getValue())
-            outEntry.setMethod(ZipEntry.STORED)
-            outEntry.setSize(newEntryContent.length)
-            outEntry.setCompressedSize(newEntryContent.length)
-            outEntry.setLastAccessTime(ZERO)
-            outEntry.setLastModifiedTime(ZERO)
-            outEntry.setCreationTime(ZERO)
-            outputZip.putNextEntry(outEntry)
-            outputZip.write(newEntryContent)
-            outputZip.closeEntry()
+            if (newEntryContent != null) {
+                CRC32 crc32 = new CRC32()
+                crc32.update(newEntryContent)
+                outEntry.setCrc(crc32.getValue())
+                outEntry.setMethod(ZipEntry.STORED)
+                outEntry.setSize(newEntryContent.length)
+                outEntry.setCompressedSize(newEntryContent.length)
+                outEntry.setLastAccessTime(ZERO)
+                outEntry.setLastModifiedTime(ZERO)
+                outEntry.setCreationTime(ZERO)
+                outputZip.putNextEntry(outEntry)
+                outputZip.write(newEntryContent)
+                outputZip.closeEntry()
+            }
         }
         outputZip.flush()
         outputZip.close()
@@ -64,6 +69,13 @@ class JarTransformExecutor {
         }
         //过滤系统类
         if (TransformUtil.isSystemClass(fullQualifiedClassName)) {
+            return false
+        }
+        if (!fullQualifiedClassName.endsWith(".class")){
+            return false
+        }
+
+        if (fullQualifiedClassName.contains("kotlin")) {
             return false
         }
 //        //自定义需要抓取的类
@@ -80,7 +92,7 @@ class JarTransformExecutor {
 ////            }
 //        } else if (RunModel.ANALYSE == AnalyseHelper.getInstance().getNoahTransformExtension().runModel) {
 //        }
-        return false
+        return true
     }
 //
 //    //jar注入
@@ -97,18 +109,4 @@ class JarTransformExecutor {
 //    }
 
 
-    //jar注入
-    static byte[] hookJarClass(InputStream inputStream, SecureClassLoader classLoader) throws IOException {
-        byte[] nowContent = waveSingleCv(inputStream, classLoader, PreLoadClassVisitor)
-        nowContent = waveSingleCv(new ByteArrayInputStream(nowContent), classLoader, CoreClassVisitor)
-        nowContent = waveSingleCv(new ByteArrayInputStream(nowContent), classLoader, TreeClassVisitor)
-        return nowContent
-    }
-
-    static byte[] waveSingleCv(InputStream inputStream, SecureClassLoader classLoader, ClassVisitor classVisitor) throws IOException {
-        ClassReader classReader = new ClassReader(inputStream)
-        ClassWriter classWriter = new ExtendClassWriter(classLoader, ClassWriter.COMPUTE_FRAMES)
-        classReader.accept(classVisitor, ClassReader.SKIP_FRAMES)
-        return classWriter.toByteArray()
-    }
 }

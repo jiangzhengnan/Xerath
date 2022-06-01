@@ -29,7 +29,7 @@ public class PreLoadMethodAdapter extends MethodVisitor implements Opcodes {
 
     public PreLoadMethodAdapter(int access, String name, String descriptor, MethodVisitor methodVisitor,
                                 String owner) {
-        super(Opcodes.ASM5, methodVisitor);
+        super(Opcodes.ASM6, methodVisitor);
         mMethodKey = name + descriptor;
         mMethodName = name;
         this.mOwner = owner;

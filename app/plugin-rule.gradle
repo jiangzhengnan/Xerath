@@ -29,7 +29,7 @@ xerathTransformExt {
 
 track_method_stack{
     enable = true
-    targetPackageList = ['']
+    targetPackageList = ['com.bumptech.glide']
     targetClassList = ['com.ng.xerath.func.DataMethodUtil']
     logTag = 'nangua'
 }

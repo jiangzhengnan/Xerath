@@ -62,7 +62,7 @@ public class XerathHookHelper implements HookLifeCycle {
 
     @Override
     public boolean onVisitClass(final int version, final int access, final String name, final String signature, final String superName, final String[] interfaces) {
-        LogUtil.print("XerathHookHelper-onVisitClass-清空");
+        //LogUtil.print("XerathHookHelper-onVisitClass-清空");
         boolean needHook = false;
         for (HookLifeCycle plug : mPlugs) {
             if (plug.onVisitClass(version, access, name, signature, superName, interfaces)) {

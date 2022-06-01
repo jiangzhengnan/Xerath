@@ -1,13 +1,9 @@
 package com.ng.xerathlib.hook.target.plug;
 
-import java.util.List;
-
 import com.android.annotations.NonNull;
 import com.android.annotations.Nullable;
-import com.ng.xerathlib.extension.ExtConstant;
 import com.ng.xerathlib.hook.target.base.ITargetPlug;
 import com.ng.xerathlib.utils.LogUtil;
-import com.ng.xerathlib.utils.TxtUtils;
 import org.apache.http.util.TextUtils;
 
 /**
@@ -21,11 +17,7 @@ public final class TargetPlugCreator {
         if (TextUtils.isEmpty(className)) {
             return null;
         }
-        ITargetPlug plug = TargetPlugCreator.createPlug(className);
-        if (plug != null) {
-            return plug;
-        }
-        return null;
+        return TargetPlugCreator.createPlug(className);
     }
 
     /**
@@ -40,36 +32,11 @@ public final class TargetPlugCreator {
      */
     @Nullable
     public static ITargetPlug createPlug(@NonNull String owner) {
-        LogUtil.print("TargetPlugCreator createPlug, owner:" + owner);
+        //LogUtil.print("TargetPlugCreator createPlug, owner:" + owner);
         ITargetPlug resultPlug = null;
-
-        String fullClassName = TxtUtils.getFullClassNameForOwner(owner);
-        List<String> targetPkgList = ExtConstant.sTrackMethodStack.targetPackageList;
-        List<String> targetClassList = ExtConstant.sTrackMethodStack.targetClassList;
-
-        //暂时只适配 track_method_stack
-        boolean needTrackMethodStack = false;
-        if (targetPkgList != null) {
-            LogUtil.print("targetPkgList: " + targetPkgList);
-            for (String pkgName : targetPkgList) {
-                if (!TextUtils.isEmpty(pkgName) && fullClassName.startsWith(pkgName)) {
-                    needTrackMethodStack = true;
-                    break;
-                }
-            }
-        }
-        if (!needTrackMethodStack && targetClassList != null) {
-            LogUtil.print("targetClassList: " + targetClassList);
-            for (String className : targetClassList) {
-                //包含内部类
-                if (!TextUtils.isEmpty(className) && fullClassName.startsWith(className)) {
-                    needTrackMethodStack = true;
-                    break;
-                }
-            }
-        }
-        if (needTrackMethodStack) {
+        if (TargetPlugFilter.isNeedTrackMethodStack(owner)) {
             resultPlug = new TrackMethodStackPlug();
+            //LogUtil.print("TargetPlugCreator 符合条件:" + owner);
         }
         return resultPlug;
     }

@@ -3,7 +3,7 @@ package com.ng.xerathlib.asm.base;
 import org.objectweb.asm.ClassVisitor;
 
 import static org.objectweb.asm.Opcodes.ACC_INTERFACE;
-import static org.objectweb.asm.Opcodes.ASM5;
+import static org.objectweb.asm.Opcodes.ASM6;
 
 /**
  * @Project ASMCostTime
@@ -20,7 +20,7 @@ public class BaseClassVisitor extends ClassVisitor {
     public boolean isInterface;
 
     public BaseClassVisitor(ClassVisitor visitor) {
-        super(ASM5, visitor);
+        super(ASM6, visitor);
     }
 
     @Override

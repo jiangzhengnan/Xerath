@@ -12,8 +12,10 @@ public class TrackMethodStackPlug extends TargetPlug {
 
     @Override
     public void onHookMethodStart(final MethodVisitor mv) {
-        LogUtil.print("目标插件 实施注入 onHookMethodStart" + mOwner + " " + mMethodName + " " + mMethodDesc);
-
+        if (!TargetPlugFilter.isNeedTrackMethodStack(mOwner)) {
+            return;
+        }
+        LogUtil.print("TrackMethodStackPlug 实施注入 onHookMethodStart " + mOwner + " " + mMethodName + " " + mMethodDesc);
         String log = "";
         if (ExtConstant.sTrackMethodStack != null && !TextUtils.isEmpty(ExtConstant.sTrackMethodStack.logTag)) {
             log = ExtConstant.sTrackMethodStack.logTag;

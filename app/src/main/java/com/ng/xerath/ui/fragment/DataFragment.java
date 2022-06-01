@@ -1,9 +1,18 @@
 package com.ng.xerath.ui.fragment;
 
+import java.io.File;
+
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.ng.xerath.R;
 import com.ng.xerath.func.DataMethodUtil;
 import com.ng.xerath.func.member.TestMember1;
@@ -87,7 +96,27 @@ public class DataFragment extends BaseFragment {
             @Override
             public void onClick(final View v) {
                 pushNewLine();
-                DataMethodUtil.testCallChain();
+                //app
+                //DataMethodUtil.testCallChain();
+
+                //api
+                Glide.with(getActivity())
+                     .downloadOnly()
+                     .load("https://github.com/jiangzhengnan/Xerath/raw/master/app/src/main/res/raw/ic_bg.png")
+                     .listener(new RequestListener<File>() {
+                         @Override
+                         public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<File> target, boolean isFirstResource) {
+                             Toast.makeText(getContext(), "下载失败", Toast.LENGTH_SHORT).show();
+                             return false;
+                         }
+
+                         @Override
+                         public boolean onResourceReady(File resource, Object model, Target<File> target, DataSource dataSource, boolean isFirstResource) {
+                             Toast.makeText(getContext(), "下载成功", Toast.LENGTH_SHORT).show();
+                             return false;
+                         }
+                     })
+                     .preload();
             }
         });
 

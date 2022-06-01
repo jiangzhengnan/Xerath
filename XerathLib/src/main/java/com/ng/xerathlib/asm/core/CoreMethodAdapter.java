@@ -7,7 +7,7 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.commons.LocalVariablesSorter;
 
-import static org.objectweb.asm.Opcodes.ASM5;
+import static org.objectweb.asm.Opcodes.ASM6;
 import static org.objectweb.asm.Opcodes.ATHROW;
 import static org.objectweb.asm.Opcodes.IRETURN;
 import static org.objectweb.asm.Opcodes.RETURN;
@@ -19,7 +19,7 @@ class CoreMethodAdapter extends LocalVariablesSorter {
 
     public CoreMethodAdapter(int access, String name, String descriptor, MethodVisitor methodVisitor,
                              String owner) {
-        super(ASM5, access, descriptor, methodVisitor);
+        super(ASM6, access, descriptor, methodVisitor);
         XerathHookHelper.getInstance().getParams().init(access, methodVisitor,this, owner, name, descriptor);
         XerathHookHelper.getInstance()
                         .onVisitMethod(access, name, descriptor, methodVisitor, owner);
@@ -116,7 +116,7 @@ class CoreMethodAdapter extends LocalVariablesSorter {
         boolean isAnnotationed = XerathHookHelper.getInstance()
                                                  .visitMethodAnnotation(descriptor, visible);
         if (isAnnotationed) {
-            return new AnnotationVisitor(ASM5) {
+            return new AnnotationVisitor(ASM6) {
                 @Override
                 public void visit(String name, Object value) {
                     super.visit(name, value);
@@ -128,7 +128,7 @@ class CoreMethodAdapter extends LocalVariablesSorter {
                 public AnnotationVisitor visitArray(String name) {
                     //这里比较绕，访问者模式。。
                     String arrayName = name;
-                    return new AnnotationVisitor(ASM5) {
+                    return new AnnotationVisitor(ASM6) {
                         @Override
                         public void visit(String name, Object value) {
                             LogUtil.print("注解 visitArray: " + descriptor + " 附带参数 key:" + arrayName + " value:" + value);

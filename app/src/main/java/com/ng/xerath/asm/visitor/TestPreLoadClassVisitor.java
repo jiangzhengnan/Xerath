@@ -3,7 +3,7 @@ package com.ng.xerath.asm.visitor;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
-import static org.objectweb.asm.Opcodes.ASM5;
+import static org.objectweb.asm.Opcodes.ASM6;
 
 /**
  * @author : jiangzhengnan
@@ -15,7 +15,7 @@ public class TestPreLoadClassVisitor extends ClassVisitor {
 
 
     public TestPreLoadClassVisitor(ClassVisitor visitor) {
-        super(ASM5, visitor);
+        super(ASM6, visitor);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class TestPreLoadClassVisitor extends ClassVisitor {
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         MethodVisitor methodVisitor = super.visitMethod(access, name, descriptor, signature, exceptions);
         if (name.equals("testParams")) {
-            return new TestPreLoadAdviceAdapter(ASM5, methodVisitor);
+            return new TestPreLoadAdviceAdapter(ASM6, methodVisitor);
         }
         return methodVisitor;
 

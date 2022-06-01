@@ -37,10 +37,12 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
 
-
     //asm
     implementation 'org.ow2.asm:asm:9.2'
     implementation 'org.ow2.asm:asm-commons:9.1'
+
+    implementation "androidx.core:core-ktx:1.7.0"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31"
 
     if (project.BUILD_DEV) {
         api project(':XerathCore')
@@ -48,8 +50,10 @@ dependencies {
         //core 引入注解依赖
         implementation 'com.ng.xerathlib:XerathCore:1.0.0'
     }
-    implementation "androidx.core:core-ktx:1.7.0"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.5.31"
+
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+
+
 }
 
 //引入插件
