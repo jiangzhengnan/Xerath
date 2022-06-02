@@ -22,7 +22,7 @@ class AppTransformExecutor {
             println " "
             //hook关键代码
             HookClassExecutor.hookAppClass(filePath)
-            println "[ Xerath ] --- hook className: " + className
+            println "[ Xerath ] --- hook className end: " + className
             FileUtils.copyDirectory(dir, dest)
         }
     }

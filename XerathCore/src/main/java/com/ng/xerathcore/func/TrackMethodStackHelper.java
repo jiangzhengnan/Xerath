@@ -26,8 +26,8 @@ public class TrackMethodStackHelper {
         timeConsuming = nowTime - lastTime;
         lastTime = nowTime;
 
-        timeStr = "上一个方法耗时:" + timeConsuming + "ms    总时长:" + (nowTime - firstTime) + "ms";
-        String result = timeStr + "\n" + methodInfo;
+        timeStr = "pre:" + timeConsuming + "ms all:" + (nowTime - firstTime) + "ms";
+        String result = timeStr + " " + methodInfo;
         Log.d("xerath", result);
     }
 }

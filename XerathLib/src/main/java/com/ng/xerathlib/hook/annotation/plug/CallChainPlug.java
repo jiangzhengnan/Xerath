@@ -20,10 +20,10 @@ public class CallChainPlug extends AnnotationPlug {
     @Override
     public void init(HookParams params) {
         super.init(params);
-        LogUtil.print("access:" + mMethodAccess);
-        LogUtil.print("owner:" + mOwner);
-        LogUtil.print("name:" + mMethodName);
-        LogUtil.print("methodDesc:" + mMethodDesc);
+        LogUtil.print("access:" + mParams.mMethodAccess);
+        LogUtil.print("owner:" + mParams.mOwner);
+        LogUtil.print("name:" + mParams.mMethodName);
+        LogUtil.print("methodDesc:" + mParams.mMethodDesc);
     }
 
     @Override

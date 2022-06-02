@@ -1,5 +1,6 @@
 package com.ng.xerathlib.asm.core;
 
+import com.android.annotations.Nullable;
 import com.ng.xerathlib.hook.XerathHookHelper;
 import com.ng.xerathlib.utils.LogUtil;
 import org.objectweb.asm.AnnotationVisitor;
@@ -16,13 +17,17 @@ import static org.objectweb.asm.Opcodes.RETURN;
  * 继承自LocalVariablesSorter 有序遍历素有方法
  */
 class CoreMethodAdapter extends LocalVariablesSorter {
+    @Nullable
+    public XerathHookHelper mHookHelper;
 
-    public CoreMethodAdapter(int access, String name, String descriptor, MethodVisitor methodVisitor,
+    public CoreMethodAdapter(@Nullable XerathHookHelper hookHelper, int access, String name, String descriptor, MethodVisitor methodVisitor,
                              String owner) {
         super(ASM6, access, descriptor, methodVisitor);
-        XerathHookHelper.getInstance().getParams().init(access, methodVisitor,this, owner, name, descriptor);
-        XerathHookHelper.getInstance()
-                        .onVisitMethod(access, name, descriptor, methodVisitor, owner);
+        this.mHookHelper = hookHelper;
+        if (mHookHelper != null) {
+            mHookHelper.getParams().init(access, methodVisitor, this, owner, name, descriptor);
+            mHookHelper.onVisitMethod(access, name, descriptor, methodVisitor, owner);
+        }
     }
 
     /**
@@ -31,7 +36,9 @@ class CoreMethodAdapter extends LocalVariablesSorter {
     @Override
     public void visitCode() {
         super.visitCode();
-        XerathHookHelper.getInstance().visitMethodCode();
+        if (mHookHelper != null) {
+            mHookHelper.visitMethodCode();
+        }
     }
 
     @Override
@@ -73,7 +80,9 @@ class CoreMethodAdapter extends LocalVariablesSorter {
     @Override
     public void visitInsn(int opcode) {
         if ((opcode >= IRETURN && opcode <= RETURN) || opcode == ATHROW) {
-            XerathHookHelper.getInstance().onHookMethodReturn(opcode, mv);
+            if (mHookHelper != null) {
+                mHookHelper.onHookMethodReturn(opcode, mv);
+            }
             //            // 成员变量
             //            for (int i = 0; i < XerathHookHelper.getInstance().getFiledList().size(); i++) {
             //                String[] values = XerathHookHelper.getInstance().getFiledList().get(i).split(" ");
@@ -113,52 +122,56 @@ class CoreMethodAdapter extends LocalVariablesSorter {
      */
     @Override
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
-        boolean isAnnotationed = XerathHookHelper.getInstance()
-                                                 .visitMethodAnnotation(descriptor, visible);
-        if (isAnnotationed) {
-            return new AnnotationVisitor(ASM6) {
-                @Override
-                public void visit(String name, Object value) {
-                    super.visit(name, value);
-                    LogUtil.print("注解: " + descriptor + " 附带参数 key:" + name + " value:" + value.toString());
-                    XerathHookHelper.getInstance().getParams().putAnnotationParams(name, value);
-                }
+        if (mHookHelper != null) {
+            boolean isAnnotationed = mHookHelper.visitMethodAnnotation(descriptor, visible);
+            if (isAnnotationed) {
+                return new AnnotationVisitor(ASM6) {
+                    @Override
+                    public void visit(String name, Object value) {
+                        super.visit(name, value);
+                        LogUtil.print("注解: " + descriptor + " 附带参数 key:" + name + " value:" + value.toString());
+                        mHookHelper.getParams().putAnnotationParams(name, value);
+                    }
 
-                @Override
-                public AnnotationVisitor visitArray(String name) {
-                    //这里比较绕，访问者模式。。
-                    String arrayName = name;
-                    return new AnnotationVisitor(ASM6) {
-                        @Override
-                        public void visit(String name, Object value) {
-                            LogUtil.print("注解 visitArray: " + descriptor + " 附带参数 key:" + arrayName + " value:" + value);
-                            XerathHookHelper.getInstance().getParams()
-                                            .putAnnotationArrayParams(arrayName, value);
-                            super.visit(name, value);
-                        }
-                    };
-                }
+                    @Override
+                    public AnnotationVisitor visitArray(String name) {
+                        //这里比较绕，访问者模式。。
+                        String arrayName = name;
+                        return new AnnotationVisitor(ASM6) {
+                            @Override
+                            public void visit(String name, Object value) {
+                                LogUtil.print("注解 visitArray: " + descriptor + " 附带参数 key:" + arrayName + " value:" + value);
+                                mHookHelper.getParams().putAnnotationArrayParams(arrayName, value);
+                                super.visit(name, value);
+                            }
+                        };
+                    }
 
-            };
+                };
+            }
         }
         return super.visitAnnotation(descriptor, visible);
     }
 
     @Override
     public void visitMaxs(int maxStack, int maxLocals) {
-        XerathHookHelper.getInstance().onHookMethodEnd(mv);
+        if (mHookHelper != null) {
+            mHookHelper.onHookMethodEnd(mv);
+        }
         super.visitMaxs(maxStack, maxLocals);
     }
 
     @Override
     public void visitLineNumber(int line, Label start) {
-        XerathHookHelper.getInstance().getParams().setLineNumber(line);
+        if (mHookHelper != null) {
+            mHookHelper.getParams().setLineNumber(line);
+        }
         super.visitLineNumber(line, start);
     }
 
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String desc, boolean itf) {
-        if (XerathHookHelper.getInstance().onVisitMethodInsn(mv, opcode, owner, name, desc, itf)) {
+        if (mHookHelper != null && mHookHelper.onVisitMethodInsn(mv, opcode, owner, name, desc, itf)) {
             //是否打断
             return;
         }
@@ -169,6 +182,8 @@ class CoreMethodAdapter extends LocalVariablesSorter {
     @Override
     public void visitEnd() {
         super.visitEnd();
-        XerathHookHelper.getInstance().visitEnd();
+        if (mHookHelper != null) {
+            mHookHelper.visitEnd();
+        }
     }
 }

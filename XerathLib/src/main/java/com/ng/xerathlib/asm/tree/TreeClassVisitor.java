@@ -2,6 +2,7 @@ package com.ng.xerathlib.asm.tree;
 
 import com.ng.xerathlib.asm.base.BaseClassVisitor;
 
+import com.ng.xerathlib.hook.XerathHookManager;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
@@ -31,4 +32,9 @@ public class TreeClassVisitor extends BaseClassVisitor {
         return mv;
     }
 
+    @Override
+    public void visitEnd() {
+        super.visitEnd();
+        XerathHookManager.getInstance().removeHelper(owner);
+    }
 }

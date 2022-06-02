@@ -1,7 +1,6 @@
 package com.ng.xerathlib.asm.preload;
 
 import com.ng.xerathlib.asm.base.BaseClassVisitor;
-import com.ng.xerathlib.hook.XerathHookHelper;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 
@@ -24,7 +23,6 @@ public class PreLoadClassVisitor extends BaseClassVisitor {
         super.visit(version, access, name, signature, superName, interfaces);
         this.owner = name;
         isInterface = (access & ACC_INTERFACE) != 0;
-        XerathHookHelper.getInstance().getParams().clearClassData();
     }
 
     @Override
@@ -33,7 +31,7 @@ public class PreLoadClassVisitor extends BaseClassVisitor {
         if (!isInterface && mv != null && !name.equals("<init>")) {
             //LogUtil.printPre("方法：" + name + " des:" + descriptor + " ");
             //将MethodVisitor交由 XerathPreLoadAdviceAdapter 代理
-            mv = new PreLoadMethodAdapter(access, name, descriptor, mv, owner);
+            mv = new PreLoadMethodAdapter(mHookHelper, access, name, descriptor, mv, owner);
         }
         return mv;
     }

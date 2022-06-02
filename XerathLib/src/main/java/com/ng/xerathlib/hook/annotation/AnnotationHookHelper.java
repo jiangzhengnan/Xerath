@@ -59,7 +59,6 @@ public class AnnotationHookHelper implements HookLifeCycle {
 
     @Override
     public boolean onVisitClass(final int version, final int access, final String name, final String signature, final String superName, final String[] interfaces) {
-        hadChanged = false;
         return false;
     }
 

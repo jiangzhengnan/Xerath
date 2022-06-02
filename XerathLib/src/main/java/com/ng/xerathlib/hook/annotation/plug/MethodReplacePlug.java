@@ -44,8 +44,8 @@ public class MethodReplacePlug extends AnnotationPlug {
     @Override
     public boolean onVisitMethodInsn(MethodVisitor mv, int opcode, String owner, String name, String desc, boolean itf) {
         LogUtil.print("MethodReplacePlug - onVisitMethodInsn");
-        Object[] targetMethodObjArray = (Object[]) XerathHookHelper.getInstance().getParams().getAnnotationParams("targetMethods");
-        Object[] replaceMethodObjArray = (Object[]) XerathHookHelper.getInstance().getParams().getAnnotationParams("replaceMethods");
+        Object[] targetMethodObjArray = (Object[]) mParams.getAnnotationParams("targetMethods");
+        Object[] replaceMethodObjArray = (Object[]) mParams.getAnnotationParams("replaceMethods");
         if (targetMethodObjArray == null || replaceMethodObjArray == null) {
             return false;
         }

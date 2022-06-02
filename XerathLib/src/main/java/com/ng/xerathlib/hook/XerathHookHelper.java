@@ -7,7 +7,6 @@ import com.android.annotations.NonNull;
 import com.ng.xerathlib.hook.annotation.AnnotationHookHelper;
 import com.ng.xerathlib.hook.params.HookParams;
 import com.ng.xerathlib.hook.target.TargetHookHelper;
-import com.ng.xerathlib.utils.LogUtil;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 
@@ -36,23 +35,12 @@ public class XerathHookHelper implements HookLifeCycle {
     @NonNull
     public HookParams mParams;
 
-    private static XerathHookHelper mInstance;
+    public boolean mNeedHook;
 
-    private XerathHookHelper() {
+    public XerathHookHelper() {
         mParams = new HookParams();
         mPlugs.add(new TargetHookHelper(mParams));
         mPlugs.add(new AnnotationHookHelper(mParams));
-    }
-
-    public static XerathHookHelper getInstance() {
-        if (mInstance == null) {
-            synchronized (XerathHookHelper.class) {
-                if (mInstance == null) {
-                    mInstance = new XerathHookHelper();
-                }
-            }
-        }
-        return mInstance;
     }
 
     @NonNull
@@ -63,13 +51,12 @@ public class XerathHookHelper implements HookLifeCycle {
     @Override
     public boolean onVisitClass(final int version, final int access, final String name, final String signature, final String superName, final String[] interfaces) {
         //LogUtil.print("XerathHookHelper-onVisitClass-清空");
-        boolean needHook = false;
         for (HookLifeCycle plug : mPlugs) {
             if (plug.onVisitClass(version, access, name, signature, superName, interfaces)) {
-                needHook = true;
+                mNeedHook = true;
             }
         }
-        return needHook;
+        return mNeedHook;
     }
 
     @Override

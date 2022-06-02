@@ -80,7 +80,7 @@ public class TryCatchPlug extends AnnotationPlug {
             mv.visitInsn(Opcodes.ATHROW);
         }
         // catch结束，方法返回默认值收工
-        Pair defaultVo = ASMUtil.getDefaultByDesc(mMethodDesc);
+        Pair defaultVo = ASMUtil.getDefaultByDesc(mParams.mMethodDesc);
         int value = defaultVo.key;
         int opcode = defaultVo.value;
         if (value >= 0) {

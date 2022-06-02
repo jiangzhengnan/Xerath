@@ -26,11 +26,11 @@ public class CollectParamsPlug extends AnnotationPlug {
     public void onHookMethodStart(MethodVisitor mv) {
         //获取参数列表
         loadParams();
-        int printUtilsVarIndex = mAdapter.newLocal(Type.getObjectType("com/ng/xerathcore/utils/ParameterPrinter"));
+        int printUtilsVarIndex = mParams.mAdapter.newLocal(Type.getObjectType("com/ng/xerathcore/utils/ParameterPrinter"));
         mv.visitTypeInsn(Opcodes.NEW, "com/ng/xerathcore/utils/ParameterPrinter");
         mv.visitInsn(Opcodes.DUP);
-        mv.visitLdcInsn(mOwner);
-        mv.visitLdcInsn(mMethodName);
+        mv.visitLdcInsn(mParams.mOwner);
+        mv.visitLdcInsn(mParams.mMethodName);
         mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "com/ng/xerathcore/utils/ParameterPrinter", "<init>", "(Ljava/lang/String;Ljava/lang/String;)V", false);
         mv.visitVarInsn(Opcodes.ASTORE, printUtilsVarIndex);
         if (mParameters != null) {
@@ -63,9 +63,9 @@ public class CollectParamsPlug extends AnnotationPlug {
 
     //加载参数列表
     private void loadParams() {
-        String key = mMethodName + mMethodDesc;
+        String key = mParams.mMethodName + mParams.mMethodDesc;
         LogUtil.print("CollectParamsPlug key:" + key);
-        mParameters = XerathHookHelper.getInstance().getParams().getMethodParams(key);
+        mParameters = mParams.getMethodParams(key);
         if (mParameters != null) {
             LogUtil.print("CollectParamsPlug 参数列表:" + mParameters.toString());
         } else {
@@ -76,8 +76,8 @@ public class CollectParamsPlug extends AnnotationPlug {
     //进行出参统计
     @Override
     public void onHookMethodReturn(int opcode, MethodVisitor mv) {
-        Type returnType = Type.getReturnType(mMethodDesc);
-        String returnDesc = mMethodDesc.substring(mMethodDesc.indexOf(")") + 1);
+        Type returnType = Type.getReturnType(mParams.mMethodDesc);
+        String returnDesc = mParams.mMethodDesc.substring(mParams.mMethodDesc.indexOf(")") + 1);
         if (returnDesc.startsWith("[") || returnDesc.startsWith("L")) {
             returnDesc = "Ljava/lang/Object;";
         }
@@ -87,7 +87,7 @@ public class CollectParamsPlug extends AnnotationPlug {
             if (opcode == Opcodes.ATHROW) {
                 returnType = Type.getType("Ljava/lang/Object;");
             }
-            resultTempValIndex = mAdapter.newLocal(returnType);
+            resultTempValIndex = mParams.mAdapter.newLocal(returnType);
             int storeOpcocde = OpcodesUtils.getStoreOpcodeFromType(returnType);
             if (opcode == Opcodes.ATHROW) {
                 storeOpcocde = Opcodes.ASTORE;
@@ -95,7 +95,7 @@ public class CollectParamsPlug extends AnnotationPlug {
             mv.visitVarInsn(storeOpcocde, resultTempValIndex);
         }
 
-        mv.visitLdcInsn(mMethodName);
+        mv.visitLdcInsn(mParams.mMethodName);
         //parameter 4
         if (returnType != Type.VOID_TYPE || opcode == Opcodes.ATHROW) {
             int loadOpcode = OpcodesUtils.getLoadOpcodeFromType(returnType);

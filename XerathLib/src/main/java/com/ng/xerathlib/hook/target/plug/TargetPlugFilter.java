@@ -19,6 +19,9 @@ public class TargetPlugFilter {
     }
 
     public static boolean isNeedTrackMethodStack(@NonNull String owner) {
+        if (!ExtConstant.sTrackMethodStack.enable) {
+            return false;
+        }
         String fullClassName = TxtUtils.getFullClassNameForOwner(owner);
         List<String> targetPkgList = ExtConstant.sTrackMethodStack.targetPackageList;
         List<String> targetClassList = ExtConstant.sTrackMethodStack.targetClassList;

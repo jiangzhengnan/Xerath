@@ -29,7 +29,7 @@ public class CalculateTimePlug extends AnnotationPlug {
     public void onHookMethodStart(MethodVisitor mv) {
         LogUtil.print("耗时统计 plug 开始");
         mv.visitMethodInsn(INVOKESTATIC, "java/lang/System", "currentTimeMillis", "()J", false);
-        time = mAdapter.newLocal(Type.LONG_TYPE);
+        time = mParams.mAdapter.newLocal(Type.LONG_TYPE);
         mv.visitVarInsn(LSTORE, time);
     }
 
@@ -45,11 +45,11 @@ public class CalculateTimePlug extends AnnotationPlug {
         mv.visitVarInsn(LSTORE, 3);
         Label l2 = new Label();
         mv.visitLabel(l2);
-        mv.visitLdcInsn(mOwner);
+        mv.visitLdcInsn(mParams.mOwner);
         mv.visitTypeInsn(NEW, "java/lang/StringBuilder");
         mv.visitInsn(DUP);
         mv.visitMethodInsn(INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false);
-        mv.visitLdcInsn("【耗时统计】:func " + mMethodName + " cost Time:");
+        mv.visitLdcInsn("【耗时统计】:func " + mParams.mMethodName + " cost Time:");
         mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
         mv.visitVarInsn(LLOAD, 3);
         mv.visitMethodInsn(INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false);

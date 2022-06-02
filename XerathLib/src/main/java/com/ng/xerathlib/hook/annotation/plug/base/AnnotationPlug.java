@@ -1,10 +1,9 @@
 package com.ng.xerathlib.hook.annotation.plug.base;
 
+import com.android.annotations.NonNull;
 import com.ng.xerathlib.hook.params.HookParams;
-
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.commons.LocalVariablesSorter;
 
 /**
  * 描述:
@@ -13,24 +12,16 @@ import org.objectweb.asm.commons.LocalVariablesSorter;
  * @date 2021/9/14
  */
 public abstract class AnnotationPlug implements IAnnotationPlug {
-    // 方法返回值类型描述符
-    protected int mMethodAccess;
-    protected String mMethodDesc;
-    protected String mOwner;
-    protected String mMethodName;
-    protected LocalVariablesSorter mAdapter;
+    @NonNull
+    protected HookParams mParams;
 
     @Override
-    public void init(HookParams params) {
-        this.mMethodAccess = params.mMethodAccess;
-        this.mAdapter = params.mAdapter;
-        this.mOwner = params.mOwner;
-        this.mMethodName = params.mMethodName;
-        this.mMethodDesc = params.mMethodDesc;
+    public void init(@NonNull HookParams params) {
+        this.mParams = params;
     }
 
     protected boolean isStaticMethod() {
-        return ((Opcodes.ACC_STATIC & mMethodAccess) != 0);
+        return ((Opcodes.ACC_STATIC & mParams.mMethodAccess) != 0);
     }
 
     @Override

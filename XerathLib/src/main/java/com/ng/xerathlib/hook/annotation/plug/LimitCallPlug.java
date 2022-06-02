@@ -1,14 +1,11 @@
 package com.ng.xerathlib.hook.annotation.plug;
 
-import com.ng.xerathlib.hook.XerathHookHelper;
 import com.ng.xerathlib.hook.annotation.plug.base.AnnotationPlug;
 import com.ng.xerathlib.utils.ASMUtil;
 import com.ng.xerathlib.utils.Pair;
-
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
-import org.objectweb.asm.commons.LocalVariablesSorter;
 
 
 /**
@@ -30,7 +27,7 @@ public class LimitCallPlug extends AnnotationPlug {
 
     @Override
     public void onHookMethodStart(MethodVisitor mv) {
-        Long clickTimeL = (Long) XerathHookHelper.getInstance().getParams().getAnnotationParams("time");
+        Long clickTimeL = (Long) mParams.getAnnotationParams("time");
         if (clickTimeL != null) {
             clickTime = clickTimeL;
         }
@@ -40,7 +37,7 @@ public class LimitCallPlug extends AnnotationPlug {
         mv.visitLdcInsn(clickTime);
 
         mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/utils/CoreUtils",
-                "needLimitCall", "(J)Z", false);
+                           "needLimitCall", "(J)Z", false);
 
         mv.visitJumpInsn(Opcodes.IFEQ, elseLabel);
 
@@ -50,7 +47,7 @@ public class LimitCallPlug extends AnnotationPlug {
         mv.visitMethodInsn(Opcodes.INVOKESTATIC, "com/ng/xerathcore/CoreHelper", "catchLog", "(Ljava/lang/String;)V", false);
 
         //方法返回默认值
-        Pair defaultVo = ASMUtil.getDefaultByDesc(mMethodDesc);
+        Pair defaultVo = ASMUtil.getDefaultByDesc(mParams.mMethodDesc);
         int value = defaultVo.key;
         int opcode = defaultVo.value;
         if (value >= 0) {

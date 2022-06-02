@@ -23,12 +23,12 @@ buildscript {
 
 apply plugin: 'ng-xerath-plugin'
 xerathTransformExt {
-    enableAnnotation = false
+    enableAnnotation = true
     runVariant = 'DEBUG'
 }
 
 track_method_stack{
-    enable = true
+    enable = false
     targetPackageList = ['com.bumptech.glide']
     targetClassList = ['com.ng.xerath.func.DataMethodUtil']
     logTag = 'nangua'

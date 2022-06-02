@@ -20,7 +20,7 @@ public class TrackMethodStackPlug extends TargetPlug {
         if (ExtConstant.sTrackMethodStack != null && !TextUtils.isEmpty(ExtConstant.sTrackMethodStack.logTag)) {
             log = ExtConstant.sTrackMethodStack.logTag;
         }
-        mv.visitLdcInsn(log + "-[方法调用]-" + mOwner + "-" + mMethodName + "-" + mMethodDesc);
+        mv.visitLdcInsn(log + " " + mOwner + "/" + mMethodName + " " + mMethodDesc);
         mv.visitMethodInsn(INVOKESTATIC, "com/ng/xerathcore/func/TrackMethodStackHelper", "callMethod", "(Ljava/lang/String;)V", false);
     }
 }
